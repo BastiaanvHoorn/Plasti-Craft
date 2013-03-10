@@ -29,7 +29,7 @@ public class PlastiCraft {
         @SidedProxy(clientSide="com.DarkXD.PlastiCraft.client.ClientProxy", serverSide="com.DarkXD.PlastiCraft.ServerProxy")
         public static ServerProxy proxy;
         
-        public final static Block Block_Quicksand = new Block_Quicksand(500, 1, Material.ground)
+        public final static Block Block_Quicksand = new Block_Quicksand(500, 0, Material.ground)
         	.setHardness(0.5F).setStepSound(Block.soundGravelFootstep)
         	.setBlockName("Quicksand1").setCreativeTab(CreativeTabs.tabBlock);
         
