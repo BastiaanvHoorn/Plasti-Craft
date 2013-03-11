@@ -1,5 +1,7 @@
 package com.DarkXD.PlastiCraft;
 
+import com.DarkXD.PlastiCraft.client.ClientProxy;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -28,6 +30,7 @@ public class PlastiCraft {
         // Says where the client and server 'proxy' code is loaded.
         @SidedProxy(clientSide="com.DarkXD.PlastiCraft.client.ClientProxy", serverSide="com.DarkXD.PlastiCraft.ServerProxy")
         public static ServerProxy proxy;
+        public static ClientProxy Clientproxy;
         
         public final static Block Block_Quicksand = new Block_Quicksand(500, 0, Material.ground)
         	.setHardness(0.5F).setStepSound(Block.soundGravelFootstep)
@@ -44,6 +47,8 @@ public class PlastiCraft {
         @Init
         public void load(FMLInitializationEvent event) {
                 proxy.registerRenderers();
+                //Clientproxy.registerRenderers();
+                
                 
                 LanguageRegistry.addName(Block_Quicksand, "Quicksand"/*ingame name*/);
                 MinecraftForge.setBlockHarvestLevel(Block_Quicksand, "shovel", 2);
