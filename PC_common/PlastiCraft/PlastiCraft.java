@@ -1,10 +1,10 @@
-package com.DarkXD.PlastiCraft;
-
-import com.DarkXD.PlastiCraft.client.ClientProxy;
+package PlastiCraft;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -19,7 +19,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(modid="PlastiCraft", name="PlastiCraft", version="0.0.1")
+@Mod(modid="PlastiCraft", name="PlastiCraft", version="0.0.2")
 @NetworkMod(clientSideRequired=true, serverSideRequired=false)
 public class PlastiCraft {
 
@@ -28,15 +28,16 @@ public class PlastiCraft {
         public static PlastiCraft instance;
         
         // Says where the client and server 'proxy' code is loaded.
-        @SidedProxy(clientSide="com.DarkXD.PlastiCraft.client.ClientProxy", serverSide="com.DarkXD.PlastiCraft.ServerProxy")
-        public static ServerProxy proxy;
-        public static ClientProxy Clientproxy;
+        @SidedProxy(clientSide="PlastiCraft.client.ClientProxy", serverSide="PlastiCraft.CommonProxy")
+        public static CommonProxy proxy;
         
-        public final static Block Block_Quicksand = new Block_Quicksand(500, 0, Material.ground)
+        public static final CreativeTabs tabsPC/*system reference*/ = new CreativeTabs(CreativeTabs.creativeTabArray.length, "PlastiTab"/*ingame name*/);
+        public static final Material QuicksandMaterial = new Material(MapColor.dirtColor);
+        public final static Block Block_Quicksand = new Block_Quicksand(500, 1, Material.ground)
         	.setHardness(0.5F).setStepSound(Block.soundGravelFootstep)
-        	.setBlockName("Quicksand1").setCreativeTab(CreativeTabs.tabBlock);
+        	.setBlockName("Quicksand1");
         
-        public static final CreativeTabs tabsPC = new CreativeTabs(CreativeTabs.creativeTabArray.length, "PlastiTab");
+        
         
         
         @PreInit
@@ -46,13 +47,17 @@ public class PlastiCraft {
         
         @Init
         public void load(FMLInitializationEvent event) {
-                proxy.registerRenderers();
-                //Clientproxy.registerRenderers();
-                
+                proxy.registerRenderers();                
                 
                 LanguageRegistry.addName(Block_Quicksand, "Quicksand"/*ingame name*/);
                 MinecraftForge.setBlockHarvestLevel(Block_Quicksand, "shovel", 2);
-                GameRegistry.registerBlock(Block_Quicksand, "Quicksand2");
+                GameRegistry.registerBlock(Block_Quicksand, "PCQuicksand"/*must be unique*/);
+        
+                GameRegistry.addShapelessRecipe(new ItemStack(Block.beacon, 64),
+                	new ItemStack(Block.dirt),
+                    new ItemStack(Block.sand),
+                    new ItemStack(Block.gravel),
+                    new ItemStack(Block.slowSand, 3));
         }
         
         @PostInit
