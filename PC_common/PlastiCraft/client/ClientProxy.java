@@ -1,7 +1,7 @@
-package PlastiCraft.client;
+package plasticraft.client;
 
 import net.minecraftforge.client.MinecraftForgeClient;
-import PlastiCraft.CommonProxy;
+import plasticraft.CommonProxy;
 
 public class ClientProxy extends CommonProxy {
         

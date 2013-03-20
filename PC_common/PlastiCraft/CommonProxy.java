@@ -1,7 +1,7 @@
-package PlastiCraft;
+package plasticraft;
 
 public class CommonProxy {
-    public static String TEXTURES_PNG = "/Plasti-Craft/recources/block.png";
+    public static String TEXTURES_PNG = "/block.png";
     
     // Client stuff
     public void registerRenderers() {
