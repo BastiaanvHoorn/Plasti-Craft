@@ -1,4 +1,4 @@
-package plasticraft;
+package PlastiCraft;
 
 public class CommonProxy {
     public static String TEXTURES_PNG = "/block.png";

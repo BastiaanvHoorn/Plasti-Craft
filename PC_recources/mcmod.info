@@ -1,0 +1,21 @@
+[
+{
+  "modid": "PC",
+  "name": "Plasti Craft",
+  "description": "Make plastic and all you can do with it!",
+  "version": "0.0.1",
+  "url": "https://github.com/XD-face-me/Plasti-Craft/",
+  "updateUrl": "",
+  "authorList": [
+    "XD-face-me",
+    "darkracers"
+  ],
+  "credits": "By XD-face-me and darkracers",
+  "logoFile": "",
+  "screenshots": [
+  ],
+  "parent":"",
+  "dependencies": [
+  ]
+}
+]
