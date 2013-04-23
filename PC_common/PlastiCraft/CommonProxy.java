@@ -1,7 +1,6 @@
 package plasticraft;
 
 public class CommonProxy {
-    public static String TEXTURES_PNG = "/block.png";
     
     // Client stuff
     public void registerRenderers() {
