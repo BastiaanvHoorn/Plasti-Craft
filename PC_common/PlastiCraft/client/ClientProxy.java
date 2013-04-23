@@ -1,11 +1,12 @@
-package plasticraft.client;
+package PlastiCraft.client;
 
 import net.minecraftforge.client.MinecraftForgeClient;
-import plasticraft.CommonProxy;
+import PlastiCraft.CommonProxy;
 
 public class ClientProxy extends CommonProxy {
         
-        @Override
+        @SuppressWarnings("deprecation")
+		@Override
         public void registerRenderers() {
         }
         
