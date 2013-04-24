@@ -1,4 +1,4 @@
-package plasticraft.blocks;
+package PlastiCraft.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -13,8 +13,8 @@ import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import plasticraft.CommonProxy;
-import plasticraft.PlastiCraft;
+import PlastiCraft.CommonProxy;
+import PlastiCraft.PlastiCraft;
 
 public class BlockQuicksand extends Block {
 		

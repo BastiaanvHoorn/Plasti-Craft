@@ -1,7 +1,7 @@
-package plasticraft.blocks;
+package PlastiCraft.blocks;
 
 
-import plasticraft.PlastiCraft;
+import PlastiCraft.PlastiCraft;
 import net.minecraft.block.BlockStationary;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;

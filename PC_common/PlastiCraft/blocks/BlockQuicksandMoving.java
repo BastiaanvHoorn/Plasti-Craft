@@ -1,6 +1,6 @@
-package plasticraft.blocks;
+package PlastiCraft.blocks;
 
-import plasticraft.PlastiCraft;
+import PlastiCraft.PlastiCraft;
 import net.minecraft.block.BlockFlowing;
 import net.minecraft.block.material.Material;
 import net.minecraft.world.World;
