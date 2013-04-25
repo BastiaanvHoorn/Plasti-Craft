@@ -6,13 +6,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.liquids.LiquidStack;
-
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -28,8 +25,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 import PlastiCraft.blocks.BlockQuicksand;
-import PlastiCraft.blocks.BlockQuicksandStill;
-import PlastiCraft.blocks.BlockQuicksandMoving;
 
 @Mod(modid="PlastiCraft", name="plasticraft", version="0.0.2")
 @NetworkMod(clientSideRequired=true, serverSideRequired=false)
