@@ -1,18 +1,26 @@
 package PlastiCraft.blocks;
 
-import PlastiCraft.lib.References;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import PlastiCraft.PlastiCraft;
+import PlastiCraft.lib.References;
+import PlastiCraft.tileentities.TileEntityCarbonFormer;
+import cpw.mods.fml.common.network.FMLNetworkHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
-public class carbonformer extends Block {
+public class carbonformer extends BlockContainer {
 
 	public carbonformer(int id, Material Material) {
 		super(id, Material);
@@ -117,5 +125,49 @@ public class carbonformer extends Block {
     		return FrontIcon;
     	}
     }
+    
+    @Override
+    public boolean onBlockActivated(World world,int x,int y,int z, EntityPlayer player, int Side, float hitX,float hitY, float hitZ){
+		
+    	if(!world.isRemote){
+    		FMLNetworkHandler.openGui(player, PlastiCraft.instance, 0, world, x, y, z);
+    	}
+    	
+    	return true;
+    	
+    }
+
+	@Override
+	public TileEntity createNewTileEntity(World world) {
+		return new TileEntityCarbonFormer();
+	}
+	
+	@Override
+	public void breakBlock(World world, int x,int y,int z,int id, int metadata){
+		TileEntity te = world.getBlockTileEntity(x, y, z);
+		if(te != null && te instanceof IInventory){
+			IInventory inv = (IInventory)te;
+			
+			for(int i = 0; i < inv.getSizeInventory();i++){
+				ItemStack item = inv.getStackInSlotOnClosing(i);
+				
+				if(item != null){
+					float spawnx = x + world.rand.nextFloat();
+					float spawny = y + world.rand.nextFloat();
+					float spawnz = z + world.rand.nextFloat();
+					
+					EntityItem droppedItem = new EntityItem(world,spawnx,spawny,spawnz,item);
+					
+					float mult = 0.05F;
+					
+					droppedItem.motionX = (-0.5F + world.rand.nextFloat()) * mult;
+					droppedItem.motionY = (4 + world.rand.nextFloat()) * mult;
+					droppedItem.motionZ = (-0.5F + world.rand.nextFloat()) * mult;
+				}
+			}
+		}
+		
+		super.breakBlock(world, x, y, z, id, metadata);
+	}
 
 }

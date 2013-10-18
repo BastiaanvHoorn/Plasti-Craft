@@ -11,7 +11,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.Configuration;
 import PlastiCraft.blocks.BlockQuicksand;
 import PlastiCraft.blocks.carbonformer;
+import PlastiCraft.client.interfaces.GuiHandler;
 import PlastiCraft.items.Plastic;
+import PlastiCraft.lib.References;
+import PlastiCraft.tileentities.TileEntityCarbonFormer;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -25,12 +28,12 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod(modid="PlastiCraft", name="plasticraft", version="0.0.2")
-@NetworkMod(clientSideRequired=true, serverSideRequired=false)
+@NetworkMod(clientSideRequired=true, serverSideRequired=true)
 
 public class PlastiCraft {
 
         // The instance of your mod that Forge uses.
-        @Instance(value= "pc")
+        @Instance(value= "PlastiCraft")
         public static PlastiCraft instance;
         
         // Says where the client and server 'proxy' code is loaded.
@@ -66,13 +69,17 @@ public class PlastiCraft {
         	
         	//adding block Quicksand
             block_Quicksand =  new BlockQuicksand(config.getBlock("Quicksand", 500).getInt(500),Material.ground).setUnlocalizedName("quicksand");
-            carbon_former = new carbonformer(config.getBlock("carbonformer", 503).getInt(503),Material.ground).setUnlocalizedName("carbonformer");
+            carbon_former = new carbonformer(config.getBlock("carbonformer", 503).getInt(503),Material.iron).setUnlocalizedName("carbonformer");
             LanguageRegistry.addName(carbon_former, "carbon Former");
             GameRegistry.registerBlock(carbon_former,"carbonformer");
             carbon_former.setCreativeTab(tabsPC);
             LanguageRegistry.addName(block_Quicksand, "Quicksand");
             GameRegistry.registerBlock(block_Quicksand,"quicksand");
             block_Quicksand.setCreativeTab(tabsPC);
+            
+            GameRegistry.registerTileEntity(TileEntityCarbonFormer.class, References.CARBONFORMER_TE_KEY);
+            
+            new GuiHandler();
             
             plastic_Item= new Plastic(config.getBlock("Plastic", 501).getInt(501)).setUnlocalizedName("plastic");
             LanguageRegistry.addName(plastic_Item, "Plastic");
