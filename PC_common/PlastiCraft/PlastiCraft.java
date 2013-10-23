@@ -27,13 +27,13 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-@Mod(modid="PlastiCraft", name="plasticraft", version="0.0.2")
+@Mod(modid=References.MOD_ID, name=References.MOD_NAME, version=References.VERSION)
 @NetworkMod(clientSideRequired=true, serverSideRequired=true)
 
 public class PlastiCraft {
 
         // The instance of your mod that Forge uses.
-        @Instance(value= "PlastiCraft")
+        @Instance(value= References.MOD_ID)
         public static PlastiCraft instance;
         
         // Says where the client and server 'proxy' code is loaded.

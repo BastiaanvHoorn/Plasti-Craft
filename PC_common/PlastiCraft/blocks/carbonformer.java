@@ -163,6 +163,8 @@ public class carbonformer extends BlockContainer {
 					droppedItem.motionX = (-0.5F + world.rand.nextFloat()) * mult;
 					droppedItem.motionY = (4 + world.rand.nextFloat()) * mult;
 					droppedItem.motionZ = (-0.5F + world.rand.nextFloat()) * mult;
+					
+					world.spawnEntityInWorld(droppedItem);
 				}
 			}
 		}
