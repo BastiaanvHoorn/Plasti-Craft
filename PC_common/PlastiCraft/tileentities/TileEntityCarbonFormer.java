@@ -1,17 +1,20 @@
-package PlastiCraft.tileentities;
+package plasticraft.tileentities;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 
-public class TileEntityCarbonFormer extends TileEntity implements IInventory{
+public class TileEntityCarbonFormer extends TileEntity implements ISidedInventory{
 
 	private ItemStack[] items;
+	
+	private int[] Slots_bottom = {2};
+	private int[] Slots_top = {0};
+	private int[] Slots_side = {0,1};
 	
 	public TileEntityCarbonFormer(){
 		items = new ItemStack[3];
@@ -89,11 +92,7 @@ public class TileEntityCarbonFormer extends TileEntity implements IInventory{
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
 		if(i==0){
-			if(itemstack.itemID == Item.diamond.itemID){
-				return true;
-			}else{
-				return false;
-			}
+			return plasticraft.Carbon.isCarbon(itemstack);
 		}else if(i == 1){
 			if(TileEntityFurnace.isItemFuel(itemstack)){
 				return true;
@@ -138,6 +137,38 @@ public class TileEntityCarbonFormer extends TileEntity implements IInventory{
 				setInventorySlotContents(slot,ItemStack.loadItemStackFromNBT(item));
 			}
 		}
+	}
+	
+	@Override
+	public void onInventoryChanged(){
+		super.onInventoryChanged();
+		/*ItemStack stack0 = getStackInSlot(0);
+		ItemStack stack1 = getStackInSlot(1);
+		if(Carbon.isCarbon(stack0) && TileEntityFurnace.isItemFuel(stack1)){
+			setInventorySlotContents(2,new ItemStack(501,stack1.stackSize + 1,0));
+		}*/
+	}
+
+	@Override
+	public int[] getAccessibleSlotsFromSide(int var1) {
+		if (var1 == 0){
+			return Slots_bottom;
+		}else if(var1 == 1){
+			return Slots_top;
+		}else{
+			return Slots_side;
+		}
+	}
+
+	@Override
+	public boolean canInsertItem(int i, ItemStack itemstack, int j) {
+		return isItemValidForSlot(i, itemstack);
+	}
+
+	@Override
+	public boolean canExtractItem(int i, ItemStack itemstack, int j) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

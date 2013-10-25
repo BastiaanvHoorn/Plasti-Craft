@@ -1,4 +1,4 @@
-package PlastiCraft.client.interfaces;
+package plasticraft.client.interfaces;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;

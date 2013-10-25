@@ -1,4 +1,4 @@
-package PlastiCraft.blocks;
+package plasticraft.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -13,9 +13,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import PlastiCraft.PlastiCraft;
-import PlastiCraft.lib.References;
-import PlastiCraft.tileentities.TileEntityCarbonFormer;
+import plasticraft.PlastiCraft;
+import plasticraft.lib.References;
+import plasticraft.tileentities.TileEntityCarbonFormer;
 import cpw.mods.fml.common.network.FMLNetworkHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

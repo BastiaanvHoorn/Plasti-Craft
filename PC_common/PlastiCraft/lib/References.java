@@ -1,4 +1,4 @@
-package PlastiCraft.lib;
+package plasticraft.lib;
 
 public class References {
 	public static final String MOD_ID= "pc";

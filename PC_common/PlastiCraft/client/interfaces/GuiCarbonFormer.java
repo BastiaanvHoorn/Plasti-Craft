@@ -1,4 +1,4 @@
-package PlastiCraft.client.interfaces;
+package plasticraft.client.interfaces;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -7,7 +7,7 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-import PlastiCraft.tileentities.TileEntityCarbonFormer;
+import plasticraft.tileentities.TileEntityCarbonFormer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

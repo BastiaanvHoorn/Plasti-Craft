@@ -1,4 +1,4 @@
-package PlastiCraft;
+package plasticraft;
 
 public class CommonProxy {
     

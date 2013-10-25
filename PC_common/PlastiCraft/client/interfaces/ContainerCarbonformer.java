@@ -1,11 +1,11 @@
-package PlastiCraft.client.interfaces;
+package plasticraft.client.interfaces;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import PlastiCraft.tileentities.TileEntityCarbonFormer;
+import plasticraft.tileentities.TileEntityCarbonFormer;
 
 public class ContainerCarbonformer extends Container{
 
@@ -25,7 +25,7 @@ public class ContainerCarbonformer extends Container{
 		}
 		for(int x=0; x<3;x++){
 			if(x==0){
-				addSlotToContainer( new SlotDiamond(carbonformer,x,8+ 18 * x, 17));
+				addSlotToContainer( new SlotCarbon(carbonformer,x,8+ 18 * x, 17));
 			}else if(x == 1){
 				addSlotToContainer(new SlotFuel(carbonformer,x,8+18*x,17));
 			}else

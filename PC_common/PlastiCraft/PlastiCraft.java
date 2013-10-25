@@ -1,4 +1,4 @@
-package PlastiCraft;
+package plasticraft;
 
 import java.util.logging.Logger;
 
@@ -9,12 +9,12 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.Configuration;
-import PlastiCraft.blocks.BlockQuicksand;
-import PlastiCraft.blocks.carbonformer;
-import PlastiCraft.client.interfaces.GuiHandler;
-import PlastiCraft.items.Plastic;
-import PlastiCraft.lib.References;
-import PlastiCraft.tileentities.TileEntityCarbonFormer;
+import plasticraft.blocks.BlockQuicksand;
+import plasticraft.blocks.carbonformer;
+import plasticraft.client.interfaces.GuiHandler;
+import plasticraft.items.Plastic;
+import plasticraft.lib.References;
+import plasticraft.tileentities.TileEntityCarbonFormer;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -37,7 +37,7 @@ public class PlastiCraft {
         public static PlastiCraft instance;
         
         // Says where the client and server 'proxy' code is loaded.
-        @SidedProxy(clientSide="PlastiCraft.client.ClientProxy", serverSide="PlastiCraft.CommonProxy")
+        @SidedProxy(clientSide="plasticraft.client.ClientProxy", serverSide="plasticraft.CommonProxy")
         public static CommonProxy proxy;
         
 
