@@ -1,6 +1,6 @@
-package PlastiCraft.items;
+package plasticraft.items;
 
-import PlastiCraft.lib.References;
+import plasticraft.lib.References;
 import net.minecraft.item.Item;
 
 public class Plastic extends Item {
