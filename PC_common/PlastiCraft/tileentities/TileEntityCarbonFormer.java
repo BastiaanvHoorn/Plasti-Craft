@@ -1,5 +1,7 @@
 package plasticraft.tileentities;
 
+import plasticraft.Carbon;
+import plasticraft.PlastiCraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -139,15 +141,39 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 		}
 	}
 	
+	private int timer = 0;
+	
 	@Override
-	public void onInventoryChanged(){
-		super.onInventoryChanged();
-		/*ItemStack stack0 = getStackInSlot(0);
+	public void updateEntity(){
+		super.updateEntity();
+		if(!this.worldObj.isRemote){
+		ItemStack stack0 = getStackInSlot(0);
 		ItemStack stack1 = getStackInSlot(1);
+		ItemStack stack2 = getStackInSlot(2);
 		if(Carbon.isCarbon(stack0) && TileEntityFurnace.isItemFuel(stack1)){
-			setInventorySlotContents(2,new ItemStack(501,stack1.stackSize + 1,0));
-		}*/
+			if(timer ==40){
+			if(stack2!=null){
+				if(stack2.stackSize!=getInventoryStackLimit()){
+						decrStackSize(0, 1);
+						decrStackSize(1,1);
+						setInventorySlotContents(2,new ItemStack(PlastiCraft.plastic_Item,stack2.stackSize + 1,0));
+						this.onInventoryChanged();
+						timer = 0;
+					}
+				}else{
+					decrStackSize(0, 1);
+					decrStackSize(1,1);
+					setInventorySlotContents(2,new ItemStack(PlastiCraft.plastic_Item,1,0));
+					timer = 0;
+					this.onInventoryChanged();
+				}
+			}else{
+				timer++;
+			}
+			}
+		}
 	}
+	
 
 	@Override
 	public int[] getAccessibleSlotsFromSide(int var1) {
@@ -167,8 +193,11 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 
 	@Override
 	public boolean canExtractItem(int i, ItemStack itemstack, int j) {
-		// TODO Auto-generated method stub
-		return false;
+		if(i == 2){
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 }

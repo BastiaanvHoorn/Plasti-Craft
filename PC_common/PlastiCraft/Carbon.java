@@ -19,10 +19,14 @@ public class Carbon {
  
  public static boolean isCarbon(ItemStack stack){
 	 for(int i = 0; i < carbon_id.length; i++){
+		 if(stack!=null){
 		 if(stack.itemID == carbon_id[i]){
 			 return true;
 		 }
+	 }else{
+		 return false;
+		 }
 	 }
-	 return false;
+	return false;
  }
 }
