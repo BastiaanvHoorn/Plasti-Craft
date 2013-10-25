@@ -98,6 +98,10 @@ public class PlastiCraft {
         	GameRegistry.addRecipe(new ItemStack(PlastiCraft.block_Quicksand,2), "xyx","yzy","xyx",
         	'x', new ItemStack(Block.dirt),'y',new ItemStack(Block.gravel),'z',new ItemStack(Item.bucketWater)
         		);
+        	GameRegistry.addRecipe(new ItemStack(PlastiCraft.carbon_former,1),
+        			"xxx","xyx","xxx",
+        			'x', new ItemStack(Block.netherBrick),
+        			'y', new ItemStack(Block.furnaceIdle));
         }
         
         @EventHandler
