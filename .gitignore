@@ -11,3 +11,11 @@ Thumbs.db
 # Media files #
 *.psd
 *.xcf
+
+# Client only files #
+.metadata
+.classpath
+.settings/
+.loadpath
+*.launch
+.buildpath
