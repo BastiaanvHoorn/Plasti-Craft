@@ -1,4 +1,13 @@
-# OS generated files #
-######################
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# System generated files #
 Thumbs.db
+
+# Media files #
 *.psd
+*.xcf
