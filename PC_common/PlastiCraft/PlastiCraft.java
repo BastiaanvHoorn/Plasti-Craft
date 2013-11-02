@@ -5,13 +5,18 @@ import java.util.logging.Logger;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.Configuration;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import plasticraft.blocks.BlockQuicksand;
+import plasticraft.blocks.Fluid_Plastic;
 import plasticraft.blocks.carbonformer;
 import plasticraft.client.interfaces.GuiHandler;
+import plasticraft.fluid.PlasticFluid;
 import plasticraft.items.Plastic;
 import plasticraft.lib.References;
 import plasticraft.tileentities.TileEntityCarbonFormer;
@@ -52,11 +57,19 @@ public class PlastiCraft {
         public static Block block_Quicksand;
         public static Block carbon_former;
         public static Item plastic_Item;
+        public static Fluid plastic_fluid;
+        public static Block Fluid_Plastic_Block;
+        public static Item bucketplastic;
         public static final CreativeTabs tabsPC = new CreativeTabs("PlastiTab"){
         	public ItemStack getIconItemStack(){
         		return new ItemStack(block_Quicksand);
         	}
         };
+        
+        public static Material plastic;
+        
+        public static int fluidPlasticId;
+        
         @EventHandler
         public void preInit(FMLPreInitializationEvent event) {
     		pcLog.setParent(FMLLog.getLogger());
@@ -64,10 +77,10 @@ public class PlastiCraft {
 
         	Configuration config = new Configuration(event.getSuggestedConfigurationFile());
         	config.load();
+        	
+        	fluidPlasticId = config.getBlock("plastic_fluid", 600).getInt(600);
             
         	
-        	
-        	//adding block Quicksand
             block_Quicksand =  new BlockQuicksand(config.getBlock("Quicksand", 500).getInt(500),Material.ground).setUnlocalizedName("quicksand");
             carbon_former = new carbonformer(config.getBlock("carbonformer", 503).getInt(503),Material.iron).setUnlocalizedName("carbonformer");
             LanguageRegistry.addName(carbon_former, "carbon Former");
@@ -76,6 +89,20 @@ public class PlastiCraft {
             LanguageRegistry.addName(block_Quicksand, "Quicksand");
             GameRegistry.registerBlock(block_Quicksand,"quicksand");
             block_Quicksand.setCreativeTab(tabsPC);
+            
+            
+            plastic = new MaterialLiquid(MapColor.ironColor);
+            
+            plastic_fluid = new PlasticFluid("Plastic").setBlockID(fluidPlasticId);
+            
+            FluidRegistry.registerFluid(plastic_fluid);
+            Fluid_Plastic_Block = new Fluid_Plastic(fluidPlasticId, plastic_fluid, plastic);
+
+            
+            GameRegistry.registerBlock(Fluid_Plastic_Block, "plasticBlockfluid");
+            LanguageRegistry.addName(Fluid_Plastic_Block, "Plastic");
+            
+            
             
             GameRegistry.registerTileEntity(TileEntityCarbonFormer.class, References.CARBONFORMER_TE_KEY);
             
