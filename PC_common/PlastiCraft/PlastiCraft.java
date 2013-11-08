@@ -10,13 +10,17 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import plasticraft.blocks.BlockQuicksand;
 import plasticraft.blocks.Fluid_Plastic;
 import plasticraft.blocks.carbonformer;
 import plasticraft.client.interfaces.GuiHandler;
+import plasticraft.events.bucketevent;
 import plasticraft.fluid.PlasticFluid;
+import plasticraft.items.BucketPlastic;
 import plasticraft.items.Plastic;
 import plasticraft.lib.References;
 import plasticraft.tileentities.TileEntityCarbonFormer;
@@ -89,8 +93,7 @@ public class PlastiCraft {
             LanguageRegistry.addName(block_Quicksand, "Quicksand");
             GameRegistry.registerBlock(block_Quicksand,"quicksand");
             block_Quicksand.setCreativeTab(tabsPC);
-            
-            
+    
             plastic = new MaterialLiquid(MapColor.ironColor);
             
             plastic_fluid = new PlasticFluid("Plastic").setBlockID(fluidPlasticId);
@@ -102,9 +105,14 @@ public class PlastiCraft {
             GameRegistry.registerBlock(Fluid_Plastic_Block, "plasticBlockfluid");
             LanguageRegistry.addName(Fluid_Plastic_Block, "Plastic");
             
+            bucketplastic = new BucketPlastic(config.getItem("bucketplastic", 602).getInt(602), PlastiCraft.Fluid_Plastic_Block.blockID);
+            GameRegistry.registerItem(bucketplastic,"bucketplastic");
+            FluidContainerRegistry.registerFluidContainer(PlastiCraft.plastic_fluid, new ItemStack(PlastiCraft.bucketplastic,1 ,1), new ItemStack(Item.bucketEmpty));
+            LanguageRegistry.addName(bucketplastic, "Plastic Bucket");
             
+            MinecraftForge.EVENT_BUS.register(new bucketevent());
             
-            GameRegistry.registerTileEntity(TileEntityCarbonFormer.class, References.CARBONFORMER_TE_KEY);
+            GameRegistry.registerTileEntity(TileEntityCarbonFormer.class, References.CARBONFORMER_TE_KEY); 
             
             new GuiHandler();
             
