@@ -110,6 +110,8 @@ public class PlastiCraft {
             FluidContainerRegistry.registerFluidContainer(PlastiCraft.plastic_fluid, new ItemStack(PlastiCraft.bucketplastic,1 ,1), new ItemStack(Item.bucketEmpty));
             LanguageRegistry.addName(bucketplastic, "Plastic Bucket");
             
+            
+            
             MinecraftForge.EVENT_BUS.register(new bucketevent());
             
             GameRegistry.registerTileEntity(TileEntityCarbonFormer.class, References.CARBONFORMER_TE_KEY); 

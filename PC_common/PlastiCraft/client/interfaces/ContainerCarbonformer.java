@@ -23,14 +23,8 @@ public class ContainerCarbonformer extends Container{
 				addSlotToContainer(new Slot(invPlayer,x + y * 9 + 9,8 + 18 * x, 72 + y * 18));
 			}
 		}
-		for(int x=0; x<3;x++){
-			if(x==0){
-				addSlotToContainer( new SlotCarbon(carbonformer,x,8+ 18 * x, 17));
-			}else if(x == 1){
-				addSlotToContainer(new SlotFuel(carbonformer,x,8+18*x,17));
-			}else
-			addSlotToContainer(new SlotNone(carbonformer,x, 8 + 18 * x, 17));
-		}
+		addSlotToContainer(new SlotCarbon(carbonformer, 0, 26, 17));
+		addSlotToContainer(new SlotFuel(carbonformer, 1, 26, 47));
 	}
 	
 	@Override
@@ -41,5 +35,5 @@ public class ContainerCarbonformer extends Container{
 	public ItemStack transferStackInSlot(EntityPlayer player, int i){
 		return null;
 	}
-
+	
 }

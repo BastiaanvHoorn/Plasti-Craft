@@ -9,10 +9,15 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidEvent;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidTank;
 import plasticraft.PlastiCraft;
 import plasticraft.lib.References;
 import plasticraft.tileentities.TileEntityCarbonFormer;
@@ -20,13 +25,22 @@ import cpw.mods.fml.common.network.FMLNetworkHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class carbonformer extends BlockContainer {
+public class carbonformer extends BlockContainer implements IFluidTank{
 
+	private FluidStack fluid;
+	private int amount;
+	private int capacity;
+	private TileEntity te;
+	
 	public carbonformer(int id, Material Material) {
 		super(id, Material);
 		setStepSound(soundStoneFootstep);
 		setHardness(2F);
 		setLightValue(0.1F);
+		this.fluid = null;
+		this.amount = 0;
+		this.capacity = 16000;
+		this.te = new TileEntityCarbonFormer();
 	}
     @SideOnly(Side.CLIENT)
     public static Icon TopIcon;
@@ -52,7 +66,38 @@ public class carbonformer extends BlockContainer {
         this.setDefaultDirection(par1World, par2, par3, par4);
     }
     
-    private void setDefaultDirection(World par1World, int par2, int par3, int par4)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    {
+        if (fluid != null)
+        {
+            fluid.writeToNBT(nbt);
+        }
+        else
+        {
+            nbt.setString("Empty", "");
+        }
+        return nbt;
+    }
+    
+    public carbonformer readFromNBT(NBTTagCompound nbt)
+    {
+        if (!nbt.hasKey("Empty"))
+        {
+            FluidStack fluid = FluidStack.loadFluidStackFromNBT(nbt);
+
+            if (fluid != null)
+            {
+                setFluid(fluid);
+            }
+        }
+        return this;
+    }
+    
+    private void setFluid(FluidStack fluid2) {
+    	this.fluid = fluid2;
+	}
+
+	private void setDefaultDirection(World par1World, int par2, int par3, int par4)
     {
         if (!par1World.isRemote)
         {
@@ -170,6 +215,110 @@ public class carbonformer extends BlockContainer {
 		}
 		
 		super.breakBlock(world, x, y, z, id, metadata);
+	}
+
+	@Override
+	public FluidStack getFluid() {
+		return fluid;
+	}
+
+	@Override
+	public int getFluidAmount() {
+		return amount;
+	}
+
+	@Override
+	public int getCapacity() {
+		return capacity;
+	}
+
+	@Override
+	public FluidTankInfo getInfo() {
+		return new FluidTankInfo(this);
+	}
+
+	@Override
+	public int fill(FluidStack resource, boolean doFill) {
+        if (resource == null){
+            return 0;
+        }
+        if(resource.getFluid() == PlastiCraft.plastic_fluid){
+	        if (!doFill){
+	        	if (fluid == null)
+	        	{
+	        		return Math.min(capacity, resource.amount);
+	            }
+	
+	        	if (!fluid.isFluidEqual(resource))
+	        	{
+	        		return 0;
+	        	}
+	        	
+	        	return Math.min(capacity - fluid.amount, resource.amount);
+	           }
+	        if (fluid == null)
+	        {
+	            fluid = new FluidStack(resource, Math.min(capacity, resource.amount));
+	
+	            if (te != null)
+	            {
+	                FluidEvent.fireEvent(new FluidEvent.FluidFillingEvent(fluid, te.worldObj, te.xCoord, te.yCoord, te.zCoord, this));
+	            }
+	            return fluid.amount;
+	        }
+	        if (!fluid.isFluidEqual(resource))
+	        {
+	            return 0;
+	        }
+	        int filled = capacity - fluid.amount;
+	
+	        if (resource.amount < filled)
+	        {
+	            fluid.amount += resource.amount;
+	            filled = resource.amount;
+	        }
+	        else
+	        {
+	            fluid.amount = capacity;
+	        }
+	
+	        if (te != null)
+	        {
+	            FluidEvent.fireEvent(new FluidEvent.FluidFillingEvent(fluid, te.worldObj, te.xCoord, te.yCoord, te.zCoord, this));
+	        }
+	        return filled;
+        }
+        return 0;
+        
+        
+	}
+
+	@Override
+	public FluidStack drain(int maxDrain, boolean doDrain) {
+		 if (fluid == null)
+	        {
+	            return null;
+	        }
+	        int drained = maxDrain;
+	        if (fluid.amount < drained)
+	        {
+	        	drained = fluid.amount;
+	        }
+	        FluidStack stack = new FluidStack(fluid, drained);
+	        if (doDrain)
+	        {
+	            fluid.amount -= drained;
+	            if (fluid.amount <= 0)
+	            {
+	                fluid = null;
+	            }
+
+	            if (te != null)
+	            {
+	                FluidEvent.fireEvent(new FluidEvent.FluidDrainingEvent(fluid, te.worldObj, te.xCoord, te.yCoord, te.zCoord, this));
+	            }
+	        }
+	        return stack;
 	}
 
 }

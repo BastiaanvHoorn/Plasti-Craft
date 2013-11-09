@@ -1,7 +1,5 @@
 package plasticraft.tileentities;
 
-import plasticraft.Carbon;
-import plasticraft.PlastiCraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -9,9 +7,19 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
+import plasticraft.Carbon;
+import plasticraft.PlastiCraft;
 
-public class TileEntityCarbonFormer extends TileEntity implements ISidedInventory{
+public class TileEntityCarbonFormer extends TileEntity implements ISidedInventory, IFluidHandler{
 
+	public static FluidTank tank = new FluidTank(16000);
+	
 	private ItemStack[] items;
 	
 	private int[] Slots_bottom = {2};
@@ -141,7 +149,7 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 		}
 	}
 	
-	private int timer = 0;
+	private static int timer = 0;
 	
 	@Override
 	public void updateEntity(){
@@ -149,30 +157,35 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 		if(!this.worldObj.isRemote){
 		ItemStack stack0 = getStackInSlot(0);
 		ItemStack stack1 = getStackInSlot(1);
-		ItemStack stack2 = getStackInSlot(2);
-		if(Carbon.isCarbon(stack0) && TileEntityFurnace.isItemFuel(stack1)){
-			if(timer ==40){
-			if(stack2!=null){
-				if(stack2.stackSize!=getInventoryStackLimit()){
-						decrStackSize(0, 1);
-						decrStackSize(1,1);
-						setInventorySlotContents(2,new ItemStack(PlastiCraft.plastic_Item,stack2.stackSize + 1,0));
-						this.onInventoryChanged();
+		if(!worldObj.isRemote){
+			if(Carbon.isCarbon(stack0) && TileEntityFurnace.isItemFuel(stack1)){
+				if(timer ==40){
+					if(tank.getFluid()!= null){
+						if(tank.getCapacity() - tank.getFluidAmount() >= 750){
+							decrStackSize(0, 1);
+							decrStackSize(1,1);
+							tank.fill(new FluidStack(PlastiCraft.plastic_fluid, 750), true);
+							this.onInventoryChanged();
+							timer = 0;
+						}else{
+							timer = 0;
+						}
+						}else{
+							decrStackSize(0, 1);
+							decrStackSize(1,1);
+							tank.fill(new FluidStack(PlastiCraft.plastic_fluid, 750), true);
+							timer = 0;
+							this.onInventoryChanged();
+						}
+					}else{
+						timer++;
+					}
+					}else{
 						timer = 0;
 					}
-				}else{
-					decrStackSize(0, 1);
-					decrStackSize(1,1);
-					setInventorySlotContents(2,new ItemStack(PlastiCraft.plastic_Item,1,0));
-					timer = 0;
-					this.onInventoryChanged();
 				}
-			}else{
-				timer++;
-			}
 			}
 		}
-	}
 	
 
 	@Override
@@ -199,5 +212,48 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 			return false;
 		}
 	}
+
+	public static int getTime() {
+		return timer;
+	}
+
+	@Override
+	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+		return tank.fill(resource, doFill);
+	}
+
+
+	@Override
+	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+		return tank.drain(maxDrain, doDrain);
+	}
+
+	@Override
+	public boolean canFill(ForgeDirection from, Fluid fluid) {
+		return false;
+	}
+
+	@Override
+	public boolean canDrain(ForgeDirection from, Fluid fluid) {
+		return true;
+	}
+
+	@Override
+	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+		return new FluidTankInfo[] {tank.getInfo()};
+	}
+
+	@Override
+	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+		if(doDrain){
+		tank.drain(tank.getFluidAmount(), true);
+		return new FluidStack(PlastiCraft.plastic_fluid, tank.getFluidAmount());
+		}else{
+			return new FluidStack(PlastiCraft.plastic_fluid, tank.getFluidAmount());
+		}
+	}
+
+
+
 
 }
