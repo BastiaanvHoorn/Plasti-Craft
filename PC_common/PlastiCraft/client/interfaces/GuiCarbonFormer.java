@@ -24,7 +24,7 @@ public class GuiCarbonFormer extends GuiContainer{
 	}
 	
 	private static final ResourceLocation texture = new ResourceLocation("pc", "textures/gui/carbonformer.png");
-	private static final ResourceLocation plasticTexture = new ResourceLocation(References.MOD_ID.toLowerCase() , "textures/blocks/fluidplastic.png");
+	private static final ResourceLocation plasticTexture = new ResourceLocation(References.MOD_ID.toLowerCase() , "textures/blocks/fluidplastic_still.png");
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
