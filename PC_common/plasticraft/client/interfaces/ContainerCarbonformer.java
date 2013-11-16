@@ -35,5 +35,6 @@ public class ContainerCarbonformer extends Container{
 	public ItemStack transferStackInSlot(EntityPlayer player, int i){
 		return null;
 	}
+
 	
 }

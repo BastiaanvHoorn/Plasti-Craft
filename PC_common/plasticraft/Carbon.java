@@ -5,14 +5,14 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class Carbon {
- private static int[] carbon_id = {Item.diamond.itemID, Item.coal.itemID, Block.coalBlock.blockID, };
+ private static int[] carbon_id = {Item.diamond.itemID, Item.coal.itemID, Block.coalBlock.blockID};
  
  public boolean addCarbon(int id){
 	 int lenght = carbon_id.length;
-	 if(carbon_id[lenght+1] > 0){
+	 if(carbon_id[lenght] > 0){
 		 return false;
 	 }else{
-		 carbon_id[lenght + 1] = id;
+		 carbon_id[lenght] = id;
 		 return true;
 	 }
  }

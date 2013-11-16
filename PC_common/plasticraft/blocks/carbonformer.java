@@ -9,15 +9,10 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidEvent;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidTank;
 import plasticraft.PlastiCraft;
 import plasticraft.lib.References;
 import plasticraft.tileentities.TileEntityCarbonFormer;
@@ -25,23 +20,22 @@ import cpw.mods.fml.common.network.FMLNetworkHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class carbonformer extends BlockContainer implements IFluidTank{
+public class carbonformer extends BlockContainer{
 
-	private FluidStack fluid;
-	private int amount;
-	private int capacity;
-	private TileEntity te;
 	
-	public carbonformer(int id, Material Material) {
+	private boolean isActive;
+	private static boolean keepInventory;
+	
+	public carbonformer(int id, Material Material,int amount, boolean state) {
 		super(id, Material);
 		setStepSound(soundStoneFootstep);
 		setHardness(2F);
 		setLightValue(0.1F);
-		this.fluid = null;
-		this.amount = 0;
-		this.capacity = 16000;
-		this.te = new TileEntityCarbonFormer();
+		this.isActive = state;
 	}
+
+	
+	
     @SideOnly(Side.CLIENT)
     public static Icon TopIcon;
     @SideOnly(Side.CLIENT)
@@ -57,7 +51,7 @@ public class carbonformer extends BlockContainer implements IFluidTank{
     	TopIcon= icon.registerIcon(References.MOD_ID.toLowerCase() + ":carbonformer_top");
     	BottomIcon = icon.registerIcon(References.MOD_ID.toLowerCase() + ":carbonformer");
     	SideIcon = icon.registerIcon(References.MOD_ID.toLowerCase() + ":carbonformer_side");
-    	FrontIcon = icon.registerIcon(References.MOD_ID.toLowerCase() + ":carbonformer_front");
+    	FrontIcon = this.isActive ? icon.registerIcon(References.MOD_ID.toLowerCase() + ":carbonformer_front_on") : icon.registerIcon(References.MOD_ID.toLowerCase() +":carbonformer_front_off");
     }
     
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
@@ -66,36 +60,8 @@ public class carbonformer extends BlockContainer implements IFluidTank{
         this.setDefaultDirection(par1World, par2, par3, par4);
     }
     
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
-    {
-        if (fluid != null)
-        {
-            fluid.writeToNBT(nbt);
-        }
-        else
-        {
-            nbt.setString("Empty", "");
-        }
-        return nbt;
-    }
-    
-    public carbonformer readFromNBT(NBTTagCompound nbt)
-    {
-        if (!nbt.hasKey("Empty"))
-        {
-            FluidStack fluid = FluidStack.loadFluidStackFromNBT(nbt);
 
-            if (fluid != null)
-            {
-                setFluid(fluid);
-            }
-        }
-        return this;
-    }
     
-    private void setFluid(FluidStack fluid2) {
-    	this.fluid = fluid2;
-	}
 
 	private void setDefaultDirection(World par1World, int par2, int par3, int par4)
     {
@@ -174,6 +140,10 @@ public class carbonformer extends BlockContainer implements IFluidTank{
     @Override
     public boolean onBlockActivated(World world,int x,int y,int z, EntityPlayer player, int Side, float hitX,float hitY, float hitZ){
 		
+    	if(player.isSneaking()){
+    		return false;
+    	}
+    	
     	if(!world.isRemote){
     		FMLNetworkHandler.openGui(player, PlastiCraft.instance, 0, world, x, y, z);
     	}
@@ -189,27 +159,29 @@ public class carbonformer extends BlockContainer implements IFluidTank{
 	
 	@Override
 	public void breakBlock(World world, int x,int y,int z,int id, int metadata){
-		TileEntity te = world.getBlockTileEntity(x, y, z);
-		if(te != null && te instanceof IInventory){
-			IInventory inv = (IInventory)te;
-			
-			for(int i = 0; i < inv.getSizeInventory();i++){
-				ItemStack item = inv.getStackInSlotOnClosing(i);
+		if(!keepInventory){
+			TileEntity te = world.getBlockTileEntity(x, y, z);
+			if(te != null && te instanceof IInventory){
+				IInventory inv = (IInventory)te;
 				
-				if(item != null){
-					float spawnx = x + world.rand.nextFloat();
-					float spawny = y + world.rand.nextFloat();
-					float spawnz = z + world.rand.nextFloat();
+				for(int i = 0; i < inv.getSizeInventory();i++){
+					ItemStack item = inv.getStackInSlotOnClosing(i);
 					
-					EntityItem droppedItem = new EntityItem(world,spawnx,spawny,spawnz,item);
-					
-					float mult = 0.05F;
-					
-					droppedItem.motionX = (-0.5F + world.rand.nextFloat()) * mult;
-					droppedItem.motionY = (4 + world.rand.nextFloat()) * mult;
-					droppedItem.motionZ = (-0.5F + world.rand.nextFloat()) * mult;
-					
-					world.spawnEntityInWorld(droppedItem);
+					if(item != null){
+						float spawnx = x + world.rand.nextFloat();
+						float spawny = y + world.rand.nextFloat();
+						float spawnz = z + world.rand.nextFloat();
+						
+						EntityItem droppedItem = new EntityItem(world,spawnx,spawny,spawnz,item);
+						
+						float mult = 0.05F;
+						
+						droppedItem.motionX = (-0.5F + world.rand.nextFloat()) * mult;
+						droppedItem.motionY = (4 + world.rand.nextFloat()) * mult;
+						droppedItem.motionZ = (-0.5F + world.rand.nextFloat()) * mult;
+						
+						world.spawnEntityInWorld(droppedItem);
+					}
 				}
 			}
 		}
@@ -217,108 +189,29 @@ public class carbonformer extends BlockContainer implements IFluidTank{
 		super.breakBlock(world, x, y, z, id, metadata);
 	}
 
-	@Override
-	public FluidStack getFluid() {
-		return fluid;
-	}
+    public static void updateFurnaceBlockState(boolean par0, World par1World, int par2, int par3, int par4)
+    {
+        int l = par1World.getBlockMetadata(par2, par3, par4);
+        TileEntity tileentity = par1World.getBlockTileEntity(par2, par3, par4);
+        keepInventory = true;
 
-	@Override
-	public int getFluidAmount() {
-		return amount;
-	}
-
-	@Override
-	public int getCapacity() {
-		return capacity;
-	}
-
-	@Override
-	public FluidTankInfo getInfo() {
-		return new FluidTankInfo(this);
-	}
-
-	@Override
-	public int fill(FluidStack resource, boolean doFill) {
-        if (resource == null){
-            return 0;
+        if (par0)
+        {
+            par1World.setBlock(par2, par3, par4, PlastiCraft.carbon_former_burning.blockID);
         }
-        if(resource.getFluid() == PlastiCraft.plastic_fluid){
-	        if (!doFill){
-	        	if (fluid == null)
-	        	{
-	        		return Math.min(capacity, resource.amount);
-	            }
-	
-	        	if (!fluid.isFluidEqual(resource))
-	        	{
-	        		return 0;
-	        	}
-	        	
-	        	return Math.min(capacity - fluid.amount, resource.amount);
-	           }
-	        if (fluid == null)
-	        {
-	            fluid = new FluidStack(resource, Math.min(capacity, resource.amount));
-	
-	            if (te != null)
-	            {
-	                FluidEvent.fireEvent(new FluidEvent.FluidFillingEvent(fluid, te.worldObj, te.xCoord, te.yCoord, te.zCoord, this));
-	            }
-	            return fluid.amount;
-	        }
-	        if (!fluid.isFluidEqual(resource))
-	        {
-	            return 0;
-	        }
-	        int filled = capacity - fluid.amount;
-	
-	        if (resource.amount < filled)
-	        {
-	            fluid.amount += resource.amount;
-	            filled = resource.amount;
-	        }
-	        else
-	        {
-	            fluid.amount = capacity;
-	        }
-	
-	        if (te != null)
-	        {
-	            FluidEvent.fireEvent(new FluidEvent.FluidFillingEvent(fluid, te.worldObj, te.xCoord, te.yCoord, te.zCoord, this));
-	        }
-	        return filled;
+        else
+        {
+            par1World.setBlock(par2, par3, par4, PlastiCraft.carbon_former_idle.blockID);
         }
-        return 0;
-        
-        
-	}
 
-	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
-		 if (fluid == null)
-	        {
-	            return null;
-	        }
-	        int drained = maxDrain;
-	        if (fluid.amount < drained)
-	        {
-	        	drained = fluid.amount;
-	        }
-	        FluidStack stack = new FluidStack(fluid, drained);
-	        if (doDrain)
-	        {
-	            fluid.amount -= drained;
-	            if (fluid.amount <= 0)
-	            {
-	                fluid = null;
-	            }
+        keepInventory = false;
+        par1World.setBlockMetadataWithNotify(par2, par3, par4, l, 2);
 
-	            if (te != null)
-	            {
-	                FluidEvent.fireEvent(new FluidEvent.FluidDrainingEvent(fluid, te.worldObj, te.xCoord, te.yCoord, te.zCoord, this));
-	            }
-	        }
-	        return stack;
-	}
+        if (tileentity != null)
+        {
+            tileentity.validate();
+            par1World.setBlockTileEntity(par2, par3, par4, tileentity);
+        }
+    }
 
 }

@@ -59,7 +59,8 @@ public class PlastiCraft {
 
         public static Logger pcLog = Logger.getLogger("PLastiCraft");
         public static Block block_Quicksand;
-        public static Block carbon_former;
+        public static Block carbon_former_idle;
+        public static Block carbon_former_burning;
         public static Item plastic_Item;
         public static Fluid plastic_fluid;
         public static Block Fluid_Plastic_Block;
@@ -86,10 +87,13 @@ public class PlastiCraft {
             
         	
             block_Quicksand =  new BlockQuicksand(config.getBlock("Quicksand", 500).getInt(500),Material.ground).setUnlocalizedName("quicksand");
-            carbon_former = new carbonformer(config.getBlock("carbonformer", 503).getInt(503),Material.iron).setUnlocalizedName("carbonformer");
-            LanguageRegistry.addName(carbon_former, "carbon Former");
-            GameRegistry.registerBlock(carbon_former,"carbonformer");
-            carbon_former.setCreativeTab(tabsPC);
+            carbon_former_idle = new carbonformer(config.getBlock("carbonformer", 503).getInt(503),Material.iron, 16000, false).setUnlocalizedName("carbonformer_idle");
+            carbon_former_burning = new carbonformer(config.getBlock("carbonformer", 503).getInt() + 1, Material.iron, 16000, true).setUnlocalizedName("carbonformer_burning");
+            LanguageRegistry.addName(carbon_former_idle, "carbon former");
+            GameRegistry.registerBlock(carbon_former_idle,"carbonformer_idle");
+            carbon_former_idle.setCreativeTab(tabsPC);
+            LanguageRegistry.addName(carbon_former_burning, "carbon former");
+            GameRegistry.registerBlock(carbon_former_burning, "carbon_former_burning");
             LanguageRegistry.addName(block_Quicksand, "Quicksand");
             GameRegistry.registerBlock(block_Quicksand,"quicksand");
             block_Quicksand.setCreativeTab(tabsPC);
@@ -135,7 +139,7 @@ public class PlastiCraft {
         	GameRegistry.addRecipe(new ItemStack(PlastiCraft.block_Quicksand,2), "xyx","yzy","xyx",
         	'x', new ItemStack(Block.dirt),'y',new ItemStack(Block.gravel),'z',new ItemStack(Item.bucketWater)
         		);
-        	GameRegistry.addRecipe(new ItemStack(PlastiCraft.carbon_former,1),
+        	GameRegistry.addRecipe(new ItemStack(PlastiCraft.carbon_former_idle,1),
         			"xxx","xyx","xxx",
         			'x', new ItemStack(Block.netherBrick),
         			'y', new ItemStack(Block.furnaceIdle));

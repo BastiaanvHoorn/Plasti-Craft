@@ -10,24 +10,30 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import plasticraft.Carbon;
 import plasticraft.PlastiCraft;
+import plasticraft.blocks.carbonformer;
+import plasticraft.fluid.CarbonTank;
 
 public class TileEntityCarbonFormer extends TileEntity implements ISidedInventory, IFluidHandler{
 
-	public static FluidTank tank = new FluidTank(16000);
+	public CarbonTank tank;
 	
 	private ItemStack[] items;
+	
+	private int burnTime;
+	private int cookTime;
+	private int currentBurnTime;
 	
 	private int[] Slots_bottom = {2};
 	private int[] Slots_top = {0};
 	private int[] Slots_side = {0,1};
 	
 	public TileEntityCarbonFormer(){
-		items = new ItemStack[3];
+		items = new ItemStack[2];
+		this.tank = new CarbonTank(16000, this);
 	}
 	
 	@Override
@@ -37,7 +43,7 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		return items[i];
+		return this.items[i];
 	}
 
 	@Override
@@ -45,10 +51,10 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 		ItemStack itemstack = getStackInSlot(i);
 		if(itemstack != null){
 			if(itemstack.stackSize <= count){
-				setInventorySlotContents(i, null);
+				this.setInventorySlotContents(i, null);
 			}else{
 				itemstack = itemstack.splitStack(count);
-				onInventoryChanged();
+				this.onInventoryChanged();
 			}
 		}
 		return itemstack;
@@ -57,20 +63,20 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
 		ItemStack item = getStackInSlot(i);
-		setInventorySlotContents(i, null);
+		this.setInventorySlotContents(i, null);
 		return item;
 	}
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
-		items[i] = itemstack;
+		this.items[i] = itemstack;
 		
 		if(itemstack != null && itemstack.stackSize > getInventoryStackLimit()){
-			itemstack.stackSize = getInventoryStackLimit();
-			items[i] = itemstack;
+			itemstack.stackSize = this.getInventoryStackLimit();
+			this.items[i] = itemstack;
 		}
 		
-		onInventoryChanged();
+		this.onInventoryChanged();
 	}
 
 	@Override
@@ -80,7 +86,7 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 
 	@Override
 	public boolean isInvNameLocalized() {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -116,6 +122,8 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 	@Override
 	public void writeToNBT(NBTTagCompound compound){
 		super.writeToNBT(compound);
+		compound.setShort("burnTime", (short)this.burnTime);
+		compound.setShort("cookTime", (short)this.cookTime);
 		
 		NBTTagList items = new NBTTagList();
 		
@@ -147,45 +155,102 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 				setInventorySlotContents(slot,ItemStack.loadItemStackFromNBT(item));
 			}
 		}
+		
+		this.cookTime = compound.getShort("cookTime");
+		this.burnTime = compound.getShort("burnTime");
 	}
 	
-	private static int timer = 0;
+	public boolean canSmelt(){
+		if(this.items[0] == null || this.tank.getFluidAmount() >= (this.tank.getCapacity() - 750)){
+			return false;
+		}else{
+			FluidStack fluid = this.tank.getFluid();
+			if(fluid != null){
+				if(Carbon.isCarbon(this.items[0]) && fluid.getFluid() == PlastiCraft.plastic_fluid) return true;
+			}else{
+				return Carbon.isCarbon(this.items[0]);
+			}
+			return false;
+		}
+	}
+	
+	public int getCookProgressScaled(int par1){
+		return this.cookTime * (par1 / 200);
+	}
+	
+	public boolean isBurning(){
+		return this.burnTime > 0;
+	}
 	
 	@Override
 	public void updateEntity(){
-		super.updateEntity();
+		
+		boolean flag = this.burnTime > 0;
+		boolean flag1 = false;
+		
+		if(this.burnTime > 0){
+			--this.burnTime;
+		}
 		if(!this.worldObj.isRemote){
-		ItemStack stack0 = getStackInSlot(0);
-		ItemStack stack1 = getStackInSlot(1);
-		if(!worldObj.isRemote){
-			if(Carbon.isCarbon(stack0) && TileEntityFurnace.isItemFuel(stack1)){
-				if(timer ==40){
-					if(tank.getFluid()!= null){
-						if(tank.getCapacity() - tank.getFluidAmount() >= 750){
-							decrStackSize(0, 1);
-							decrStackSize(1,1);
-							tank.fill(new FluidStack(PlastiCraft.plastic_fluid, 750), true);
-							this.onInventoryChanged();
-							timer = 0;
-						}else{
-							timer = 0;
+			if(this.burnTime == 0 && this.canSmelt()){
+				this.currentBurnTime = this.burnTime = TileEntityFurnace.getItemBurnTime(this.items[1]);
+				
+				if(this.burnTime > 0){
+					flag1 = true;
+					
+					if(this.items[1] != null){
+						--this.items[1].stackSize;
+						if(this.items[1].stackSize == 0){
+							this.items[1] = this.items[1].getItem().getContainerItemStack(items[1]);
 						}
-						}else{
-							decrStackSize(0, 1);
-							decrStackSize(1,1);
-							tank.fill(new FluidStack(PlastiCraft.plastic_fluid, 750), true);
-							timer = 0;
-							this.onInventoryChanged();
-						}
-					}else{
-						timer++;
-					}
-					}else{
-						timer = 0;
 					}
 				}
 			}
+			if(this.isBurning() && this.canSmelt()){
+				++this.cookTime;
+				
+				if(this.cookTime == 200){
+					this.cookTime = 0;
+					this.smeltItem();
+					flag1 = true;
+				}
+			}else{
+				this.cookTime = 0;
+			}
+			
+			if(flag != this.burnTime > 0){
+				flag = true;
+				carbonformer.updateFurnaceBlockState(this.burnTime > 0, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+			}
 		}
+			
+		if(flag1){
+			this.onInventoryChanged();
+		}
+			
+
+	}
+	
+	public void smeltItem(){
+		if(this.canSmelt()){
+			FluidStack fluid = this.tank.getFluid();
+			if(fluid != null){
+				if(fluid.amount < (this.tank.getCapacity() -750)){
+					this.tank.fill(new FluidStack(PlastiCraft.plastic_fluid, 750), true);
+					--this.items[0].stackSize;
+					if(this.items[0].stackSize <= 0){
+						this.items[0] = null;
+					}
+				}
+			}else{
+				this.tank.fill(new FluidStack(PlastiCraft.plastic_fluid, 750), true);
+				--this.items[0].stackSize;
+				if(this.items[0].stackSize <= 0){
+					this.items[0] = null;
+				}
+			}
+		}
+	}
 	
 
 	@Override
@@ -213,8 +278,8 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 		}
 	}
 
-	public static int getTime() {
-		return timer;
+	public int getTime() {
+		return this.cookTime;
 	}
 
 	@Override
@@ -246,12 +311,17 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 	@Override
 	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
 		if(doDrain){
-		tank.drain(tank.getFluidAmount(), true);
+		tank.drain(resource.amount, true);
 		return new FluidStack(PlastiCraft.plastic_fluid, tank.getFluidAmount());
 		}else{
 			return new FluidStack(PlastiCraft.plastic_fluid, tank.getFluidAmount());
 		}
 	}
+
+	public CarbonTank getTank() {
+		return this.tank;
+	}
+
 
 
 
