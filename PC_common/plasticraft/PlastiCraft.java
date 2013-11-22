@@ -57,6 +57,8 @@ public class PlastiCraft {
         public static Block Quicksand_Moving = new BlockQuicksandMoving(502, Material.water);
         */
 
+        private static Configuration config;
+        
         public static Logger pcLog = Logger.getLogger("PLastiCraft");
         public static Block block_Quicksand;
         public static Block carbon_former_idle;
@@ -77,10 +79,16 @@ public class PlastiCraft {
         
         @EventHandler
         public void preInit(FMLPreInitializationEvent event) {
+        	config = new Configuration(((FMLPreInitializationEvent) event).getSuggestedConfigurationFile());
+
+        }
+        
+        @EventHandler
+        public void load(FMLInitializationEvent event) {
     		pcLog.setParent(FMLLog.getLogger());
     		pcLog.info("PlastiCraft preInitialization started");
 
-        	Configuration config = new Configuration(event.getSuggestedConfigurationFile());
+
         	config.load();
         	
         	fluidPlasticId = config.getBlock("plastic_fluid", 600).getInt(600);
@@ -92,6 +100,7 @@ public class PlastiCraft {
             LanguageRegistry.addName(carbon_former_idle, "carbon former");
             GameRegistry.registerBlock(carbon_former_idle,"carbonformer_idle");
             carbon_former_idle.setCreativeTab(tabsPC);
+            GameRegistry.registerTileEntity(TileEntityCarbonFormer.class, References.CARBONFORMER_TE_KEY); 
             LanguageRegistry.addName(carbon_former_burning, "carbon former");
             GameRegistry.registerBlock(carbon_former_burning, "carbon_former_burning");
             LanguageRegistry.addName(block_Quicksand, "Quicksand");
@@ -118,7 +127,7 @@ public class PlastiCraft {
             
             MinecraftForge.EVENT_BUS.register(new bucketevent());
             
-            GameRegistry.registerTileEntity(TileEntityCarbonFormer.class, References.CARBONFORMER_TE_KEY); 
+
             
             new GuiHandler();
             
@@ -129,11 +138,6 @@ public class PlastiCraft {
     		config.save();
     		LanguageRegistry.instance().addStringLocalization("itemGroup.PlastiTab", "PlastiCraft");
     		pcLog.info("PlastiCraft succesfully loaded");
-
-        }
-        
-        @EventHandler
-        public void load(FMLInitializationEvent event) {
         	proxy.registerRenderers();
         	
         	GameRegistry.addRecipe(new ItemStack(PlastiCraft.block_Quicksand,2), "xyx","yzy","xyx",

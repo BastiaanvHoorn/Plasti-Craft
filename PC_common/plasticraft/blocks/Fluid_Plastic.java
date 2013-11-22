@@ -12,7 +12,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class Fluid_Plastic extends BlockFluidClassic{
 
-	private static Icon[] theIcon;
+	public static Icon[] theIcon;
 	
 	public Fluid_Plastic(int id, Fluid fluid, Material material) {
 		super(id, fluid, material);

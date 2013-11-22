@@ -3,10 +3,12 @@ package plasticraft.client.interfaces;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import plasticraft.blocks.Fluid_Plastic;
 import plasticraft.lib.References;
 import plasticraft.tileentities.TileEntityCarbonFormer;
 import cpw.mods.fml.relauncher.Side;
@@ -25,7 +27,7 @@ public class GuiCarbonFormer extends GuiContainer{
 	}
 	
 	private static final ResourceLocation texture = new ResourceLocation(References.MOD_ID.toLowerCase(), "textures/gui/carbonformer.png");
-	private static final ResourceLocation plasticTexture = new ResourceLocation(References.MOD_ID.toLowerCase() , "textures/blocks/fluidplastic_still.png");
+	private static final Icon plasticTexture = Fluid_Plastic.theIcon[0];
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
@@ -36,12 +38,14 @@ public class GuiCarbonFormer extends GuiContainer{
 		int i1;
 		
 		i1 = this.carbonformer.getCookProgressScaled(34);
-		this.drawTexturedModalRect(guiLeft + 48, guiTop + 17, 176, 0, i1, 15);
+		this.drawTexturedModalRect(guiLeft + 48, guiTop + 17, 176, 0, (int) i1, 15);
+		
+		int i2;
+		if(this.carbonformer.tank.getFluidAmount() != 0){
+			i2 = this.carbonformer.getFluidAmountScaled(32);
+			this.drawTexturedModelRectFromIcon(guiLeft + 100,guiTop + 17 + 32 - i2 , plasticTexture, 16, i2);
+		}
 	}
-	@Override
-	protected void drawGuiContainerForegroundLayer(int x, int y){
-
-	}
-
+	
 
 }

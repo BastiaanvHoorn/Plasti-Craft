@@ -23,16 +23,15 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 	
 	private ItemStack[] items;
 	
-	private int burnTime;
-	private int cookTime;
-	private int currentBurnTime;
+	public int burnTime;
+	public int cookTime;
 	
 	private int[] Slots_bottom = {2};
 	private int[] Slots_top = {0};
 	private int[] Slots_side = {0,1};
 	
 	public TileEntityCarbonFormer(){
-		items = new ItemStack[2];
+		this.items = new ItemStack[2];
 		this.tank = new CarbonTank(16000, this);
 	}
 	
@@ -139,11 +138,16 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 			}
 		}
 		compound.setTag("items", items);
+	
+		compound.setInteger("tankAmount", this.tank.getFluidAmount());
 	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound compound){
 		super.readFromNBT(compound);
+		if(compound.getInteger("tankAmount") != 0){
+			this.tank.fill(new FluidStack(PlastiCraft.plastic_fluid, compound.getInteger("tankAmount")), true);
+		}
 		
 		NBTTagList items = compound.getTagList("items");
 		
@@ -175,7 +179,11 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 	}
 	
 	public int getCookProgressScaled(int par1){
-		return this.cookTime * (par1 / 200);
+		return this.cookTime * par1 / 200;
+	}
+	
+	public int getFluidAmountScaled(int par1){
+		return this.tank.getFluidAmount() * par1 / 16000;
 	}
 	
 	public boolean isBurning(){
@@ -193,7 +201,7 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 		}
 		if(!this.worldObj.isRemote){
 			if(this.burnTime == 0 && this.canSmelt()){
-				this.currentBurnTime = this.burnTime = TileEntityFurnace.getItemBurnTime(this.items[1]);
+				this.burnTime = TileEntityFurnace.getItemBurnTime(this.items[1]);
 				
 				if(this.burnTime > 0){
 					flag1 = true;
@@ -207,7 +215,7 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 				}
 			}
 			if(this.isBurning() && this.canSmelt()){
-				++this.cookTime;
+				this.cookTime += 1;
 				
 				if(this.cookTime == 200){
 					this.cookTime = 0;
