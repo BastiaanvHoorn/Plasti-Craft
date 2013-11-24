@@ -3,6 +3,7 @@ package plasticraft.blocks;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
@@ -36,6 +37,13 @@ public class Fluid_Plastic extends BlockFluidClassic implements ITileEntityProvi
 	@Override
 	public TileEntity createNewTileEntity(World world) {
 		return new TeFluidPlastic();
+	}
+	
+	@Override
+	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity){
+		super.onEntityCollidedWithBlock(world, x, y, z, entity);
+		entity.setFire(5);
+		entity.handleWaterMovement();
 	}
 	
 }
