@@ -14,6 +14,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
+import plasticraft.blocks.BlockPlastic;
 import plasticraft.blocks.BlockQuicksand;
 import plasticraft.blocks.Fluid_Plastic;
 import plasticraft.blocks.carbonformer;
@@ -23,6 +24,7 @@ import plasticraft.fluid.PlasticFluid;
 import plasticraft.items.BucketPlastic;
 import plasticraft.items.Plastic;
 import plasticraft.lib.References;
+import plasticraft.tileentities.TeFluidPlastic;
 import plasticraft.tileentities.TileEntityCarbonFormer;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
@@ -63,6 +65,7 @@ public class PlastiCraft {
         public static Block block_Quicksand;
         public static Block carbon_former_idle;
         public static Block carbon_former_burning;
+        public static Block BlockPlastic;
         public static Item plastic_Item;
         public static Fluid plastic_fluid;
         public static Block Fluid_Plastic_Block;
@@ -100,12 +103,17 @@ public class PlastiCraft {
             LanguageRegistry.addName(carbon_former_idle, "carbon former");
             GameRegistry.registerBlock(carbon_former_idle,"carbonformer_idle");
             carbon_former_idle.setCreativeTab(tabsPC);
-            GameRegistry.registerTileEntity(TileEntityCarbonFormer.class, References.CARBONFORMER_TE_KEY); 
+            GameRegistry.registerTileEntity(TileEntityCarbonFormer.class, References.CARBONFORMER_TE_KEY);
+            GameRegistry.registerTileEntity(TeFluidPlastic.class, References.FLUIDPLASTIC_TE_KEY);
             LanguageRegistry.addName(carbon_former_burning, "carbon former");
             GameRegistry.registerBlock(carbon_former_burning, "carbon_former_burning");
             LanguageRegistry.addName(block_Quicksand, "Quicksand");
             GameRegistry.registerBlock(block_Quicksand,"quicksand");
             block_Quicksand.setCreativeTab(tabsPC);
+            
+            BlockPlastic = new BlockPlastic(config.getBlock("PlasticBlock", 505).getInt());
+            GameRegistry.registerBlock(BlockPlastic, "BlockPlastic");
+            LanguageRegistry.addName(BlockPlastic, "Plastic Block");
     
             plastic = new MaterialLiquid(MapColor.ironColor);
             
@@ -147,7 +155,13 @@ public class PlastiCraft {
         			"xxx","xyx","xxx",
         			'x', new ItemStack(Block.netherBrick),
         			'y', new ItemStack(Block.furnaceIdle));
+        	
+        	GameRegistry.addRecipe(new ItemStack(PlastiCraft.BlockPlastic, 1), "xxx", "xxx", "xxx",
+        			'x', new ItemStack(PlastiCraft.plastic_Item));
+        	
+        	GameRegistry.addShapelessRecipe(new ItemStack(PlastiCraft.plastic_Item, 9), new ItemStack(PlastiCraft.BlockPlastic,1));
         }
+        
         
         @EventHandler
         public void postInit(FMLPostInitializationEvent event) {
