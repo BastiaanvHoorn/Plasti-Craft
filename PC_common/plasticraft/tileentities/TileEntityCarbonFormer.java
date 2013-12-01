@@ -165,7 +165,7 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 	}
 	
 	public boolean canSmelt(){
-		if(this.items[0] == null || this.tank.getFluidAmount() >= (this.tank.getCapacity() - 750)){
+		if(this.items[0] == null || this.tank.getFluidAmount() >= (this.tank.getCapacity() - Carbon.produces(this.items[0]))){
 			return false;
 		}else{
 			FluidStack fluid = this.tank.getFluid();
@@ -243,15 +243,15 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 		if(this.canSmelt()){
 			FluidStack fluid = this.tank.getFluid();
 			if(fluid != null){
-				if(fluid.amount < (this.tank.getCapacity() -750)){
-					this.tank.fill(new FluidStack(PlastiCraft.plastic_fluid, 750), true);
+				if(fluid.amount < (this.tank.getCapacity() - Carbon.produces(this.items[0]))){
+					this.tank.fill(new FluidStack(PlastiCraft.plastic_fluid, Carbon.produces(this.items[0])), true);
 					--this.items[0].stackSize;
 					if(this.items[0].stackSize <= 0){
 						this.items[0] = null;
 					}
 				}
 			}else{
-				this.tank.fill(new FluidStack(PlastiCraft.plastic_fluid, 750), true);
+				this.tank.fill(new FluidStack(PlastiCraft.plastic_fluid, Carbon.produces(this.items[0])), true);
 				--this.items[0].stackSize;
 				if(this.items[0].stackSize <= 0){
 					this.items[0] = null;
