@@ -1,7 +1,7 @@
 package plasticraft.tileentities;
 
 import net.minecraft.tileentity.TileEntity;
-import plasticraft.PlastiCraft;
+import plasticraft.blocks.Blocks;
 
 public class TeFluidPlastic extends TileEntity{
 
@@ -16,7 +16,7 @@ public class TeFluidPlastic extends TileEntity{
 			if(this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord) == 0){
 				this.counter++;
 				if(this.counter >= 200){
-					this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, PlastiCraft.BlockPlastic.blockID);
+					this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, Blocks.BlockPlastic.blockID);
 				}
 			}
 		}

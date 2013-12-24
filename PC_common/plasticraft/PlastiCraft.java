@@ -14,18 +14,15 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
-import plasticraft.blocks.BlockPlastic;
-import plasticraft.blocks.BlockQuicksand;
+import plasticraft.blocks.Blocks;
 import plasticraft.blocks.Fluid_Plastic;
-import plasticraft.blocks.carbonformer;
 import plasticraft.client.interfaces.GuiHandler;
 import plasticraft.events.bucketevent;
 import plasticraft.fluid.PlasticFluid;
 import plasticraft.items.BucketPlastic;
+import plasticraft.items.LunchBox;
 import plasticraft.items.Plastic;
 import plasticraft.lib.References;
-import plasticraft.tileentities.TeFluidPlastic;
-import plasticraft.tileentities.TileEntityCarbonFormer;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -39,7 +36,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod(modid=References.MOD_ID, name=References.MOD_NAME, version=References.VERSION)
-@NetworkMod(clientSideRequired=true, serverSideRequired=true)
+@NetworkMod(clientSideRequired=true, serverSideRequired=false)
 
 public class PlastiCraft {
 
@@ -54,27 +51,20 @@ public class PlastiCraft {
 
         public static final Material QuicksandMaterial = new Material(MapColor.dirtColor);
         
-        
-        /*public static Block Quicksand_Still = new BlockQuicksandStill(501, Material.water);
-        public static Block Quicksand_Moving = new BlockQuicksandMoving(502, Material.water);
-        */
+
 
         private static Configuration config;
         
+        public static int LunchBoxId;
+        
         public static Logger pcLog = Logger.getLogger("PLastiCraft");
-        public static Block block_Quicksand;
-        public static Block carbon_former_idle;
-        public static Block carbon_former_burning;
-        public static Block BlockPlastic;
+       
         public static Item plastic_Item;
+        public static Item lunchBox;
         public static Fluid plastic_fluid;
-        public static Block Fluid_Plastic_Block;
+
         public static Item bucketplastic;
-        public static final CreativeTabs tabsPC = new CreativeTabs("PlastiTab"){
-        	public ItemStack getIconItemStack(){
-        		return new ItemStack(block_Quicksand);
-        	}
-        };
+        public static CreativeTabs tabsPC; 
         
         public static Material plastic;
         
@@ -93,40 +83,41 @@ public class PlastiCraft {
 
 
         	config.load();
-        	
+
+        	tabsPC = new CreativeTabs("PlastiTab"){
+            	public ItemStack getIconItemStack(){
+            		return new ItemStack(Blocks.block_Quicksand);
+            	}
+        	};
+
         	fluidPlasticId = config.getBlock("plastic_fluid", 600).getInt(600);
-            
         	
-            block_Quicksand =  new BlockQuicksand(config.getBlock("Quicksand", 500).getInt(500),Material.ground).setUnlocalizedName("quicksand");
-            carbon_former_idle = new carbonformer(config.getBlock("carbonformer", 503).getInt(503),Material.iron, 16000, false).setUnlocalizedName("carbonformer_idle");
-            carbon_former_burning = new carbonformer(config.getBlock("carbonformer", 503).getInt() + 1, Material.iron, 16000, true).setUnlocalizedName("carbonformer_burning");
-            LanguageRegistry.addName(carbon_former_idle, "carbon former");
-            GameRegistry.registerBlock(carbon_former_idle,"carbonformer_idle");
-            carbon_former_idle.setCreativeTab(tabsPC);
-            GameRegistry.registerTileEntity(TileEntityCarbonFormer.class, References.CARBONFORMER_TE_KEY);
-            GameRegistry.registerTileEntity(TeFluidPlastic.class, References.FLUIDPLASTIC_TE_KEY);
-            LanguageRegistry.addName(carbon_former_burning, "carbon former");
-            GameRegistry.registerBlock(carbon_former_burning, "carbon_former_burning");
-            LanguageRegistry.addName(block_Quicksand, "Quicksand");
-            GameRegistry.registerBlock(block_Quicksand,"quicksand");
-            block_Quicksand.setCreativeTab(tabsPC);
+        	Blocks.init(config);
+        	
+        	LunchBoxId = config.getItem("lunch box", 1000).getInt(1000);
+        	lunchBox = new LunchBox(LunchBoxId).setUnlocalizedName("lunchbox");
+        	GameRegistry.registerItem(lunchBox, "lunchbox");
+        	LanguageRegistry.addName(lunchBox, "Lunch Box");
+
+
+
+
+
             
-            BlockPlastic = new BlockPlastic(config.getBlock("PlasticBlock", 505).getInt());
-            GameRegistry.registerBlock(BlockPlastic, "BlockPlastic");
-            LanguageRegistry.addName(BlockPlastic, "Plastic Block");
+
     
             plastic = new MaterialLiquid(MapColor.ironColor);
             
             plastic_fluid = new PlasticFluid("Plastic").setBlockID(fluidPlasticId);
             
             FluidRegistry.registerFluid(plastic_fluid);
-            Fluid_Plastic_Block = new Fluid_Plastic(fluidPlasticId, plastic_fluid, plastic);
+            Blocks.Fluid_Plastic_Block = new Fluid_Plastic(fluidPlasticId, plastic_fluid, plastic);
 
             
-            GameRegistry.registerBlock(Fluid_Plastic_Block, "plasticBlockfluid");
-            LanguageRegistry.addName(Fluid_Plastic_Block, "Plastic");
+            GameRegistry.registerBlock(Blocks.Fluid_Plastic_Block, "plasticBlockfluid");
+            LanguageRegistry.addName(Blocks.Fluid_Plastic_Block, "Plastic");
             
-            bucketplastic = new BucketPlastic(config.getItem("bucketplastic", 602).getInt(602), PlastiCraft.Fluid_Plastic_Block.blockID);
+            bucketplastic = new BucketPlastic(config.getItem("bucketplastic", 602).getInt(602), Blocks.Fluid_Plastic_Block.blockID);
             GameRegistry.registerItem(bucketplastic,"bucketplastic");
             FluidContainerRegistry.registerFluidContainer(PlastiCraft.plastic_fluid, new ItemStack(PlastiCraft.bucketplastic,1 ,1), new ItemStack(Item.bucketEmpty));
             LanguageRegistry.addName(bucketplastic, "Plastic Bucket");
@@ -148,23 +139,27 @@ public class PlastiCraft {
     		pcLog.info("PlastiCraft succesfully loaded");
         	proxy.registerRenderers();
         	
-        	GameRegistry.addRecipe(new ItemStack(PlastiCraft.block_Quicksand,2), "xyx","yzy","xyx",
+        	GameRegistry.addRecipe(new ItemStack(Blocks.block_Quicksand,2), "xyx","yzy","xyx",
         	'x', new ItemStack(Block.dirt),'y',new ItemStack(Block.gravel),'z',new ItemStack(Item.bucketWater)
         		);
-        	GameRegistry.addRecipe(new ItemStack(PlastiCraft.carbon_former_idle,1),
+        	GameRegistry.addRecipe(new ItemStack(Blocks.carbon_former_idle,1),
         			"xxx","xyx","xxx",
         			'x', new ItemStack(Block.netherBrick),
         			'y', new ItemStack(Block.furnaceIdle));
         	
-        	GameRegistry.addRecipe(new ItemStack(PlastiCraft.BlockPlastic, 1), "xxx", "xxx", "xxx",
+        	GameRegistry.addRecipe(new ItemStack(Blocks.BlockPlastic, 1), "xxx", "xxx", "xxx",
         			'x', new ItemStack(PlastiCraft.plastic_Item));
         	
-        	GameRegistry.addShapelessRecipe(new ItemStack(PlastiCraft.plastic_Item, 9), new ItemStack(PlastiCraft.BlockPlastic,1));
+        	GameRegistry.addShapelessRecipe(new ItemStack(PlastiCraft.plastic_Item, 9), new ItemStack(Blocks.BlockPlastic,1));
         }
         
         
         @EventHandler
         public void postInit(FMLPostInitializationEvent event) {
                 // Stub Method
+        }
+        
+        public static void info(String text){
+        	pcLog.info(text);
         }
 }

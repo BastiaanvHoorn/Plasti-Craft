@@ -39,8 +39,11 @@ public class GuiCarbonFormer extends GuiContainer{
 		this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 		int i1;
 		
+		
 		i1 = this.carbonformer.getCookProgressScaled(34);
-		this.drawTexturedModalRect(guiLeft + 48, guiTop + 17, 176, 0, (int) i1, 15);
+			if(i1 != 0){
+			this.drawTexturedModalRect(guiLeft + 48, guiTop + 17, 176, 0, (int) i1 +1, 15);
+		}
 		
 		int i2;
 		if(this.carbonformer.tank.getFluidAmount() != 0){
@@ -48,7 +51,10 @@ public class GuiCarbonFormer extends GuiContainer{
 			this.drawTexturedModelRectFromIcon(guiLeft + 100,guiTop + 17 + 32 - i2 , plasticTexture, 16, i2);
 		}
 		if(x <= guiLeft + 116 && x >= guiLeft + 100 && y <= guiTop + 49 && y >= guiTop + 17){
-			String text = GuiColor.YELLOW.toString() + this.carbonformer.tank.getFluidAmount() + "/" + this.carbonformer.tank.getCapacity()+"mB" + "\n" + this.carbonformer.tank.getFluid().getFluid().getName();
+			String text = GuiColor.YELLOW.toString() + this.carbonformer.tank.getFluidAmount() + "/" + this.carbonformer.tank.getCapacity()+"mB";
+			if(this.carbonformer.tank.getFluid()!= null){
+				text += "\n" + this.carbonformer.tank.getFluid().getFluid().getName();
+			}
 			this.drawHoveringText(Arrays.asList(text.split("\n")),x , y , fontRenderer);
 		}
 	}

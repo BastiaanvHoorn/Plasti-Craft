@@ -197,11 +197,11 @@ public class carbonformer extends BlockContainer{
 
         if (par0)
         {
-            par1World.setBlock(par2, par3, par4, PlastiCraft.carbon_former_burning.blockID);
+            par1World.setBlock(par2, par3, par4, Blocks.carbon_former_burning.blockID);
         }
         else
         {
-            par1World.setBlock(par2, par3, par4, PlastiCraft.carbon_former_idle.blockID);
+            par1World.setBlock(par2, par3, par4, Blocks.carbon_former_idle.blockID);
         }
 
         keepInventory = false;

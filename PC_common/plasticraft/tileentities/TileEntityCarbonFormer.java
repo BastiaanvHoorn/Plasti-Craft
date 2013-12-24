@@ -58,6 +58,11 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 		}
 		return itemstack;
 	}
+	
+	@Override
+	public void onInventoryChanged(){
+		super.onInventoryChanged();
+	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
@@ -165,7 +170,7 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 	}
 	
 	public boolean canSmelt(){
-		if(this.items[0] == null || this.tank.getFluidAmount() >= (this.tank.getCapacity() - Carbon.produces(this.items[0]))){
+		if(this.items[0] == null || this.tank.getFluidAmount() > (this.tank.getCapacity() - Carbon.produces(this.items[0]))){
 			return false;
 		}else{
 			FluidStack fluid = this.tank.getFluid();
@@ -198,6 +203,8 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 		
 		if(this.burnTime > 0){
 			--this.burnTime;
+		}else{
+			this.cookTime = 0;
 		}
 		if(!this.worldObj.isRemote){
 			if(this.burnTime == 0 && this.canSmelt()){
@@ -243,7 +250,7 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 		if(this.canSmelt()){
 			FluidStack fluid = this.tank.getFluid();
 			if(fluid != null){
-				if(fluid.amount < (this.tank.getCapacity() - Carbon.produces(this.items[0]))){
+				if(fluid.amount <= (this.tank.getCapacity() - Carbon.produces(this.items[0]))){
 					this.tank.fill(new FluidStack(PlastiCraft.plastic_fluid, Carbon.produces(this.items[0])), true);
 					--this.items[0].stackSize;
 					if(this.items[0].stackSize <= 0){
