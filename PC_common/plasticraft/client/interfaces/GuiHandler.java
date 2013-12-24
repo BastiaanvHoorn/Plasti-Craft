@@ -5,6 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import plasticraft.PlastiCraft;
+import plasticraft.items.Items;
 import plasticraft.tileentities.TeLunchBox;
 import plasticraft.tileentities.TileEntityCarbonFormer;
 import cpw.mods.fml.common.network.IGuiHandler;
@@ -28,8 +29,8 @@ public class GuiHandler implements IGuiHandler{
 				}
 			break;
 			case 1:
-				PlastiCraft.info(player.getCurrentEquippedItem().itemID == PlastiCraft.lunchBox.itemID ? "true": "false");
-				if(player.getCurrentEquippedItem().itemID == PlastiCraft.lunchBox.itemID){
+				PlastiCraft.info(player.getCurrentEquippedItem().itemID == Items.lunchBox.itemID ? "true": "false");
+				if(player.getCurrentEquippedItem().itemID == Items.lunchBox.itemID){
 					PlastiCraft.info(player.getCurrentEquippedItem().hasTagCompound() ? "true": "false");
 					if(player.getCurrentEquippedItem().hasTagCompound()){
 						NBTTagCompound compound = player.getCurrentEquippedItem().getTagCompound();
@@ -66,7 +67,7 @@ public class GuiHandler implements IGuiHandler{
 			}
 			break;
 			case 1:
-				if(player.getCurrentEquippedItem().itemID == PlastiCraft.lunchBox.itemID){
+				if(player.getCurrentEquippedItem().itemID == Items.lunchBox.itemID){
 					if(player.getCurrentEquippedItem().hasTagCompound()){
 						NBTTagCompound compound = player.getCurrentEquippedItem().getTagCompound();
 							this.tile = new TeLunchBox(player.getCurrentEquippedItem(),compound);

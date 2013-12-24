@@ -38,6 +38,8 @@ public class Blocks {
         BlockPlastic = new BlockPlastic(config.getBlock("PlasticBlock", 505).getInt());
         GameRegistry.registerBlock(BlockPlastic, "BlockPlastic");
         LanguageRegistry.addName(BlockPlastic, "Plastic Block");
+        
+        
 		
 	}
 	

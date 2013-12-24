@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import plasticraft.PlastiCraft;
+import plasticraft.items.Items;
 
 public class TeLunchBox extends TileEntity implements IInventory{
 
@@ -103,7 +104,7 @@ public class TeLunchBox extends TileEntity implements IInventory{
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
 		if(itemstack != null){
-			if(i == 0 && PlastiCraft.plastic_Item.itemID == itemstack.itemID){
+			if(i == 0 && Items.plastic_Item.itemID == itemstack.itemID){
 				return true;
 			}
 		}

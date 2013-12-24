@@ -7,6 +7,7 @@ import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import plasticraft.PlastiCraft;
+import plasticraft.items.Items;
 
 public class bucketevent{
 
@@ -26,7 +27,7 @@ public class bucketevent{
 		
 		if(PlastiCraft.fluidPlasticId == blockId && world.getBlockMetadata(target.blockX, target.blockY, target.blockZ) == 0){
 			world.setBlock(target.blockX, target.blockY, target.blockZ, 0);
-			return new ItemStack(PlastiCraft.bucketplastic);
+			return new ItemStack(Items.bucketplastic);
 		}else return null;
 		
 

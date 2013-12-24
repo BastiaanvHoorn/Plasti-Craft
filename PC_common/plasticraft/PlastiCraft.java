@@ -12,16 +12,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import plasticraft.blocks.Blocks;
 import plasticraft.blocks.Fluid_Plastic;
 import plasticraft.client.interfaces.GuiHandler;
 import plasticraft.events.bucketevent;
 import plasticraft.fluid.PlasticFluid;
-import plasticraft.items.BucketPlastic;
-import plasticraft.items.LunchBox;
-import plasticraft.items.Plastic;
+import plasticraft.items.Items;
 import plasticraft.lib.References;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
@@ -59,11 +56,10 @@ public class PlastiCraft {
         
         public static Logger pcLog = Logger.getLogger("PLastiCraft");
        
-        public static Item plastic_Item;
-        public static Item lunchBox;
+
         public static Fluid plastic_fluid;
 
-        public static Item bucketplastic;
+
         public static CreativeTabs tabsPC; 
         
         public static Material plastic;
@@ -93,34 +89,22 @@ public class PlastiCraft {
         	fluidPlasticId = config.getBlock("plastic_fluid", 600).getInt(600);
         	
         	Blocks.init(config);
-        	
-        	LunchBoxId = config.getItem("lunch box", 1000).getInt(1000);
-        	lunchBox = new LunchBox(LunchBoxId).setUnlocalizedName("lunchbox");
-        	GameRegistry.registerItem(lunchBox, "lunchbox");
-        	LanguageRegistry.addName(lunchBox, "Lunch Box");
-
-
-
-
-
-            
-
-    
             plastic = new MaterialLiquid(MapColor.ironColor);
             
             plastic_fluid = new PlasticFluid("Plastic").setBlockID(fluidPlasticId);
             
             FluidRegistry.registerFluid(plastic_fluid);
             Blocks.Fluid_Plastic_Block = new Fluid_Plastic(fluidPlasticId, plastic_fluid, plastic);
+        	Items.Init(config);            
+
+    
+
 
             
             GameRegistry.registerBlock(Blocks.Fluid_Plastic_Block, "plasticBlockfluid");
             LanguageRegistry.addName(Blocks.Fluid_Plastic_Block, "Plastic");
             
-            bucketplastic = new BucketPlastic(config.getItem("bucketplastic", 602).getInt(602), Blocks.Fluid_Plastic_Block.blockID);
-            GameRegistry.registerItem(bucketplastic,"bucketplastic");
-            FluidContainerRegistry.registerFluidContainer(PlastiCraft.plastic_fluid, new ItemStack(PlastiCraft.bucketplastic,1 ,1), new ItemStack(Item.bucketEmpty));
-            LanguageRegistry.addName(bucketplastic, "Plastic Bucket");
+
             
             
             
@@ -129,11 +113,7 @@ public class PlastiCraft {
 
             
             new GuiHandler();
-            
-            plastic_Item= new Plastic(config.getBlock("Plastic", 501).getInt(501)).setUnlocalizedName("plastic");
-            LanguageRegistry.addName(plastic_Item, "Plastic");
-            GameRegistry.registerItem(plastic_Item, "plastic");
-            plastic_Item.setCreativeTab(tabsPC);
+
     		config.save();
     		LanguageRegistry.instance().addStringLocalization("itemGroup.PlastiTab", "PlastiCraft");
     		pcLog.info("PlastiCraft succesfully loaded");
@@ -148,9 +128,9 @@ public class PlastiCraft {
         			'y', new ItemStack(Block.furnaceIdle));
         	
         	GameRegistry.addRecipe(new ItemStack(Blocks.BlockPlastic, 1), "xxx", "xxx", "xxx",
-        			'x', new ItemStack(PlastiCraft.plastic_Item));
+        			'x', new ItemStack(Items.plastic_Item));
         	
-        	GameRegistry.addShapelessRecipe(new ItemStack(PlastiCraft.plastic_Item, 9), new ItemStack(Blocks.BlockPlastic,1));
+        	GameRegistry.addShapelessRecipe(new ItemStack(Items.plastic_Item, 9), new ItemStack(Blocks.BlockPlastic,1));
         }
         
         
