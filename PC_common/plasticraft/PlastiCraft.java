@@ -87,22 +87,14 @@ public class PlastiCraft {
         	};
 
         	fluidPlasticId = config.getBlock("plastic_fluid", 600).getInt(600);
-        	
-        	Blocks.init(config);
             plastic = new MaterialLiquid(MapColor.ironColor);
-            
             plastic_fluid = new PlasticFluid("Plastic").setBlockID(fluidPlasticId);
             
-            FluidRegistry.registerFluid(plastic_fluid);
-            Blocks.Fluid_Plastic_Block = new Fluid_Plastic(fluidPlasticId, plastic_fluid, plastic);
+            FluidRegistry.registerFluid(plastic_fluid);          
+        	Blocks.init(config);
         	Items.Init(config);            
-
-    
-
-
             
-            GameRegistry.registerBlock(Blocks.Fluid_Plastic_Block, "plasticBlockfluid");
-            LanguageRegistry.addName(Blocks.Fluid_Plastic_Block, "Plastic");
+
             
 
             

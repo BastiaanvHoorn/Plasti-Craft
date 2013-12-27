@@ -18,21 +18,12 @@ public class TeLunchBox extends TileEntity implements IInventory{
 	public TeLunchBox(ItemStack stack, NBTTagCompound containing){
 		this.stack = stack;
 		this.compound = containing;
-		NBTTagList items = this.compound.getTagList("items");
-		
-		for(int i = 0; i < items.tagCount(); i++){
-			NBTTagCompound item = (NBTTagCompound)items.tagAt(i);
-			int slot = item.getByte("slot");
-			
-			if(slot >= 0 && slot < getSizeInventory()){
-				this.setInventorySlotContents(slot,ItemStack.loadItemStackFromNBT(item));
-				PlastiCraft.info("item loaded");
-			}
-		}
+		this.readFromNBT(containing);
 
 		
 		
 	}
+	
 
 	@Override
 	public int getSizeInventory() {
@@ -113,10 +104,6 @@ public class TeLunchBox extends TileEntity implements IInventory{
 	
 	@Override
 	public void writeToNBT(NBTTagCompound compound){
-		super.writeToNBT(compound);
-	}
-
-	public void saveItem() {
 		NBTTagList items = new NBTTagList();
 		
 		for(int x=0; x < getSizeInventory();x++){
@@ -131,8 +118,28 @@ public class TeLunchBox extends TileEntity implements IInventory{
 			}
 		}
 		compound.setTag("items", items);
-		this.stack.setTagCompound(compound);
 		PlastiCraft.info("item saved");
+		super.writeToNBT(compound);
+	}
+	
+	@Override
+	public void readFromNBT(NBTTagCompound compound){
+	NBTTagList items = compound.getTagList("items");
+			
+			for(int i = 0; i < items.tagCount(); i++){
+				NBTTagCompound item = (NBTTagCompound)items.tagAt(i);
+				int slot = item.getByte("slot");
+				
+				if(slot >= 0 && slot < getSizeInventory()){
+					this.setInventorySlotContents(slot,ItemStack.loadItemStackFromNBT(item));
+					PlastiCraft.info("item loaded");
+				}
+			}
+		super.readFromNBT(compound);
+	}
+
+	public void saveToItem() {
+		this.writeToNBT(compound);
 	}
 	
 }
