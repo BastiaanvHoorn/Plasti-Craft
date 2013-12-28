@@ -18,6 +18,8 @@ public class Blocks {
      public static Block carbon_former_burning;
      public static Block BlockPlastic;
      public static Block Fluid_Plastic_Block;
+     public static Block grindStone;
+     
 	public static void init(Configuration config){
 		
         block_Quicksand =  new BlockQuicksand(config.getBlock("Quicksand", 500).getInt(500),Material.ground).setUnlocalizedName("quicksand");
@@ -42,6 +44,10 @@ public class Blocks {
         Fluid_Plastic_Block = new Fluid_Plastic(PlastiCraft.fluidPlasticId, PlastiCraft.plastic_fluid, PlastiCraft.plastic);
         GameRegistry.registerBlock(Blocks.Fluid_Plastic_Block, "plasticBlockfluid");
         LanguageRegistry.addName(Blocks.Fluid_Plastic_Block, "Plastic");
+        
+        grindStone = new GrindStone(700);
+        GameRegistry.registerBlock(Blocks.grindStone, "grindstone");
+        LanguageRegistry.addName(Blocks.grindStone, "Grindstone");
 	}
 	
 	

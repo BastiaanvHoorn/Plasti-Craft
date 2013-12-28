@@ -49,21 +49,16 @@ public class PlastiCraft {
         @SidedProxy(clientSide="plasticraft.client.ClientProxy", serverSide="plasticraft.CommonProxy")
         public static CommonProxy proxy;
         
-
         public static final Material QuicksandMaterial = new Material(MapColor.dirtColor);
         
-
-
         private static Configuration config;
         
         public static int LunchBoxId;
         
         public static Logger pcLog = Logger.getLogger("PLastiCraft");
-       
-
+        
         public static Fluid plastic_fluid;
-
-
+        
         public static CreativeTabs tabsPC; 
         
         public static Material plastic;
@@ -73,23 +68,21 @@ public class PlastiCraft {
         @EventHandler
         public void preInit(FMLPreInitializationEvent event) {
         	config = new Configuration(((FMLPreInitializationEvent) event).getSuggestedConfigurationFile());
-
         }
         
         @EventHandler
         public void load(FMLInitializationEvent event) {
     		pcLog.setParent(FMLLog.getLogger());
     		pcLog.info("PlastiCraft preInitialization started");
-
-
+    		
         	config.load();
-
+        	
         	tabsPC = new CreativeTabs("PlastiTab"){
             	public ItemStack getIconItemStack(){
             		return new ItemStack(Blocks.block_Quicksand);
             	}
         	};
-
+        	
         	fluidPlasticId = config.getBlock("plastic_fluid", 600).getInt(600);
             plastic = new MaterialLiquid(MapColor.ironColor);
             plastic_fluid = new PlasticFluid("Plastic").setBlockID(fluidPlasticId);
@@ -98,18 +91,10 @@ public class PlastiCraft {
         	Blocks.init(config);
         	Items.Init(config);            
             
-
-            
-
-            
-            
-            
             MinecraftForge.EVENT_BUS.register(new bucketevent());
             
-
-            
             new GuiHandler();
-
+            
     		config.save();
     		LanguageRegistry.instance().addStringLocalization("itemGroup.PlastiTab", "PlastiCraft");
     		pcLog.info("PlastiCraft succesfully loaded");
