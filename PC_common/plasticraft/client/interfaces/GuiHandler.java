@@ -61,10 +61,10 @@ public class GuiHandler implements IGuiHandler{
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		switch(ID){
 			case 0:
-			TileEntity te = world.getBlockTileEntity(x, y, z);
-			if(te != null && te instanceof TileEntityCarbonFormer){
-				return new GuiCarbonFormer(player.inventory,(TileEntityCarbonFormer)te);
-			}
+				TileEntity te = world.getBlockTileEntity(x, y, z);
+				if(te != null && te instanceof TileEntityCarbonFormer){
+					return new GuiCarbonFormer(player.inventory,(TileEntityCarbonFormer)te);
+				}
 			break;
 			case 1:
 				if(player.getCurrentEquippedItem().itemID == Items.lunchBox.itemID){

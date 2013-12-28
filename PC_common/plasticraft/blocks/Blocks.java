@@ -42,8 +42,8 @@ public class Blocks {
         LanguageRegistry.addName(BlockPlastic, "Plastic Block");
         
         Fluid_Plastic_Block = new Fluid_Plastic(PlastiCraft.fluidPlasticId, PlastiCraft.plastic_fluid, PlastiCraft.plastic);
-        GameRegistry.registerBlock(Blocks.Fluid_Plastic_Block, "plasticBlockfluid");
-        LanguageRegistry.addName(Blocks.Fluid_Plastic_Block, "Plastic");
+        GameRegistry.registerBlock(Fluid_Plastic_Block, "plasticBlockfluid");
+        LanguageRegistry.addName(Fluid_Plastic_Block, "Plastic");
         
         grindStone = new GrindStone(700);
         GameRegistry.registerBlock(Blocks.grindStone, "grindstone");
