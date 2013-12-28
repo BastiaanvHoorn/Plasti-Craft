@@ -16,6 +16,8 @@ public class Items {
     public static Item lunchBox;
     public static Item bucketplastic;
     public static ItemFood steak;
+    public static Item knife;
+    public static Item sliceBread;
 	
 	public static void Init(Configuration config){
     	lunchBox = new LunchBox(config.getItem("lunch box", 1000).getInt(1000)).setUnlocalizedName("lunchbox");
@@ -36,6 +38,14 @@ public class Items {
         steak = new Sandwich(config.getItem("hamburger", 600).getInt(), 10 , false, 10, 5, 1);
         GameRegistry.registerItem(steak, "hamburger");
         LanguageRegistry.addName(steak, "Hamburger sandwich");
+        
+        knife = new Knife(config.getItem("knife", 603).getInt()).setUnlocalizedName("knife");
+        GameRegistry.registerItem(knife, "knife");
+        LanguageRegistry.addName(knife, "Knife");
+        
+        sliceBread = new SliceBread(config.getItem("slicebread", 604).getInt()).setUnlocalizedName("slicebread");
+        GameRegistry.registerItem(sliceBread, "slicebread");
+        LanguageRegistry.addName(sliceBread, "Bread Slice");
 	}
 	
 }

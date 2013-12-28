@@ -8,7 +8,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
@@ -123,8 +127,14 @@ public class PlastiCraft {
         			'x', new ItemStack(Items.plastic_Item));
         	
         	GameRegistry.addShapelessRecipe(new ItemStack(Items.plastic_Item, 9), new ItemStack(Blocks.BlockPlastic,1));
+        	
+        	GameRegistry.addShapedRecipe(new ItemStack(Items.knife, 1), "xyy",
+        			'x', new ItemStack(Items.plastic_Item),
+        			'y', new ItemStack(Item.ingotIron));
+        	
+        	GameRegistry.addShapelessRecipe(new ItemStack(Items.sliceBread, 4),
+        	new Object[] {Item.bread, Items.knife.setContainerItem(Items.knife)});
         }
-        
         
         @EventHandler
         public void postInit(FMLPostInitializationEvent event) {
