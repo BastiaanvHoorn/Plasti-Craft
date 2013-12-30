@@ -6,6 +6,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import plasticraft.PlastiCraft;
 import plasticraft.items.Items;
+import plasticraft.tileentities.TeGrindStone;
 import plasticraft.tileentities.TeLunchBox;
 import plasticraft.tileentities.TileEntityCarbonFormer;
 import cpw.mods.fml.common.network.IGuiHandler;
@@ -21,9 +22,10 @@ public class GuiHandler implements IGuiHandler{
 	
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+		TileEntity te = world.getBlockTileEntity(x, y, z);
+		
 		switch(ID){
 			case 0:
-				TileEntity te = world.getBlockTileEntity(x, y, z);
 				if(te != null && te instanceof TileEntityCarbonFormer){
 					return new ContainerCarbonformer(player.inventory, (TileEntityCarbonFormer)te);
 				}
@@ -53,15 +55,18 @@ public class GuiHandler implements IGuiHandler{
 					PlastiCraft.info("not lunchbox");
 				}
 				break;
+			case 2:
+				return new ContainerGrindStone(player.inventory, (TeGrindStone)te);
 		}
 		return null;
 	}
 
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+		TileEntity te = world.getBlockTileEntity(x, y, z);
+		
 		switch(ID){
 			case 0:
-				TileEntity te = world.getBlockTileEntity(x, y, z);
 				if(te != null && te instanceof TileEntityCarbonFormer){
 					return new GuiCarbonFormer(player.inventory,(TileEntityCarbonFormer)te);
 				}
@@ -88,6 +93,8 @@ public class GuiHandler implements IGuiHandler{
 					PlastiCraft.info("not lunchbox");
 				}
 				break;
+			case 2:
+				return new GuiGrindStone(player.inventory, (TeGrindStone)te);
 		}
 		return null;
 	}

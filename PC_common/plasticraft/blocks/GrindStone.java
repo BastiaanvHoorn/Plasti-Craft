@@ -35,8 +35,7 @@ public class GrindStone extends BlockContainer {
     	}
     	
     	if(!world.isRemote){
-    		FMLNetworkHandler.openGui(player, PlastiCraft.instance, 0, world, x, y, z);
-    		PlastiCraft.info("Opening Gui");
+    		FMLNetworkHandler.openGui(player, PlastiCraft.instance, 2, world, x, y, z);
     	}
     	
     	return true;

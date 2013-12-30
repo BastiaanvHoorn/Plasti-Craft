@@ -34,8 +34,8 @@ public class ContainerGrindStone extends Container{
 			}
 		}
 		
-		addSlotToContainer(new SlotGrindStone(grindStone, 0, 44, 20));
-		addSlotToContainer(new SlotNone(grindStone, 1, 116, 20));
+		addSlotToContainer(new SlotKnife(grindStone, 0, 44, 21));
+		addSlotToContainer(new SlotGrindStone(this.player.player, grindStone, 1, 116, 21));
 		
 		this.teGrindStone = grindStone;
 	}
@@ -43,7 +43,7 @@ public class ContainerGrindStone extends Container{
 	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer)
 	{
-		return true;//teGrindStone.isUseableByPlayer(entityplayer);
+		return teGrindStone.isUseableByPlayer(entityplayer);
 	}
 	
 	@Override

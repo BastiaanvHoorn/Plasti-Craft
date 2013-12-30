@@ -2,6 +2,7 @@ package plasticraft.tileentities;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -34,19 +35,72 @@ public class TeGrindStone extends TileEntity implements IInventory{
 		
 		return null;
 	}
+	
+	@Override
+	public void updateEntity()
+	{
+		if (this.stackInput != null && this.stackOutput == null)
+		{
+			if (this.grindTime > 0 && this.grindTime < this.stackInput.getItemDamage() * 4)
+			{
+				++this.grindTime;
+			}
+			else if (this.grindTime >= this.stackInput.getItemDamage() * 4)
+			{
+				this.grindTime = 0;
+				
+				this.stackInput.stackSize = 0;
+				
+				ItemStack output = new ItemStack(Items.knife);
+				
+				this.setInventorySlotContents(1, output);
+			}
+			else
+			{
+				this.grindTime = 0;
+			}
+		}
+		else
+		{
+			
+		}
+	}
+	
+	public int getProgressScaled(int scale)
+	{
+		PlastiCraft.info("Scale:");
+		PlastiCraft.info(scale);
+		PlastiCraft.info("Grindtime:");
+		PlastiCraft.info(grindTime);
+		if (this.stackInput != null)
+		{
+			PlastiCraft.info("Damage:");
+			PlastiCraft.info(this.stackInput.getItemDamage());
+			return this.grindTime * scale / (this.stackInput.getItemDamage() * 4);
+		}
+		else
+		{
+			return 0;
+		}
+	}
 
 	@Override
 	public ItemStack decrStackSize(int i, int j) {
 		ItemStack itemstack = getStackInSlot(i);
-		if(itemstack != null){
-			if(itemstack.stackSize <= j){
+		
+		if(itemstack != null)
+		{
+			if(itemstack.stackSize <= j)
+			{
 				this.setInventorySlotContents(i, null);
 			}
-			else{
+			else
+			{
 				itemstack = itemstack.splitStack(j);
 				this.onInventoryChanged();
 			}
 		}
+		
 		return itemstack;
 	}
 
@@ -74,6 +128,7 @@ public class TeGrindStone extends TileEntity implements IInventory{
 		{
 			this.stackOutput = itemstack;
 		}
+		
 		this.onInventoryChanged();
 	}
 

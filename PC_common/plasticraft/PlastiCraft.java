@@ -128,7 +128,18 @@ public class PlastiCraft {
                 // Stub Method
         }
         
+        /*
+         * Text of type String.
+         */
         public static void info(String text){
         	pcLog.info(text);
+        }
+        
+        /*
+         * Text of type int.
+         */
+        public static void info(int text)
+        {
+        	pcLog.info(String.valueOf(text));
         }
 }
