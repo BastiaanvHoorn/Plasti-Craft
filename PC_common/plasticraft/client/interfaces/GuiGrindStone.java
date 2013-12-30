@@ -17,6 +17,7 @@ public class GuiGrindStone extends GuiContainer {
 	private ResourceLocation texture = new ResourceLocation(References.MOD_ID.toLowerCase(), "textures/gui/grindstone.png");
 	
 	private TeGrindStone teGrindStone;
+	private GuiButton button = new GuiButton(0, this.guiLeft + 43, this.guiTop + 40, 90, 20, "Grind");
 	
 	public GuiGrindStone(InventoryPlayer player, TeGrindStone grindstone){
 		super(new ContainerGrindStone(player, grindstone));
@@ -40,6 +41,10 @@ public class GuiGrindStone extends GuiContainer {
 		{
 			this.drawTexturedModalRect(guiLeft + 71, guiTop + 21, 176, 0, progressBar + 1, 15);
 		}
+		
+		button.xPosition = guiLeft + 43;
+		button.yPosition = guiTop + 40;
+		button.enabled = teGrindStone.getStackInSlot(0) != null;
 	}
 	
 	@Override
@@ -53,7 +58,7 @@ public class GuiGrindStone extends GuiContainer {
 	{
 		super.initGui();
 		this.buttonList.clear();
-		this.buttonList.add(new GuiButton(0, this.guiLeft + 43, this.guiTop + 40, 90, 20, "Grind"));
+		this.buttonList.add(button);
 	}
 	
 	protected void actionPerformed(GuiButton button)

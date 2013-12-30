@@ -3,6 +3,7 @@ package plasticraft.blocks;
 import plasticraft.PlastiCraft;
 import plasticraft.lib.References;
 import plasticraft.tileentities.TeFluidPlastic;
+import plasticraft.tileentities.TeGrindStone;
 import plasticraft.tileentities.TeLunchBox;
 import plasticraft.tileentities.TileEntityCarbonFormer;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -18,7 +19,8 @@ public class Blocks {
      public static Block carbon_former_burning;
      public static Block BlockPlastic;
      public static Block Fluid_Plastic_Block;
-     public static Block grindStone;
+     public static Block grindStone_idle;
+     public static Block grindStone_grinding;
      
 	public static void init(Configuration config){
 		
@@ -45,9 +47,13 @@ public class Blocks {
         GameRegistry.registerBlock(Fluid_Plastic_Block, "plasticBlockfluid");
         LanguageRegistry.addName(Fluid_Plastic_Block, "Plastic");
         
-        grindStone = new GrindStone(700);
-        GameRegistry.registerBlock(Blocks.grindStone, "grindstone");
-        LanguageRegistry.addName(Blocks.grindStone, "Grindstone");
+        grindStone_idle = new GrindStone(config.getBlock("grindStone", 700).getInt(700), false).setUnlocalizedName("grindStone_idle");
+        grindStone_grinding = new GrindStone(config.getBlock("grindStone", 700).getInt() + 1, true).setUnlocalizedName("grindStone_grinding");
+        GameRegistry.registerBlock(grindStone_idle, "grindStone_idle");
+        GameRegistry.registerBlock(grindStone_grinding, "grindStone_grinding");
+        LanguageRegistry.addName(grindStone_idle, "Grindstone");
+        LanguageRegistry.addName(grindStone_grinding, "Grindstone");
+        GameRegistry.registerTileEntity(TeGrindStone.class, References.GRINDSTONE_TE_KEY);
 	}
 	
 	

@@ -39,43 +39,41 @@ public class TeGrindStone extends TileEntity implements IInventory{
 	@Override
 	public void updateEntity()
 	{
-		if (this.stackInput != null && this.stackOutput == null)
+		if (this.stackOutput == null)
 		{
-			if (this.grindTime > 0 && this.grindTime < this.stackInput.getItemDamage() * 4)
+			if (this.stackInput != null)
 			{
-				++this.grindTime;
-			}
-			else if (this.grindTime >= this.stackInput.getItemDamage() * 4)
-			{
-				this.grindTime = 0;
-				
-				this.stackInput.stackSize = 0;
-				
-				ItemStack output = new ItemStack(Items.knife);
-				
-				this.setInventorySlotContents(1, output);
+				if (this.grindTime > 0 && this.grindTime < this.stackInput.getItemDamage() * 4)
+				{
+					++this.grindTime;
+				}
+				else if (this.grindTime >= this.stackInput.getItemDamage() * 4)
+				{
+					resetGrindTime();
+					
+					this.setInventorySlotContents(1, new ItemStack(Items.knife));
+				}
+				else
+				{
+					resetGrindTime();
+				}
 			}
 			else
 			{
-				this.grindTime = 0;
+				resetGrindTime();
 			}
 		}
-		else
-		{
-			
-		}
+	}
+	
+	private void resetGrindTime()
+	{
+		this.grindTime = 0;
 	}
 	
 	public int getProgressScaled(int scale)
 	{
-		PlastiCraft.info("Scale:");
-		PlastiCraft.info(scale);
-		PlastiCraft.info("Grindtime:");
-		PlastiCraft.info(grindTime);
 		if (this.stackInput != null)
 		{
-			PlastiCraft.info("Damage:");
-			PlastiCraft.info(this.stackInput.getItemDamage());
 			return this.grindTime * scale / (this.stackInput.getItemDamage() * 4);
 		}
 		else
@@ -161,6 +159,13 @@ public class TeGrindStone extends TileEntity implements IInventory{
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack)
 	{
-		return itemstack != null && i == 0 && itemstack.itemID == Items.knife.itemID;
+		if (itemstack != null)
+		{
+			return i == 0 && itemstack.itemID == Items.knife.itemID;
+		}
+		else
+		{
+			return false;
+		}
 	}
 }
