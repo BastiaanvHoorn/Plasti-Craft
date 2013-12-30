@@ -113,6 +113,8 @@ public class PlastiCraft {
         	
         	GameRegistry.addShapelessRecipe(new ItemStack(Items.plastic_Item, 9), new ItemStack(Blocks.BlockPlastic,1));
         	
+        	GameRegistry.addRecipe(new ItemStack(Items.steak, 1), "x", "y", "x", 'x', new ItemStack(Items.sliceBread), 'y', new ItemStack(Item.beefCooked));
+        	
         	GameRegistry.addShapedRecipe(new ItemStack(Items.knife, 1), "xyy",
         			'x', new ItemStack(Items.plastic_Item),
         			'y', new ItemStack(Item.ingotIron));

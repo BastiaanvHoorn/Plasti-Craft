@@ -2,6 +2,7 @@ package plasticraft.items;
 
 import plasticraft.PlastiCraft;
 import plasticraft.blocks.Blocks;
+import plasticraft.lib.References;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraft.item.Item;
@@ -15,7 +16,7 @@ public class Items {
     public static Item plastic_Item;
     public static Item lunchBox;
     public static Item bucketplastic;
-    public static ItemFood steak;
+    public static Item steak;
     public static Item knife;
     public static Item sliceBread;
 	
@@ -35,7 +36,7 @@ public class Items {
         GameRegistry.registerItem(plastic_Item, "plastic");
         plastic_Item.setCreativeTab(PlastiCraft.tabsPC);
         
-        steak = new Sandwich(config.getItem("hamburger", 600).getInt(), 10 , false, 10, 5, 1);
+        steak = new Sandwich(config.getItem("hamburger", 600).getInt(), 10 , false, 10, 5, 1).setTextureName(References.MOD_ID.toLowerCase()+":hamburgerSandwich");
         GameRegistry.registerItem(steak, "hamburger");
         LanguageRegistry.addName(steak, "Hamburger sandwich");
         

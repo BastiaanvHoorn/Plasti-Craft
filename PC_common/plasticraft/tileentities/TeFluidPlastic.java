@@ -3,7 +3,6 @@ package plasticraft.tileentities;
 import java.util.Random;
 
 import net.minecraft.tileentity.TileEntity;
-import plasticraft.PlastiCraft;
 import plasticraft.blocks.Blocks;
 
 public class TeFluidPlastic extends TileEntity{
