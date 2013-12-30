@@ -1,43 +1,75 @@
 package plasticraft.client.interfaces;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 import plasticraft.PlastiCraft;
+import plasticraft.tileentities.TeGrindStone;
 
 public class ContainerGrindStone extends Container{
 
 	private InventoryPlayer player;
 	
-	public ContainerGrindStone(InventoryPlayer player) {
+	private TeGrindStone teGrindStone;
+	
+	private int lastGrindTime;
+	
+	public ContainerGrindStone(InventoryPlayer player, TeGrindStone grindStone) {
 		this.player = player;
 		
-		for(int x=0; x < 9; x++){
+		for(int x = 0; x < 9; x++){
 			addSlotToContainer(new Slot(this.player, x, 8 + 18 * x, 130));
 		}
 		
-		for(int y = 0; y<3; y++){
+		for(int y = 0; y < 3; y++){
 			for(int x = 0; x < 9; x++){
-				addSlotToContainer(new Slot(this.player,x + y * 9 + 9,8 + 18 * x, 72 + y * 18));
+				addSlotToContainer(new Slot(this.player, x + y * 9 + 9, 8 + 18 * x, 72 + y * 18));
 			}
 		}
 		
-		PlastiCraft.info("Container");
+		addSlotToContainer(new SlotGrindStone(grindStone, 0, 44, 20));
+		addSlotToContainer(new SlotNone(grindStone, 1, 116, 20));
+		
+		this.teGrindStone = grindStone;
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer entityplayer) {
-		return true;
+	public boolean canInteractWith(EntityPlayer entityplayer)
+	{
+		return true;//teGrindStone.isUseableByPlayer(entityplayer);
 	}
 	
 	@Override
-	public void removeCraftingFromCrafters(ICrafting crafting){
-		PlastiCraft.info("saved item (called)");
-		super.removeCraftingFromCrafters(crafting);
-		
+	public ItemStack transferStackInSlot(EntityPlayer player, int i)
+	{
+		return null;
 	}
 
+	@SideOnly(Side.CLIENT)
+	
+	@Override
+	public void updateProgressBar(int par1, int par2){
+		this.teGrindStone.grindTime = par2;
+	}
+	
+	@Override
+	public void detectAndSendChanges(){
+		super.detectAndSendChanges();
+		
+		for(int i = 0; i < this.crafters.size(); i++){
+			ICrafting crafting = (ICrafting)this.crafters.get(i);
+			
+			if(this.lastGrindTime != this.teGrindStone.grindTime)
+			{
+				crafting.sendProgressBarUpdate(this, 0, this.teGrindStone.grindTime);
+			}
+		}
+	}
 }
