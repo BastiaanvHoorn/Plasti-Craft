@@ -23,6 +23,7 @@ public class ContainerGrindStone extends Container{
 	
 	public ContainerGrindStone(InventoryPlayer player, TeGrindStone grindStone) {
 		this.player = player;
+		this.teGrindStone = grindStone;
 		
 		for(int x = 0; x < 9; x++){
 			addSlotToContainer(new Slot(this.player, x, 8 + 18 * x, 130));
@@ -36,8 +37,6 @@ public class ContainerGrindStone extends Container{
 		
 		addSlotToContainer(new SlotKnife(grindStone, 0, 44, 21));
 		addSlotToContainer(new SlotGrindStone(this.player.player, grindStone, 1, 116, 21));
-		
-		this.teGrindStone = grindStone;
 	}
 
 	@Override

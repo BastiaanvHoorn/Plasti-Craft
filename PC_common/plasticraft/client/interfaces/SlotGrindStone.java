@@ -1,5 +1,6 @@
 package plasticraft.client.interfaces;
 
+import plasticraft.tileentities.TeGrindStone;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -12,12 +13,14 @@ public class SlotGrindStone extends Slot
 {
     /** The player that is using the GUI where this slot resides. */
     private EntityPlayer thePlayer;
+    private TeGrindStone teGrindStone;
     private int field_75228_b;
 
-    public SlotGrindStone(EntityPlayer par1EntityPlayer, IInventory par2IInventory, int par3, int par4, int par5)
+    public SlotGrindStone(EntityPlayer par1EntityPlayer, TeGrindStone teGrindStone, int par3, int par4, int par5)
     {
-        super(par2IInventory, par3, par4, par5);
+        super(teGrindStone, par3, par4, par5);
         this.thePlayer = par1EntityPlayer;
+        this.teGrindStone = teGrindStone;
     }
 
     /**
@@ -42,10 +45,14 @@ public class SlotGrindStone extends Slot
         return super.decrStackSize(par1);
     }
 
-    public void onPickupFromSlot(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack)
+    public void onPickupFromSlot(EntityPlayer player, ItemStack itemStack)
     {
-        this.onCrafting(par2ItemStack);
-        super.onPickupFromSlot(par1EntityPlayer, par2ItemStack);
+        this.onCrafting(itemStack);
+        super.onPickupFromSlot(player, itemStack);
+        if (player.experienceLevel >= this.teGrindStone.experienceCost)
+        {
+            player.experienceLevel -= this.teGrindStone.experienceCost;
+        }
     }
 
     /**

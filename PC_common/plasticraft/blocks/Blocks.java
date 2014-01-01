@@ -54,6 +54,7 @@ public class Blocks {
         LanguageRegistry.addName(grindStone_idle, "Grindstone");
         LanguageRegistry.addName(grindStone_grinding, "Grindstone");
         GameRegistry.registerTileEntity(TeGrindStone.class, References.GRINDSTONE_TE_KEY);
+		grindStone_idle.setCreativeTab(PlastiCraft.tabsPC);
 	}
 	
 	

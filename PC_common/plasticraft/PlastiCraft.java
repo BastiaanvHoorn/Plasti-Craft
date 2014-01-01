@@ -120,7 +120,7 @@ public class PlastiCraft {
         			'y', new ItemStack(Item.ingotIron));
         	
         	GameRegistry.addShapelessRecipe(new ItemStack(Items.sliceBread, 4),
-        	new Object[] {Item.bread, Items.knife.setContainerItem(Items.knife)});
+        			new Object[] {Item.bread, Items.knife});
         }
         
         @EventHandler
@@ -139,6 +139,11 @@ public class PlastiCraft {
          * Text of type int.
          */
         public static void info(int text)
+        {
+        	pcLog.info(String.valueOf(text));
+        }
+        
+        public static void info(boolean text)
         {
         	pcLog.info(String.valueOf(text));
         }

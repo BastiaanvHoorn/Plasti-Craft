@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import plasticraft.PlastiCraft;
+import plasticraft.blocks.Blocks;
 import plasticraft.items.Items;
 
 public class TeGrindStone extends TileEntity implements IInventory{
@@ -16,24 +17,11 @@ public class TeGrindStone extends TileEntity implements IInventory{
 	private ItemStack stackOutput;
 	
 	public int grindTime;
+	public int experienceCost;
 	
 	@Override
 	public int getSizeInventory() {
 		return 1;
-	}
-
-	@Override
-	public ItemStack getStackInSlot(int i) {
-		if (i == 0)
-		{
-			return this.stackInput;
-		}
-		else if (i == 1)
-		{
-			return this.stackOutput;
-		}
-		
-		return null;
 	}
 	
 	@Override
@@ -43,24 +31,49 @@ public class TeGrindStone extends TileEntity implements IInventory{
 		{
 			if (this.stackInput != null)
 			{
-				if (this.grindTime > 0 && this.grindTime < this.stackInput.getItemDamage() * 4)
+				if (this.stackInput.getItemDamage() != 0)
 				{
-					++this.grindTime;
-				}
-				else if (this.grindTime >= this.stackInput.getItemDamage() * 4)
-				{
-					resetGrindTime();
+					this.experienceCost = 2 + this.stackInput.getItemDamage() / 6;
 					
-					this.setInventorySlotContents(1, new ItemStack(Items.knife));
+					if (this.grindTime > 0 && this.grindTime < this.stackInput.getItemDamage() * 4)
+					{
+						++this.grindTime;
+						
+						if (this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 0)
+						{
+							this.worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 1, 2);
+						}
+					}
+					else if (this.grindTime >= this.stackInput.getItemDamage() * 4)
+					{
+						this.stackInput = null;
+						this.experienceCost = 0;
+						
+						this.worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 0, 2);
+						resetGrindTime();
+						
+						this.setInventorySlotContents(1, new ItemStack(Items.knife));
+					}
+					else
+					{
+						resetGrindTime();
+						
+						if (this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1)
+						{
+							this.worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 0, 2);
+						}
+					}
 				}
 				else
 				{
-					resetGrindTime();
+					this.experienceCost = 0;
 				}
 			}
 			else
 			{
 				resetGrindTime();
+				
+				this.experienceCost = 0;
 			}
 		}
 	}
@@ -70,16 +83,17 @@ public class TeGrindStone extends TileEntity implements IInventory{
 		this.grindTime = 0;
 	}
 	
+	public void creativeMode()
+	{
+		if (this.grindTime > 0)
+		{
+			this.grindTime = this.stackInput.getItemDamage() * 4;
+		}
+	}
+	
 	public int getProgressScaled(int scale)
 	{
-		if (this.stackInput != null)
-		{
-			return this.grindTime * scale / (this.stackInput.getItemDamage() * 4);
-		}
-		else
-		{
-			return 0;
-		}
+		return this.grindTime * scale / (this.stackInput.getItemDamage() * 4);
 	}
 
 	@Override
@@ -100,6 +114,20 @@ public class TeGrindStone extends TileEntity implements IInventory{
 		}
 		
 		return itemstack;
+	}
+
+	@Override
+	public ItemStack getStackInSlot(int i) {
+		if (i == 0)
+		{
+			return this.stackInput;
+		}
+		else if (i == 1)
+		{
+			return this.stackOutput;
+		}
+		
+		return null;
 	}
 
 	@Override
