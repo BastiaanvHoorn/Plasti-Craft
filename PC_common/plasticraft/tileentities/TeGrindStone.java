@@ -9,6 +9,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import plasticraft.PlastiCraft;
 import plasticraft.blocks.Blocks;
+import plasticraft.blocks.GrindStone;
 import plasticraft.items.Items;
 
 public class TeGrindStone extends TileEntity implements IInventory{
@@ -38,18 +39,12 @@ public class TeGrindStone extends TileEntity implements IInventory{
 					if (this.grindTime > 0 && this.grindTime < this.stackInput.getItemDamage() * 4)
 					{
 						++this.grindTime;
-						
-						if (this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 0)
-						{
-							this.worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 1, 2);
-						}
 					}
 					else if (this.grindTime >= this.stackInput.getItemDamage() * 4)
 					{
 						this.stackInput = null;
 						this.experienceCost = 0;
 						
-						this.worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 0, 2);
 						resetGrindTime();
 						
 						this.setInventorySlotContents(1, new ItemStack(Items.knife));
@@ -57,11 +52,6 @@ public class TeGrindStone extends TileEntity implements IInventory{
 					else
 					{
 						resetGrindTime();
-						
-						if (this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1)
-						{
-							this.worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 0, 2);
-						}
 					}
 				}
 				else
@@ -76,6 +66,8 @@ public class TeGrindStone extends TileEntity implements IInventory{
 				this.experienceCost = 0;
 			}
 		}
+		
+		//GrindStone.updateBlockState(this.grindTime > 0, worldObj, xCoord, yCoord, zCoord);
 	}
 	
 	private void resetGrindTime()

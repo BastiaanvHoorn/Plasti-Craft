@@ -11,7 +11,7 @@ public class Knife extends Item{
 	public Knife(int par1) {
 		super(par1);
 		setCreativeTab(PlastiCraft.tabsPC);
-		this.maxStackSize = 1;
+		this.setMaxStackSize(1);
 		this.setNoRepair();
 		this.setMaxDamage(64);
 		this.isDamageable();
@@ -32,8 +32,7 @@ public class Knife extends Item{
 	@Override
 	public ItemStack getContainerItemStack(ItemStack itemStack)
     {
-		ItemStack itemStackDamaged = itemStack.copy();
-		itemStackDamaged.setItemDamage(itemStack.getItemDamage() + 1);
-        return itemStackDamaged;
+		itemStack.setItemDamage(itemStack.getItemDamage() + 1);
+        return itemStack;
     }
 }

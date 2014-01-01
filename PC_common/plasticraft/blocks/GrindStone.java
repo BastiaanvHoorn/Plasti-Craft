@@ -8,6 +8,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import plasticraft.PlastiCraft;
 import plasticraft.lib.References;
 import plasticraft.tileentities.TeGrindStone;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -58,7 +59,6 @@ public class GrindStone extends BlockContainer {
 	@Override
 	public void breakBlock(World world, int x, int y, int z, int id, int metadata)
 	{
-		PlastiCraft.info("breakblock");
 		TileEntity te = world.getBlockTileEntity(x, y, z);
 		
 		if(te != null && te instanceof IInventory){
@@ -98,7 +98,6 @@ public class GrindStone extends BlockContainer {
     {
     	TopIcon = this.isActive ? icon.registerIcon(References.MOD_ID.toLowerCase() + ":grindStone_top_on") : icon.registerIcon(References.MOD_ID.toLowerCase() +":grindStone_top_off");
     	SideIcon = icon.registerIcon(References.MOD_ID.toLowerCase() + ":grindStone_side");
-    	PlastiCraft.info("registericons");PlastiCraft.info(this.isActive);
     	
     }
     
@@ -119,7 +118,7 @@ public class GrindStone extends BlockContainer {
     @Override
     public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5EntityLivingBase, ItemStack par6ItemStack)
     {
-    	par1World.setBlockMetadataWithNotify(par2, par3, par4, 0, 0);
+    	par1World.setBlockMetadataWithNotify(par2, par3, par4, 0, 2);
     }
     
     @Override
@@ -151,6 +150,28 @@ public class GrindStone extends BlockContainer {
 	    	
 	    	par1World.spawnParticle("crit", (double)par2 + par5Random.nextDouble(), (double)par3 + 0.9D, (double)par4 + par5Random.nextDouble(), 0.2D * random1, 0.4D, 0.2D * random2);
     	}
-    	
+    }
+    
+    public static void updateBlockState(boolean state, World world, int x, int y, int z)
+    {
+    	int l = world.getBlockMetadata(x, y, z);
+        TileEntity tileentity = world.getBlockTileEntity(x, y, z);
+
+        if (state)
+        {
+            world.setBlock(x, y, z, Blocks.grindStone_grinding.blockID);
+        }
+        else
+        {
+            world.setBlock(x, y, z, Blocks.grindStone_idle.blockID);
+        }
+
+        world.setBlockMetadataWithNotify(x, y, z, l, 2);
+
+        if (tileentity != null)
+        {
+            tileentity.validate();
+            world.setBlockTileEntity(x, y, z, tileentity);
+        }
     }
 }
