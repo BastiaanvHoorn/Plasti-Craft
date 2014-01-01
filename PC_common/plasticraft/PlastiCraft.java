@@ -103,7 +103,7 @@ public class PlastiCraft {
         	GameRegistry.addRecipe(new ItemStack(Blocks.block_Quicksand,2), "xyx","yzy","xyx",
         	'x', new ItemStack(Block.dirt),'y',new ItemStack(Block.gravel),'z',new ItemStack(Item.bucketWater)
         		);
-        	GameRegistry.addRecipe(new ItemStack(Blocks.carbon_former_idle,1),
+        	GameRegistry.addRecipe(new ItemStack(Blocks.carbon_former_idle, 1),
         			"xxx","xyx","xxx",
         			'x', new ItemStack(Block.netherBrick),
         			'y', new ItemStack(Block.furnaceIdle));
@@ -119,8 +119,11 @@ public class PlastiCraft {
         			'x', new ItemStack(Items.plastic_Item),
         			'y', new ItemStack(Item.ingotIron));
         	
-        	GameRegistry.addShapelessRecipe(new ItemStack(Items.sliceBread, 4),
-        			new Object[] {Item.bread, Items.knife});
+        	for (int i = 0; i < 64; i++)
+        	{
+        		GameRegistry.addShapelessRecipe(new ItemStack(Items.sliceBread, 4), new Object[]
+        			{Item.bread, new ItemStack(Items.knife, 1, i)});	
+        	}
         }
         
         @EventHandler
@@ -143,6 +146,9 @@ public class PlastiCraft {
         	pcLog.info(String.valueOf(text));
         }
         
+        /*
+         * Text of type boolean.
+         */
         public static void info(boolean text)
         {
         	pcLog.info(String.valueOf(text));
