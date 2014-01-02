@@ -11,10 +11,11 @@ public class Knife extends Item{
 	public Knife(int par1) {
 		super(par1);
 		setCreativeTab(PlastiCraft.tabsPC);
-		this.setMaxStackSize(1);
-		this.setNoRepair();
-		this.setMaxDamage(64);
-		this.isDamageable();
+		setTextureName(References.MOD_ID.toLowerCase() + ":knife");
+		setMaxStackSize(1);
+		setNoRepair();
+		setMaxDamage(64);
+		isDamageable();
 	}
 	
 	@Override

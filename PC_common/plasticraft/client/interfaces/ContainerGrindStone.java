@@ -15,28 +15,25 @@ import plasticraft.tileentities.TeGrindStone;
 
 public class ContainerGrindStone extends Container{
 
-	private InventoryPlayer player;
-	
 	private TeGrindStone teGrindStone;
 	
 	private int lastGrindTime;
 	
 	public ContainerGrindStone(InventoryPlayer player, TeGrindStone grindStone) {
-		this.player = player;
 		this.teGrindStone = grindStone;
 		
 		for(int x = 0; x < 9; x++){
-			addSlotToContainer(new Slot(this.player, x, 8 + 18 * x, 130));
+			addSlotToContainer(new Slot(player, x, 8 + 18 * x, 130));
 		}
 		
 		for(int y = 0; y < 3; y++){
 			for(int x = 0; x < 9; x++){
-				addSlotToContainer(new Slot(this.player, x + y * 9 + 9, 8 + 18 * x, 72 + y * 18));
+				addSlotToContainer(new Slot(player, x + y * 9 + 9, 8 + 18 * x, 72 + y * 18));
 			}
 		}
 		
 		addSlotToContainer(new SlotKnife(grindStone, 0, 44, 21));
-		addSlotToContainer(new SlotGrindStone(this.player.player, grindStone, 1, 116, 21));
+		addSlotToContainer(new SlotGrindStone(grindStone, 1, 116, 21));
 	}
 
 	@Override

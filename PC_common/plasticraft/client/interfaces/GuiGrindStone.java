@@ -52,7 +52,12 @@ public class GuiGrindStone extends GuiContainer {
 				}
 				else
 				{
-					enableButton = teGrindStone.getStackInSlot(0) != null && teGrindStone.experienceCost <= player.experienceLevel;
+					enableButton = teGrindStone.getStackInSlot(0) != null && teGrindStone.getStackInSlot(1) != null && teGrindStone.getStackInSlot(2) == null;
+
+					if (enableButton)
+					{
+						enableButton = teGrindStone.getStackInSlot(0).getItemDamage() > 0;
+					}
 					
 					int progressBar = this.teGrindStone.getProgressScaled(34);
 
@@ -70,23 +75,7 @@ public class GuiGrindStone extends GuiContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
-		this.fontRenderer.drawString("Grindstone", 43, 6, 4210752);
-		
-		ItemStack stackInput = teGrindStone.getStackInSlot(0);
-		
-		int cost = teGrindStone.experienceCost;
-		
-		if (stackInput != null)
-		{			
-			int color = 8453920;
-			
-			if (this.player.experienceLevel < cost && !this.player.capabilities.isCreativeMode)
-			{
-				color = 16736352;
-			}
-			
-			this.fontRenderer.drawStringWithShadow(String.valueOf(cost), 78, 16, color);
-		}	
+		this.fontRenderer.drawString(this.teGrindStone.getInvName(), 43, 6, 4210752);
 	}
 	
 	@Override

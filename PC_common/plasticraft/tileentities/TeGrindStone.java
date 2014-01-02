@@ -1,52 +1,60 @@
 package plasticraft.tileentities;
 
+import net.minecraft.block.Block;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.world.World;
 import plasticraft.PlastiCraft;
 import plasticraft.blocks.Blocks;
 import plasticraft.blocks.GrindStone;
 import plasticraft.items.Items;
 
-public class TeGrindStone extends TileEntity implements IInventory{
+public class TeGrindStone extends TileEntity implements ISidedInventory{
 
-	private ItemStack stackInput;
-	private ItemStack stackOutput;
+	private ItemStack[] items;
+	private int[] Slots_bottom = {2};
+	private int[] Slots_top = {0};
+	private int[] Slots_side = {0, 1};
 	
 	public int grindTime;
-	public int experienceCost;
+	
+	public TeGrindStone()
+	{
+		this.items = new ItemStack[3];
+	}
 	
 	@Override
 	public int getSizeInventory() {
-		return 1;
+		return items.length;
 	}
 	
 	@Override
 	public void updateEntity()
 	{
-		if (this.stackOutput == null)
+		if (this.items[2] == null)
 		{
-			if (this.stackInput != null)
+			if (this.items[0] != null)
 			{
-				if (this.stackInput.getItemDamage() != 0)
+				if (this.items[0].getItemDamage() != 0)
 				{
-					this.experienceCost = 2 + this.stackInput.getItemDamage() / 6;
-					
-					if (this.grindTime > 0 && this.grindTime < this.stackInput.getItemDamage() * 4)
+					if (this.grindTime > 0 && this.grindTime < this.items[0].getItemDamage() * 4)
 					{
 						++this.grindTime;
+						
 					}
-					else if (this.grindTime >= this.stackInput.getItemDamage() * 4)
+					else if (this.grindTime >= this.items[0].getItemDamage() * 4)
 					{
-						this.stackInput = null;
-						this.experienceCost = 0;
-						
 						resetGrindTime();
-						
+
+						this.setInventorySlotContents(0, null);
 						this.setInventorySlotContents(1, new ItemStack(Items.knife));
 					}
 					else
@@ -54,23 +62,17 @@ public class TeGrindStone extends TileEntity implements IInventory{
 						resetGrindTime();
 					}
 				}
-				else
-				{
-					this.experienceCost = 0;
-				}
 			}
 			else
 			{
 				resetGrindTime();
-				
-				this.experienceCost = 0;
 			}
 		}
 		
 		//GrindStone.updateBlockState(this.grindTime > 0, worldObj, xCoord, yCoord, zCoord);
 	}
 	
-	private void resetGrindTime()
+	public void resetGrindTime()
 	{
 		this.grindTime = 0;
 	}
@@ -79,13 +81,13 @@ public class TeGrindStone extends TileEntity implements IInventory{
 	{
 		if (this.grindTime > 0)
 		{
-			this.grindTime = this.stackInput.getItemDamage() * 4;
+			this.grindTime = this.items[0].getItemDamage() * 4;
 		}
 	}
 	
 	public int getProgressScaled(int scale)
 	{
-		return this.grindTime * scale / (this.stackInput.getItemDamage() * 4);
+		return this.grindTime * scale / (this.items[0].getItemDamage() * 4);
 	}
 
 	@Override
@@ -110,41 +112,24 @@ public class TeGrindStone extends TileEntity implements IInventory{
 
 	@Override
 	public ItemStack getStackInSlot(int i) {
-		if (i == 0)
-		{
-			return this.stackInput;
-		}
-		else if (i == 1)
-		{
-			return this.stackOutput;
-		}
-		
-		return null;
+		return this.items[i];
 	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
-		if (i == 0)
-		{
-			return this.stackInput;
-		}
-		else if (i == 1)
-		{
-			return this.stackOutput;
-		}
-		
-		return null;
+		ItemStack item = getStackInSlot(i);
+		this.setInventorySlotContents(i, null);
+		return item;
 	}
 
 	@Override
 	public void setInventorySlotContents(int i, ItemStack itemstack) {
-		if (i == 0)
+		this.items[i] = itemstack;
+		
+		if(itemstack != null && itemstack.stackSize > getInventoryStackLimit())
 		{
-			this.stackInput = itemstack;
-		}
-		else if (i == 1)
-		{
-			this.stackOutput = itemstack;
+			itemstack.stackSize = this.getInventoryStackLimit();
+			this.items[i] = itemstack;
 		}
 		
 		this.onInventoryChanged();
@@ -167,7 +152,7 @@ public class TeGrindStone extends TileEntity implements IInventory{
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		return true;
+		return entityplayer.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) <= 64;
 	}
 	
 	@Override
@@ -179,13 +164,55 @@ public class TeGrindStone extends TileEntity implements IInventory{
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack)
 	{
-		if (itemstack != null)
+		if(i == 0)
 		{
-			return i == 0 && itemstack.itemID == Items.knife.itemID;
+			if (itemstack.itemID == Items.knife.itemID)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else if(i == 1)
+		{
+			if(itemstack.itemID == Block.obsidian.blockID)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		
+		return false;
+	}
+
+	@Override
+	public int[] getAccessibleSlotsFromSide(int par1) {
+		if (par1 == 0)
+		{
+			return Slots_bottom;
+		}
+		else if (par1 == 1)
+		{
+			return Slots_top;
 		}
 		else
 		{
-			return false;
+			return Slots_side;
 		}
+	}
+
+	@Override
+	public boolean canInsertItem(int i, ItemStack itemstack, int j) {
+		return true;
+	}
+
+	@Override
+	public boolean canExtractItem(int i, ItemStack itemstack, int j) {
+		return true;
 	}
 }
