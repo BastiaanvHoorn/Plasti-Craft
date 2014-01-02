@@ -124,6 +124,10 @@ public class PlastiCraft {
         		GameRegistry.addShapelessRecipe(new ItemStack(Items.sliceBread, 4), new Object[]
         			{Item.bread, new ItemStack(Items.knife, 1, i)});	
         	}
+        	
+        	GameRegistry.addShapedRecipe(new ItemStack(Items.grindFrame), "   ", "x x", "yyy",
+        			'x', new ItemStack(Item.flint),
+        			'y', new ItemStack(Items.plastic_Item));
         }
         
         @EventHandler

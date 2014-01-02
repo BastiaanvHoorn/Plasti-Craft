@@ -24,11 +24,11 @@ public class TeGrindStone extends TileEntity implements ISidedInventory{
 	private int[] Slots_top = {0};
 	private int[] Slots_side = {0, 1};
 	
-	public int grindTime;
+	private boolean isActive;
 	
 	public TeGrindStone()
 	{
-		this.items = new ItemStack[3];
+		this.items = new ItemStack[2];
 	}
 	
 	@Override
@@ -39,55 +39,56 @@ public class TeGrindStone extends TileEntity implements ISidedInventory{
 	@Override
 	public void updateEntity()
 	{
-		if (this.items[2] == null)
+		if (this.getStackInSlot(0) != null && this.getStackInSlot(1) != null)
 		{
-			if (this.items[0] != null)
+			if (this.getStackInSlot(0).getItemDamage() != 0 && this.isActive)
 			{
-				if (this.items[0].getItemDamage() != 0)
-				{
-					if (this.grindTime > 0 && this.grindTime < this.items[0].getItemDamage() * 4)
-					{
-						++this.grindTime;
-						
-					}
-					else if (this.grindTime >= this.items[0].getItemDamage() * 4)
-					{
-						resetGrindTime();
-
-						this.setInventorySlotContents(0, null);
-						this.setInventorySlotContents(1, new ItemStack(Items.knife));
-					}
-					else
-					{
-						resetGrindTime();
-					}
-				}
+				ItemStack itemStack1 = this.getStackInSlot(0);
+				itemStack1.setItemDamage(this.getStackInSlot(0).getItemDamage() - 1);
+				this.setInventorySlotContents(0, itemStack1);
+				
+				ItemStack itemStack2 = this.getStackInSlot(1);
+				itemStack2.setItemDamage(this.getStackInSlot(1).getItemDamage() - 1);
+				this.setInventorySlotContents(1, itemStack2);
 			}
-			else
-			{
-				resetGrindTime();
-			}
+		}
+		else
+		{
+			deActivate();
 		}
 		
 		//GrindStone.updateBlockState(this.grindTime > 0, worldObj, xCoord, yCoord, zCoord);
 	}
 	
-	public void resetGrindTime()
+	public void deActivate()
 	{
-		this.grindTime = 0;
+		this.isActive = false;
 	}
 	
-	public void creativeMode()
+	public void Activate(EntityPlayer player)
 	{
-		if (this.grindTime > 0)
+		if (player.capabilities.isCreativeMode)
 		{
-			this.grindTime = this.items[0].getItemDamage() * 4;
+			ItemStack itemStack = this.getStackInSlot(0);
+			itemStack.setItemDamage(0);
+			this.setInventorySlotContents(0, itemStack);
+		}
+		else
+		{
+			this.isActive = true;
 		}
 	}
 	
-	public int getProgressScaled(int scale)
+	public int getDamageScaled(int scale)
 	{
-		return this.grindTime * scale / (this.items[0].getItemDamage() * 4);
+		if (this.getStackInSlot(0) != null)
+		{
+			return (this.getStackInSlot(0).getMaxDamage() - this.getStackInSlot(0).getItemDamage()) * scale / 64;	
+		}
+		else
+		{
+			return 0;
+		}
 	}
 
 	@Override
@@ -152,7 +153,7 @@ public class TeGrindStone extends TileEntity implements ISidedInventory{
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		return entityplayer.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) <= 64;
+		return true;//entityplayer.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) <= 64;
 	}
 	
 	@Override
@@ -164,7 +165,7 @@ public class TeGrindStone extends TileEntity implements ISidedInventory{
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack)
 	{
-		if(i == 0)
+		if (i == 0)
 		{
 			if (itemstack.itemID == Items.knife.itemID)
 			{
@@ -175,9 +176,9 @@ public class TeGrindStone extends TileEntity implements ISidedInventory{
 				return false;
 			}
 		}
-		else if(i == 1)
+		else if (i == 1)
 		{
-			if(itemstack.itemID == Block.obsidian.blockID)
+			if (itemstack.itemID == Items.grindFrame.itemID)
 			{
 				return true;
 			}
@@ -186,8 +187,10 @@ public class TeGrindStone extends TileEntity implements ISidedInventory{
 				return false;
 			}
 		}
-		
-		return false;
+		else
+		{
+			return false;
+		}
 	}
 
 	@Override

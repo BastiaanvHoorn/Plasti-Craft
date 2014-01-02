@@ -18,6 +18,7 @@ public class Items {
     public static Item bucketplastic;
     public static Item steak;
     public static Item knife;
+    public static Item grindFrame;
     public static Item sliceBread;
 	
 	public static void Init(Configuration config){
@@ -47,6 +48,10 @@ public class Items {
         sliceBread = new SliceBread(config.getItem("slicebread", 604).getInt()).setUnlocalizedName("slicebread");
         GameRegistry.registerItem(sliceBread, "slicebread");
         LanguageRegistry.addName(sliceBread, "Bread Slice");
+        
+        grindFrame = new GrindFrame(config.getItem("grindframe", 605).getInt()).setUnlocalizedName("grindframe");
+        GameRegistry.registerItem(grindFrame, "grindframe");
+        LanguageRegistry.addName(grindFrame, "Grindframe");
 	}
 	
 }

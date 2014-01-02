@@ -19,7 +19,8 @@ public class GuiGrindStone extends GuiContainer {
 	private ResourceLocation texture = new ResourceLocation(References.MOD_ID.toLowerCase(), "textures/gui/grindstone.png");
 	
 	private TeGrindStone teGrindStone;
-	private GuiButton button = new GuiButton(0, this.guiLeft + 43, this.guiTop + 50, 90, 20, "Grind");
+	private GuiButton button = new GuiButton(0, this.guiLeft + 61, this.guiTop + 37, 54, 20, "Grind");
+	private int progressBar;
 	private EntityPlayer player;
 	
 	public GuiGrindStone(InventoryPlayer player, TeGrindStone grindstone){
@@ -36,10 +37,23 @@ public class GuiGrindStone extends GuiContainer {
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 		
-		button.xPosition = guiLeft + 43;
-		button.yPosition = guiTop + 40;
+		button.xPosition = guiLeft + 49;
+		button.yPosition = guiTop + 37;
 		
 		boolean enableButton = false;
+		
+		int newProgressBar = this.teGrindStone.getDamageScaled(45);
+
+		if (newProgressBar > progressBar)
+		{
+			++progressBar;
+		}
+		else if (newProgressBar < progressBar)
+		{
+			--progressBar;
+		}
+		
+		this.drawTexturedModalRect(guiLeft + 117, guiTop + 57 - progressBar, 176, 44 - progressBar, 13, progressBar);
 		
 		if (teGrindStone.getStackInSlot(0) != null)
 		{
@@ -48,23 +62,10 @@ public class GuiGrindStone extends GuiContainer {
 				if (player.capabilities.isCreativeMode)
 				{
 					enableButton = true;
-					teGrindStone.creativeMode();
 				}
 				else
 				{
-					enableButton = teGrindStone.getStackInSlot(0) != null && teGrindStone.getStackInSlot(1) != null && teGrindStone.getStackInSlot(2) == null;
-
-					if (enableButton)
-					{
-						enableButton = teGrindStone.getStackInSlot(0).getItemDamage() > 0;
-					}
-					
-					int progressBar = this.teGrindStone.getProgressScaled(34);
-
-					if (progressBar != 0)
-					{
-						this.drawTexturedModalRect(guiLeft + 71, guiTop + 21, 176, 0, progressBar + 1, 15);
-					}
+					enableButton = teGrindStone.getStackInSlot(0).getItemDamage() > 0 && teGrindStone.getStackInSlot(1) != null;
 				}
 			}
 		}
@@ -90,7 +91,7 @@ public class GuiGrindStone extends GuiContainer {
 	{
 		if (button.id == 0)
 		{
-			this.teGrindStone.grindTime = 1;
+			this.teGrindStone.Activate(this.player);
 		}
 	}
 }
