@@ -88,7 +88,9 @@ public class GrindStone extends BlockContainer {
 	}
 	
 	@SideOnly(Side.CLIENT)
-    public static Icon TopIcon;
+    public static Icon TopIcon_on;
+	@SideOnly(Side.CLIENT)
+	public static Icon TopIcon_off;
     @SideOnly(Side.CLIENT)
     public static Icon SideIcon;
     
@@ -96,7 +98,8 @@ public class GrindStone extends BlockContainer {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister icon)
     {
-    	TopIcon = this.isActive ? icon.registerIcon(References.MOD_ID.toLowerCase() + ":grindStone_top_on") : icon.registerIcon(References.MOD_ID.toLowerCase() +":grindStone_top_off");
+    	TopIcon_on = icon.registerIcon(References.MOD_ID.toLowerCase() + ":grindStone_top_on");
+    	TopIcon_off = icon.registerIcon(References.MOD_ID.toLowerCase() +":grindStone_top_off");
     	SideIcon = icon.registerIcon(References.MOD_ID.toLowerCase() + ":grindStone_side");
     	
     }
@@ -107,7 +110,14 @@ public class GrindStone extends BlockContainer {
     {
     	if (Side == 1)
     	{
-    		return TopIcon;
+    		if (isActive)
+    		{
+    			return TopIcon_on;
+    		}
+    		else
+    		{
+    			return TopIcon_off;
+    		}
     	}
     	else
     	{
