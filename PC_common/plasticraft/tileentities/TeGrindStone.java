@@ -48,7 +48,7 @@ public class TeGrindStone extends TileEntity implements ISidedInventory{
 				this.setInventorySlotContents(0, itemStack1);
 				
 				ItemStack itemStack2 = this.getStackInSlot(1);
-				itemStack2.setItemDamage(this.getStackInSlot(1).getItemDamage() - 1);
+				itemStack2.setItemDamage(this.getStackInSlot(1).getItemDamage() + 1);
 				this.setInventorySlotContents(1, itemStack2);
 			}
 		}
@@ -79,7 +79,19 @@ public class TeGrindStone extends TileEntity implements ISidedInventory{
 		}
 	}
 	
-	public int getDamageScaled(int scale)
+	public int getDurability()
+	{
+		if (this.getStackInSlot(0) != null)
+		{
+			return this.getStackInSlot(0).getMaxDamage() - this.getStackInSlot(0).getItemDamage();	
+		}
+		else
+		{
+			return 0;
+		}
+	}
+	
+	public int getDurabilityScaled(int scale)
 	{
 		if (this.getStackInSlot(0) != null)
 		{

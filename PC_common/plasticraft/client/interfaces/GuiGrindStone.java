@@ -21,6 +21,7 @@ public class GuiGrindStone extends GuiContainer {
 	private TeGrindStone teGrindStone;
 	private GuiButton button = new GuiButton(0, this.guiLeft + 61, this.guiTop + 37, 54, 20, "Grind");
 	private int progressBar;
+	private int durability;
 	private EntityPlayer player;
 	
 	public GuiGrindStone(InventoryPlayer player, TeGrindStone grindstone){
@@ -42,15 +43,29 @@ public class GuiGrindStone extends GuiContainer {
 		
 		boolean enableButton = false;
 		
-		int newProgressBar = this.teGrindStone.getDamageScaled(45);
+		int newProgressBar = this.teGrindStone.getDurabilityScaled(45);
 
 		if (newProgressBar > progressBar)
 		{
-			++progressBar;
+			if ((newProgressBar - progressBar) / 9 < 1)
+			{
+				++progressBar;
+			}
+			else
+			{
+				progressBar += (newProgressBar - progressBar) / 9;
+			}
 		}
 		else if (newProgressBar < progressBar)
 		{
-			--progressBar;
+			if ((progressBar - newProgressBar) / 9 < 1)
+			{
+				--progressBar;
+			}
+			else
+			{
+				progressBar -= (progressBar - newProgressBar) / 9;
+			}
 		}
 		
 		this.drawTexturedModalRect(guiLeft + 117, guiTop + 57 - progressBar, 176, 44 - progressBar, 13, progressBar);
@@ -77,6 +92,36 @@ public class GuiGrindStone extends GuiContainer {
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
 		this.fontRenderer.drawString(this.teGrindStone.getInvName(), 43, 6, 4210752);
+		
+		int newDurability = this.teGrindStone.getDurability();
+		
+		if (newDurability > durability)
+		{
+			if ((newDurability - durability) / 12 < 1)
+			{
+				++durability;
+			}
+			else
+			{
+				durability += (newDurability - durability) / 12;
+			}
+		}
+		else if (newDurability < durability)
+		{
+			if ((durability - newDurability) / 12 < 1)
+			{
+				--durability;
+			}
+			else
+			{
+				durability -= (durability - newDurability) / 12;
+			}
+		}
+		
+		if (this.teGrindStone.getStackInSlot(0) != null)
+		{
+			this.fontRenderer.drawString(String.valueOf(durability), 134, 53 - progressBar, 4210752);
+		}
 	}
 	
 	@Override
