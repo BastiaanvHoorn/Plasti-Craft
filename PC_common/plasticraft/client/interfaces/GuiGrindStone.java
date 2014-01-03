@@ -41,9 +41,7 @@ public class GuiGrindStone extends GuiContainer {
 		button.xPosition = guiLeft + 49;
 		button.yPosition = guiTop + 37;
 		
-		boolean enableButton = false;
-		
-		int newProgressBar = this.teGrindStone.getDurabilityScaled(45);
+		int newProgressBar = this.teGrindStone.getDurability(45);
 
 		if (newProgressBar > progressBar)
 		{
@@ -70,7 +68,9 @@ public class GuiGrindStone extends GuiContainer {
 		
 		this.drawTexturedModalRect(guiLeft + 117, guiTop + 57 - progressBar, 176, 44 - progressBar, 13, progressBar);
 		
-		if (teGrindStone.getStackInSlot(0) != null)
+		boolean enableButton = false;
+		
+		if (teGrindStone.getStackInSlot(0) != null && !this.teGrindStone.isActive)
 		{
 			if (teGrindStone.getStackInSlot(0).getItemDamage() != 0)
 			{
@@ -80,7 +80,7 @@ public class GuiGrindStone extends GuiContainer {
 				}
 				else
 				{
-					enableButton = teGrindStone.getStackInSlot(0).getItemDamage() > 0 && teGrindStone.getStackInSlot(1) != null;
+					enableButton = teGrindStone.getStackInSlot(1) != null;
 				}
 			}
 		}

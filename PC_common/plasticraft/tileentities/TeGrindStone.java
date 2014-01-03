@@ -1,5 +1,7 @@
 package plasticraft.tileentities;
 
+import java.util.Iterator;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -7,11 +9,13 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 import plasticraft.PlastiCraft;
 import plasticraft.blocks.Blocks;
 import plasticraft.blocks.GrindStone;
@@ -24,7 +28,8 @@ public class TeGrindStone extends TileEntity implements ISidedInventory{
 	private int[] Slots_top = {0};
 	private int[] Slots_side = {0, 1};
 	
-	private boolean isActive;
+	public boolean isActive;
+	private int nextDamage;
 	
 	public TeGrindStone()
 	{
@@ -41,28 +46,42 @@ public class TeGrindStone extends TileEntity implements ISidedInventory{
 	{
 		if (this.getStackInSlot(0) != null && this.getStackInSlot(1) != null)
 		{
-			if (this.getStackInSlot(0).getItemDamage() != 0 && this.isActive)
+			if (this.getStackInSlot(0).getItemDamage() != 0 && isActive)
 			{
-				ItemStack itemStack1 = this.getStackInSlot(0);
-				itemStack1.setItemDamage(this.getStackInSlot(0).getItemDamage() - 1);
-				this.setInventorySlotContents(0, itemStack1);
+				++nextDamage;
 				
-				ItemStack itemStack2 = this.getStackInSlot(1);
-				itemStack2.setItemDamage(this.getStackInSlot(1).getItemDamage() + 1);
-				this.setInventorySlotContents(1, itemStack2);
+				if (nextDamage == 10)
+				{
+					nextDamage = 0;
+					
+					ItemStack itemStack1 = this.getStackInSlot(0);
+					itemStack1.setItemDamage(this.getStackInSlot(0).getItemDamage() - 1);
+					this.setInventorySlotContents(0, itemStack1);
+					
+					ItemStack itemStack2 = this.getStackInSlot(1);
+					itemStack2.setItemDamage(this.getStackInSlot(1).getItemDamage() + 1);
+					this.setInventorySlotContents(1, itemStack2);
+				}
+			}
+			else
+			{
+				deActivate();
 			}
 		}
 		else
 		{
 			deActivate();
 		}
-		
-		//GrindStone.updateBlockState(this.grindTime > 0, worldObj, xCoord, yCoord, zCoord);
 	}
 	
 	public void deActivate()
 	{
-		this.isActive = false;
+		if (isActive == true)
+		{
+			isActive = false;
+			
+			GrindStone.updateBlockState(false, worldObj, xCoord, yCoord, zCoord);
+		}
 	}
 	
 	public void Activate(EntityPlayer player)
@@ -75,7 +94,9 @@ public class TeGrindStone extends TileEntity implements ISidedInventory{
 		}
 		else
 		{
-			this.isActive = true;
+			isActive = true;
+			
+			GrindStone.updateBlockState(true, worldObj, xCoord, yCoord, zCoord);
 		}
 	}
 	
@@ -91,7 +112,7 @@ public class TeGrindStone extends TileEntity implements ISidedInventory{
 		}
 	}
 	
-	public int getDurabilityScaled(int scale)
+	public int getDurability(int scale)
 	{
 		if (this.getStackInSlot(0) != null)
 		{
@@ -124,7 +145,8 @@ public class TeGrindStone extends TileEntity implements ISidedInventory{
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int i) {
+	public ItemStack getStackInSlot(int i)
+	{
 		return this.items[i];
 	}
 
@@ -148,6 +170,43 @@ public class TeGrindStone extends TileEntity implements ISidedInventory{
 		this.onInventoryChanged();
 	}
 
+	@Override
+	public void writeToNBT(NBTTagCompound compound){
+		super.writeToNBT(compound);
+		
+		NBTTagList items = new NBTTagList();
+		
+		for(int x = 0; x < getSizeInventory(); x++){
+			
+			ItemStack stack = getStackInSlot(x);
+			
+			if (stack != null)
+			{
+				NBTTagCompound item = new NBTTagCompound();
+				item.setByte("slot", (byte)x);
+				stack.writeToNBT(item);
+				items.appendTag(item);
+			}
+		}
+		compound.setTag("items", items);
+	}
+	
+	@Override
+	public void readFromNBT(NBTTagCompound compound){
+		super.readFromNBT(compound);
+	
+		NBTTagList items = compound.getTagList("items");
+		
+		for(int i = 0; i < items.tagCount(); i++){
+			NBTTagCompound item = (NBTTagCompound)items.tagAt(i);
+			int slot = item.getByte("slot");
+			
+			if(slot >= 0 && slot < getSizeInventory()){
+				setInventorySlotContents(slot, ItemStack.loadItemStackFromNBT(item));
+			}
+		}
+	}
+	
 	@Override
 	public String getInvName() {
 		return "Grindstone";
