@@ -80,7 +80,7 @@ public class TeGrindStone extends TileEntity implements ISidedInventory{
 		{
 			isActive = false;
 			
-			GrindStone.updateBlockState(false, worldObj, xCoord, yCoord, zCoord);
+			//GrindStone.updateBlockState(false, worldObj, xCoord, yCoord, zCoord);
 		}
 	}
 	
@@ -96,7 +96,7 @@ public class TeGrindStone extends TileEntity implements ISidedInventory{
 		{
 			isActive = true;
 			
-			GrindStone.updateBlockState(true, worldObj, xCoord, yCoord, zCoord);
+			//GrindStone.updateBlockState(true, worldObj, xCoord, yCoord, zCoord);
 		}
 	}
 	
@@ -108,7 +108,7 @@ public class TeGrindStone extends TileEntity implements ISidedInventory{
 		}
 		else
 		{
-			return 0;
+			return -1;
 		}
 	}
 	

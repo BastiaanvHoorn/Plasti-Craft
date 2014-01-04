@@ -47,7 +47,7 @@ public class GuiGrindStone extends GuiContainer {
 		button.xPosition = guiLeft + 49;
 		button.yPosition = guiTop + 37;
 		
-		int newProgressBar = this.teGrindStone.getDurability(45);
+		int newProgressBar = this.teGrindStone.getDurability(43);
 
 		if (newProgressBar > progressBar)
 		{
@@ -72,7 +72,7 @@ public class GuiGrindStone extends GuiContainer {
 			}
 		}
 		
-		this.drawTexturedModalRect(guiLeft + 117, guiTop + 57 - progressBar, 176, 44 - progressBar, 13, progressBar);
+		this.drawTexturedModalRect(guiLeft + 118, guiTop + 57 - progressBar, 176, 43 - progressBar, 11, progressBar);
 		
 		boolean enableButton = false;
 		
@@ -93,9 +93,31 @@ public class GuiGrindStone extends GuiContainer {
 		
 		button.enabled = enableButton;
 		
-		if (x > guiLeft + 117 && x < guiLeft + 130 && y > guiTop + 13 && y < guiTop + 58)
+		if (x > guiLeft + 116 && x < guiLeft + 130 && y > guiTop + 14 && y < guiTop + 58)
 		{
-			this.drawHoveringText(Lists.newArrayList(GuiColor.ORANGE.toString() + this.teGrindStone.getDurability() + "/64", "Durability"),x , y , fontRenderer);
+			String color;
+			int durability = this.teGrindStone.getDurability();
+			String hoverText = String.valueOf(durability) + "/64";
+			
+			if (durability == -1)
+			{
+				color = GuiColor.LIGHTBLUE.toString();
+				hoverText = "No knife in slot";
+			}
+			else if (durability < 21)
+			{
+				color = GuiColor.RED.toString();
+			}
+			else if (durability < 43)
+			{
+				color = GuiColor.ORANGE.toString();
+			}
+			else
+			{
+				color = GuiColor.LIME.toString();
+			}
+			
+			this.drawHoveringText(Lists.newArrayList(color + hoverText, "Durability"),x , y , fontRenderer);
 			
 		}
 	}
@@ -103,7 +125,7 @@ public class GuiGrindStone extends GuiContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
-		this.fontRenderer.drawString(this.teGrindStone.getInvName(), 43, 6, 4210752);
+		this.fontRenderer.drawString(this.teGrindStone.getInvName(), 50, 6, 4210752);
 	}
 	
 	@Override

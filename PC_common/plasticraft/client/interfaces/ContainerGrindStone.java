@@ -18,7 +18,7 @@ public class ContainerGrindStone extends Container{
 
 	private TeGrindStone teGrindStone;
 	
-	private int lastDamage;
+	private int lastDurability;
 	
 	public ContainerGrindStone(InventoryPlayer player, TeGrindStone grindStone) {
 		this.teGrindStone = grindStone;
@@ -35,6 +35,7 @@ public class ContainerGrindStone extends Container{
 		
 		addSlotToContainer(new SlotKnife(grindStone, 0, 86, 18));
 		addSlotToContainer(new SlotGrindFrame(grindStone, 1, 50, 18));
+		
 	}
 
 	@Override
@@ -55,13 +56,20 @@ public class ContainerGrindStone extends Container{
 		
 		for(int i = 0; i < this.crafters.size(); i++){
 			ICrafting crafting = (ICrafting)this.crafters.get(i);
-			if (this.teGrindStone.getStackInSlot(0) != null)
+			if (this.lastDurability != this.teGrindStone.getDurability())
 			{
-				if (this.lastDamage != this.teGrindStone.getStackInSlot(0).getItemDamage())
-				{
-					crafting.sendProgressBarUpdate(this, 0, this.teGrindStone.getStackInSlot(0).getItemDamage());
-				}
+				crafting.sendProgressBarUpdate(this, 0, this.teGrindStone.getDurability());
 			}
 		}
 	}
+	
+	/*@SideOnly(Side.CLIENT)
+	@Override
+	public void updateProgressBar(int par1, int par2)
+	{
+		if (this.teGrindStone.getStackInSlot(0) != null)
+		{
+			this.teGrindStone.getStackInSlot(0).setItemDamage(par2);
+		}
+	}*/
 }
