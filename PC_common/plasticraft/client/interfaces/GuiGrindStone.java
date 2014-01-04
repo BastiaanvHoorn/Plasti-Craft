@@ -1,5 +1,9 @@
 package plasticraft.client.interfaces;
 
+import java.awt.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -9,6 +13,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
+
+import com.google.common.collect.Lists;
 
 import plasticraft.PlastiCraft;
 import plasticraft.lib.References;
@@ -33,7 +39,7 @@ public class GuiGrindStone extends GuiContainer {
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int i, int j){
+	protected void drawGuiContainerBackgroundLayer(float f, int x, int y){
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
@@ -86,42 +92,18 @@ public class GuiGrindStone extends GuiContainer {
 		}
 		
 		button.enabled = enableButton;
+		
+		if (x > guiLeft + 117 && x < guiLeft + 130 && y > guiTop + 13 && y < guiTop + 58)
+		{
+			this.drawHoveringText(Lists.newArrayList(GuiColor.ORANGE.toString() + this.teGrindStone.getDurability() + "/64", "Durability"),x , y , fontRenderer);
+			
+		}
 	}
 	
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
 		this.fontRenderer.drawString(this.teGrindStone.getInvName(), 43, 6, 4210752);
-		
-		int newDurability = this.teGrindStone.getDurability();
-		
-		if (newDurability > durability)
-		{
-			if ((newDurability - durability) / 12 < 1)
-			{
-				++durability;
-			}
-			else
-			{
-				durability += (newDurability - durability) / 12;
-			}
-		}
-		else if (newDurability < durability)
-		{
-			if ((durability - newDurability) / 12 < 1)
-			{
-				--durability;
-			}
-			else
-			{
-				durability -= (durability - newDurability) / 12;
-			}
-		}
-		
-		if (this.teGrindStone.getStackInSlot(0) != null)
-		{
-			this.fontRenderer.drawString(String.valueOf(durability), 134, 53 - progressBar, 4210752);
-		}
 	}
 	
 	@Override
