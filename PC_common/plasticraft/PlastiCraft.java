@@ -17,6 +17,7 @@ import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import network.PacketHandler;
 import plasticraft.blocks.Blocks;
 import plasticraft.blocks.Fluid_Plastic;
 import plasticraft.client.interfaces.GuiHandler;
@@ -37,7 +38,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod(modid=References.MOD_ID, name=References.MOD_NAME, version=References.VERSION)
-@NetworkMod(clientSideRequired=true, serverSideRequired=false)
+@NetworkMod(channels = {"pc"}, clientSideRequired=true, serverSideRequired=false, packetHandler=PacketHandler.class)
 
 public class PlastiCraft {
 

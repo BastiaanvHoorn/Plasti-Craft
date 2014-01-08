@@ -63,6 +63,10 @@ public class ContainerGrindStone extends Container{
 		}
 	}
 	
+	public TeGrindStone getTe(){
+		return this.teGrindStone;
+	}
+	
 	/*@SideOnly(Side.CLIENT)
 	@Override
 	public void updateProgressBar(int par1, int par2)

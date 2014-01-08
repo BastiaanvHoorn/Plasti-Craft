@@ -1,24 +1,19 @@
 package plasticraft.client.interfaces;
 
-import java.awt.List;
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import network.PacketHandler;
 
 import org.lwjgl.opengl.GL11;
 
-import com.google.common.collect.Lists;
-
-import plasticraft.PlastiCraft;
 import plasticraft.lib.References;
 import plasticraft.tileentities.TeGrindStone;
+
+import com.google.common.collect.Lists;
 
 public class GuiGrindStone extends GuiContainer {
 
@@ -138,9 +133,6 @@ public class GuiGrindStone extends GuiContainer {
 	
 	protected void actionPerformed(GuiButton button)
 	{
-		if (button.id == 0)
-		{
-			this.teGrindStone.Activate(this.player);
-		}
+		PacketHandler.sendInterfacePacket((byte)2,(byte)button.id);
 	}
 }

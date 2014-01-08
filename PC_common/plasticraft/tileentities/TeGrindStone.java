@@ -44,41 +44,43 @@ public class TeGrindStone extends TileEntity implements ISidedInventory{
 	@Override
 	public void updateEntity()
 	{
-		if (this.getStackInSlot(0) != null && this.getStackInSlot(1) != null)
-		{
-			if (this.getStackInSlot(0).getItemDamage() != 0 && isActive)
+		if(!this.worldObj.isRemote){
+			if (this.getStackInSlot(0) != null && this.getStackInSlot(1) != null)
 			{
-				++nextDamage;
-				
-				if (nextDamage == 10)
+				if (this.getStackInSlot(0).getItemDamage() != 0 && isActive)
 				{
-					nextDamage = 0;
+					this.nextDamage++;
 					
-					ItemStack itemStack1 = this.getStackInSlot(0);
-					itemStack1.setItemDamage(this.getStackInSlot(0).getItemDamage() - 1);
-					this.setInventorySlotContents(0, itemStack1);
-					
-					ItemStack itemStack2 = this.getStackInSlot(1);
-					itemStack2.setItemDamage(this.getStackInSlot(1).getItemDamage() + 1);
-					this.setInventorySlotContents(1, itemStack2);
+					if (this.nextDamage == 10)
+					{
+						this.nextDamage = 0;
+						
+						ItemStack itemStack1 = getStackInSlot(0);
+						itemStack1.setItemDamage(itemStack1.getItemDamage() - 1);
+						this.setInventorySlotContents(0, itemStack1);
+						
+						ItemStack itemStack2 = getStackInSlot(1);
+						itemStack2.setItemDamage(itemStack2.getItemDamage() + 1);
+						this.setInventorySlotContents(1, itemStack2);
+					}
+				}
+				else
+				{
+					this.deActivate();
 				}
 			}
 			else
 			{
-				deActivate();
+				this.deActivate();
 			}
-		}
-		else
-		{
-			deActivate();
 		}
 	}
 	
 	public void deActivate()
 	{
-		if (isActive == true)
+		if (this.isActive == true)
 		{
-			isActive = false;
+			this.isActive = false;
 			
 			//GrindStone.updateBlockState(false, worldObj, xCoord, yCoord, zCoord);
 		}
@@ -86,17 +88,21 @@ public class TeGrindStone extends TileEntity implements ISidedInventory{
 	
 	public void Activate(EntityPlayer player)
 	{
-		if (player.capabilities.isCreativeMode)
-		{
-			ItemStack itemStack = this.getStackInSlot(0);
-			itemStack.setItemDamage(0);
-			this.setInventorySlotContents(0, itemStack);
-		}
-		else
-		{
-			isActive = true;
-			
-			//GrindStone.updateBlockState(true, worldObj, xCoord, yCoord, zCoord);
+		if(!this.worldObj.isRemote){
+			if (player.capabilities.isCreativeMode)
+			{
+				ItemStack itemStack = getStackInSlot(0);
+				if(itemStack != null){
+					itemStack.setItemDamage(0);
+					this.setInventorySlotContents(0, itemStack);
+				}
+			}
+			else
+			{
+				isActive = true;
+				
+				//GrindStone.updateBlockState(true, worldObj, xCoord, yCoord, zCoord);
+			}
 		}
 	}
 	
