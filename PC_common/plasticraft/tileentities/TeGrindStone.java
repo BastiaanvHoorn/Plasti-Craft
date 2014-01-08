@@ -82,7 +82,7 @@ public class TeGrindStone extends TileEntity implements ISidedInventory{
 		{
 			this.isActive = false;
 			
-			//GrindStone.updateBlockState(false, worldObj, xCoord, yCoord, zCoord);
+			GrindStone.updateBlockState(false, worldObj, xCoord, yCoord, zCoord);
 		}
 	}
 	
@@ -101,7 +101,7 @@ public class TeGrindStone extends TileEntity implements ISidedInventory{
 			{
 				isActive = true;
 				
-				//GrindStone.updateBlockState(true, worldObj, xCoord, yCoord, zCoord);
+				GrindStone.updateBlockState(true, worldObj, xCoord, yCoord, zCoord);
 			}
 		}
 	}
@@ -230,7 +230,7 @@ public class TeGrindStone extends TileEntity implements ISidedInventory{
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		return true;//entityplayer.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) <= 64;
+		return entityplayer.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) <= 64;
 	}
 	
 	@Override
