@@ -1,5 +1,7 @@
 package plasticraft.blocks;
 
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -43,7 +45,9 @@ public class carbonformer extends BlockContainer{
     @SideOnly(Side.CLIENT)
     public static Icon SideIcon;
     @SideOnly(Side.CLIENT)
-    public static Icon FrontIcon;
+    public static Icon FrontIcon_on;
+    @SideOnly(Side.CLIENT)
+    public static Icon FrontIcon_off;
     
     @Override
     @SideOnly(Side.CLIENT)
@@ -51,7 +55,8 @@ public class carbonformer extends BlockContainer{
     	TopIcon= icon.registerIcon(References.MOD_ID.toLowerCase() + ":carbonformer_top");
     	BottomIcon = icon.registerIcon(References.MOD_ID.toLowerCase() + ":carbonformer");
     	SideIcon = icon.registerIcon(References.MOD_ID.toLowerCase() + ":carbonformer_side");
-    	FrontIcon = this.isActive ? icon.registerIcon(References.MOD_ID.toLowerCase() + ":carbonformer_front_on") : icon.registerIcon(References.MOD_ID.toLowerCase() +":carbonformer_front_off");
+    	FrontIcon_on = icon.registerIcon(References.MOD_ID.toLowerCase() + ":carbonformer_front_on");
+    	FrontIcon_off = icon.registerIcon(References.MOD_ID.toLowerCase() +":carbonformer_front_off");
     }
     
     public void onBlockAdded(World par1World, int par2, int par3, int par4)
@@ -133,7 +138,14 @@ public class carbonformer extends BlockContainer{
     	} else if(Side != Metadata){
     		return SideIcon;
     	}else{
-    		return FrontIcon;
+    		if (this.isActive)
+    		{
+    			return FrontIcon_on;
+    		}
+    		else
+    		{
+    			return FrontIcon_off;
+    		}
     	}
     }
     
@@ -207,11 +219,52 @@ public class carbonformer extends BlockContainer{
         keepInventory = false;
         par1World.setBlockMetadataWithNotify(par2, par3, par4, l, 2);
 
-        if (tileentity != null)
+        if (tileentity == null)
+        {
+            par1World.setBlockTileEntity(par2, par3, par4, tileentity);
+        }
+        else
         {
             tileentity.validate();
-            par1World.setBlockTileEntity(par2, par3, par4, tileentity);
         }
     }
 
+    @SideOnly(Side.CLIENT)
+
+    /**
+     * A randomly called display update to be able to add particles or other items for display
+     */
+    public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
+    {
+        if (this.isActive)
+        {
+            int l = par1World.getBlockMetadata(par2, par3, par4);
+            float f = (float)par2 + 0.5F;
+            float f1 = (float)par3 + 0.0F + par5Random.nextFloat() * 6.0F / 16.0F;
+            float f2 = (float)par4 + 0.5F;
+            float f3 = 0.52F;
+            float f4 = par5Random.nextFloat() * 0.6F - 0.3F;
+
+            if (l == 4)
+            {
+                par1World.spawnParticle("smoke", (double)(f - f3), (double)f1, (double)(f2 + f4), 0.0D, 0.0D, 0.0D);
+                par1World.spawnParticle("flame", (double)(f - f3), (double)f1, (double)(f2 + f4), 0.0D, 0.0D, 0.0D);
+            }
+            else if (l == 5)
+            {
+                par1World.spawnParticle("smoke", (double)(f + f3), (double)f1, (double)(f2 + f4), 0.0D, 0.0D, 0.0D);
+                par1World.spawnParticle("flame", (double)(f + f3), (double)f1, (double)(f2 + f4), 0.0D, 0.0D, 0.0D);
+            }
+            else if (l == 2)
+            {
+                par1World.spawnParticle("smoke", (double)(f + f4), (double)f1, (double)(f2 - f3), 0.0D, 0.0D, 0.0D);
+                par1World.spawnParticle("flame", (double)(f + f4), (double)f1, (double)(f2 - f3), 0.0D, 0.0D, 0.0D);
+            }
+            else if (l == 3)
+            {
+                par1World.spawnParticle("smoke", (double)(f + f4), (double)f1, (double)(f2 + f3), 0.0D, 0.0D, 0.0D);
+                par1World.spawnParticle("flame", (double)(f + f4), (double)f1, (double)(f2 + f3), 0.0D, 0.0D, 0.0D);
+            }
+        }
+    }
 }
