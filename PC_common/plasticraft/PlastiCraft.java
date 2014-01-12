@@ -8,18 +8,13 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import network.PacketHandler;
 import plasticraft.blocks.Blocks;
-import plasticraft.blocks.Fluid_Plastic;
 import plasticraft.client.interfaces.GuiHandler;
 import plasticraft.events.bucketevent;
 import plasticraft.fluid.PlasticFluid;
@@ -73,15 +68,17 @@ public class PlastiCraft {
         
         @EventHandler
         public void load(FMLInitializationEvent event) {
-    		pcLog.setParent(FMLLog.getLogger());
+    		pcLog.setParent((Logger) FMLLog.getLogger());
     		pcLog.info("PlastiCraft preInitialization started");
     		
         	config.load();
         	
         	tabsPC = new CreativeTabs("PlastiTab"){
-            	public ItemStack getIconItemStack(){
-            		return new ItemStack(Blocks.block_Quicksand);
-            	}
+
+				@Override
+				public Item getTabIconItem() {
+					return Items.plastic_Item;
+				}
         	};
         	
         	fluidPlasticId = config.getBlock("plastic_fluid", 600).getInt(600);

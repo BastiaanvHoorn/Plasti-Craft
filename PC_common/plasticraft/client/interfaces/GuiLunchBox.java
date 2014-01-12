@@ -1,21 +1,22 @@
 package plasticraft.client.interfaces;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import plasticraft.items.LunchBox;
 import plasticraft.lib.References;
-import plasticraft.tileentities.TeLunchBox;
 
-public class GuiLunchBox extends GuiContainer {
+public class GuiLunchBox extends GhostGuiContainer {
 
 	private ResourceLocation texture = new ResourceLocation(References.MOD_ID.toLowerCase(), "textures/gui/lunchbox.png");
 	
-	public GuiLunchBox(InventoryPlayer player, TeLunchBox tile){
-		super(new ContainerLunchBox(player, tile));
+	public GuiLunchBox(EntityPlayer player, IInventory inv, ItemStack stack){
+		super(LunchBox.getContainer(player));
 		xSize = 176;
 		ySize = 154;
 	}

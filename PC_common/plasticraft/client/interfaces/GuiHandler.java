@@ -1,11 +1,12 @@
 package plasticraft.client.interfaces;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import plasticraft.PlastiCraft;
 import plasticraft.items.Items;
+import plasticraft.items.LunchBox;
 import plasticraft.tileentities.TeGrindStone;
 import plasticraft.tileentities.TeLunchBox;
 import plasticraft.tileentities.TileEntityCarbonFormer;
@@ -33,26 +34,7 @@ public class GuiHandler implements IGuiHandler{
 			case 1:
 				PlastiCraft.info(player.getCurrentEquippedItem().itemID == Items.lunchBox.itemID ? "true": "false");
 				if(player.getCurrentEquippedItem().itemID == Items.lunchBox.itemID){
-					PlastiCraft.info(player.getCurrentEquippedItem().hasTagCompound() ? "true": "false");
-					if(player.getCurrentEquippedItem().hasTagCompound()){
-						NBTTagCompound compound = player.getCurrentEquippedItem().getTagCompound();
-							this.tile = new TeLunchBox(player.getCurrentEquippedItem() ,compound);
-
-					}else{
-						NBTTagCompound newCompound = new NBTTagCompound();
-						player.getCurrentEquippedItem().setTagCompound(newCompound);
-						this.tile = new TeLunchBox(player.getCurrentEquippedItem(), newCompound);
-					}
-
-				}
-				
-				if(this.tile != null && this.tile instanceof TeLunchBox){
-					PlastiCraft.info("container lunchbox send");
-					return new ContainerLunchBox(player.inventory, this.tile);
-				}else if(this.tile == null){
-					PlastiCraft.info("null");
-				}else{
-					PlastiCraft.info("not lunchbox");
+					return LunchBox.getContainer(player);
 				}
 				break;
 			case 2:
@@ -72,25 +54,9 @@ public class GuiHandler implements IGuiHandler{
 				}
 			break;
 			case 1:
-				if(player.getCurrentEquippedItem().itemID == Items.lunchBox.itemID){
-					if(player.getCurrentEquippedItem().hasTagCompound()){
-						NBTTagCompound compound = player.getCurrentEquippedItem().getTagCompound();
-							this.tile = new TeLunchBox(player.getCurrentEquippedItem(),compound);
-
-					}else{
-						NBTTagCompound newCompound = new NBTTagCompound();
-						player.getCurrentEquippedItem().setTagCompound(newCompound);
-						this.tile = new TeLunchBox(player.getCurrentEquippedItem(), newCompound);
-					}
-
-				}
-				if(this.tile != null && this.tile instanceof TeLunchBox){
-					PlastiCraft.info("Gui lunchbox send");
-					return new GuiLunchBox(player.inventory, this.tile);
-				}else if(this.tile == null){
-					PlastiCraft.info("null");
-				}else{
-					PlastiCraft.info("not lunchbox");
+				ItemStack held = player.getHeldItem();
+				if(held.itemID == Items.lunchBox.itemID){
+					return new GuiLunchBox(player, LunchBox.getBoxInventory(player), held);
 				}
 				break;
 			case 2:

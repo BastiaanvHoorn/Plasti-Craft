@@ -18,15 +18,9 @@ public class ContainerLunchBox extends Container{
 		this.player = player;
 		this.tile = tile;
 		
-		for(int x=0; x < 9; x++){
-			addSlotToContainer(new Slot(this.player, x, 8 + 18 * x, 130));
-		}
+
 		
-		for(int y = 0; y<3; y++){
-			for(int x = 0; x < 9; x++){
-				addSlotToContainer(new Slot(this.player,x + y * 9 + 9,8 + 18 * x, 72 + y * 18));
-			}
-		}
+
 		if(tile instanceof IInventory){
 			addSlotToContainer(new Slot((IInventory)tile, 0, 80, 29));
 		}
