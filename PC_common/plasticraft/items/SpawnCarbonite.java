@@ -30,7 +30,7 @@ public class SpawnCarbonite extends Item{
 			
 			EntityCarbonite entity = new EntityCarbonite(world);
 			entity.posX = x;
-			entity.posY = y;
+			entity.posY = y + 1.0F;
 			entity.posZ = z;
 			
 			world.spawnEntityInWorld(entity);
