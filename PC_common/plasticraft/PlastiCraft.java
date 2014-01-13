@@ -16,6 +16,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import network.PacketHandler;
 import plasticraft.blocks.Blocks;
 import plasticraft.client.interfaces.GuiHandler;
+import plasticraft.entity.Entities;
 import plasticraft.events.bucketevent;
 import plasticraft.fluid.PlasticFluid;
 import plasticraft.items.Items;
@@ -92,6 +93,8 @@ public class PlastiCraft {
             MinecraftForge.EVENT_BUS.register(new bucketevent());
             
             new GuiHandler();
+            
+            Entities.Init();
             
     		config.save();
     		LanguageRegistry.instance().addStringLocalization("itemGroup.PlastiTab", "PlastiCraft");
