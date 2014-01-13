@@ -92,8 +92,6 @@ public class PlastiCraft {
             
             MinecraftForge.EVENT_BUS.register(new bucketevent());
             
-            new GuiHandler();
-            
             Entities.Init();
             
     		config.save();

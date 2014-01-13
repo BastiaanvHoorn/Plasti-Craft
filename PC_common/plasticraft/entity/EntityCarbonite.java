@@ -2,16 +2,18 @@ package plasticraft.entity;
 
 import plasticraft.PlastiCraft;
 import plasticraft.items.Items;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAIMoveTowardsRestriction;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+import plasticraft.items.Items;
 
 public class EntityCarbonite extends EntityMob {
 
@@ -49,6 +51,19 @@ public class EntityCarbonite extends EntityMob {
 		return true;
 	}
 	
+	@Override
+	public boolean canBeCollidedWith(){
+		return !isDead;
+	}
 	
+	@Override
+	public AxisAlignedBB getBoundingBox(){
+		return boundingBox;
+	}
+	
+	@Override
+	public AxisAlignedBB getCollisionBox(Entity entity){
+		return entity.boundingBox;
+	}
 
 }
