@@ -27,6 +27,9 @@ public class LunchBox extends Item{
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
     {
 		openGui(player);
+		if(!player.isSneaking()){
+			player.setItemInUse(stack, getMaxItemUseDuration(stack));
+		}
 		return super.onItemRightClick(stack, world, player);
     }
 	
@@ -68,6 +71,9 @@ public class LunchBox extends Item{
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10){
 		openGui(player);
+		if(!player.isSneaking()){
+			player.setItemInUse(stack, getMaxItemUseDuration(stack));
+		}
 		return super.onItemUse(stack, player, par3World, par4, par5, par6, par7, par8, par9, par10);
 	}
 	private void openGui(EntityPlayer player) {
