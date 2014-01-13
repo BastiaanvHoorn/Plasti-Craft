@@ -1,5 +1,6 @@
 package plasticraft.entity;
 
+import plasticraft.PlastiCraft;
 import plasticraft.items.Items;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
@@ -16,6 +17,8 @@ public class EntityCarbonite extends EntityMob {
 
 	public EntityCarbonite(World par1World) {
 		super(par1World);
+		PlastiCraft.info("carbonite");
+		this.setSize(1.0F, 2.0F);
 		this.tasks.addTask(1, new EntityAISwimming(this));
 		this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
 		this.tasks.addTask(3, new EntityAIWander(this, 1.0D));

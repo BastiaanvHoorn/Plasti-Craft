@@ -20,6 +20,7 @@ public class Items {
     public static Item knife;
     public static Item grindFrame;
     public static Item sliceBread;
+    public static Item spawnCarbonite;
 	
 	public static void Init(Configuration config){
     	lunchBox = new LunchBox(config.getItem("lunch box", 1000).getInt(1000)).setUnlocalizedName("lunchbox");
@@ -52,6 +53,10 @@ public class Items {
         grindFrame = new GrindFrame(config.getItem("grindframe", 605).getInt()).setUnlocalizedName("grindframe");
         GameRegistry.registerItem(grindFrame, "grindframe");
         LanguageRegistry.addName(grindFrame, "Grindframe");
+        
+        spawnCarbonite = new SpawnCarbonite(config.getItem("spawncarbonite", 606).getInt());
+        GameRegistry.registerItem(spawnCarbonite, "spawncarbonite");
+        LanguageRegistry.addName(spawnCarbonite, "Spawn Carbonite");
 	}
 	
 }
