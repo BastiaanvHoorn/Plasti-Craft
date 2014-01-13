@@ -47,10 +47,6 @@ public class EntityCarbonite extends EntityMob {
 		return this.getAttackTarget() == null ? 3: 3 + (int)(this.getHealth() - 1.0F);
 	}
 	
-	protected int getDropItemId(){
-		return Items.plastic_Item.itemID;
-	}
-	
 	@Override
 	protected int getDropItemId(){
 		return Items.plastic_Item.itemID;
