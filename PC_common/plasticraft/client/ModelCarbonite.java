@@ -1,4 +1,4 @@
-package plasticraft.entity;
+package plasticraft.client;
 
 import net.minecraft.client.model.ModelBase;
 
