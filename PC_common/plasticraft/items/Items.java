@@ -29,7 +29,7 @@ public class Items {
     	
         bucketplastic = new BucketPlastic(config.getItem("bucketplastic", 602).getInt(602), Blocks.Fluid_Plastic_Block.blockID);
         GameRegistry.registerItem(bucketplastic,"bucketplastic");
-        FluidContainerRegistry.registerFluidContainer(PlastiCraft.plastic_fluid, new ItemStack(bucketplastic,1 ,1), new ItemStack(Item.bucketEmpty));
+        FluidContainerRegistry.registerFluidContainer(PlastiCraft.plastic_fluid, new ItemStack(bucketplastic), new ItemStack(Item.bucketEmpty));
         LanguageRegistry.addName(bucketplastic, "Plastic Bucket");
         
         

@@ -7,10 +7,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 import plasticraft.PlastiCraft;
 import plasticraft.entity.EntityCarbonite;
 import plasticraft.lib.References;
+import net.minecraft.entity.EntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemMonsterPlacer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class SpawnCarbonite extends Item{
@@ -30,34 +32,38 @@ public class SpawnCarbonite extends Item{
 			EntityCarbonite entity = new EntityCarbonite(world);
 			PlastiCraft.info(side);
 			
-			entity.posX = x + 0.5F;
-			entity.posY = y;
-			entity.posZ = z + 0.5F;
+			float posX = x + 0.5F;
+			float posY = y;
+			float posZ = z + 0.5F;
 			
 			if (side == 0)
 			{
-				entity.posY -= 2.0F;
+				posY -= 2.0F;
 			}
 			else if (side == 1)
 			{
-				entity.posY += 1.0F;
+				posY += 1.0F;
 			}
 			else if (side == 2)
 			{
-				entity.posZ -= 1.0F;
+				posZ -= 1.0F;
 			}
 			else if (side == 3)
 			{
-				entity.posZ += 1.0F;
+				posZ += 1.0F;
 			}
 			else if (side == 4)
 			{
-				entity.posX -= 1.0F;
+				posX -= 1.0F;
 			}
 			else if (side == 5)
 			{
-				entity.posX += 1.0F;
+				posX += 1.0F;
 			}
+			entity.setLocationAndAngles(posX, posY, posZ, MathHelper.wrapAngleTo180_float(world.rand.nextFloat() * 360.0F), 0.0F);
+			entity.rotationYawHead = entity.rotationYaw;
+			entity.renderYawOffset = entity.rotationYaw;
+			entity.onSpawnWithEgg((EntityLivingData)null);
 			world.spawnEntityInWorld(entity);
 			return true;
 		}

@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 
 public class GhostContainer extends Container{
 
@@ -38,6 +39,11 @@ public class GhostContainer extends Container{
 		}
 		
 		return this;
+	}
+	
+	@Override
+	public ItemStack transferStackInSlot(EntityPlayer player, int i){
+		return null;
 	}
 
 }

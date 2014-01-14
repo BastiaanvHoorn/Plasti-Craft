@@ -15,6 +15,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import plasticraft.PlastiCraft;
 import plasticraft.lib.References;
 import plasticraft.tileentities.TileEntityCarbonFormer;
@@ -152,6 +155,20 @@ public class carbonformer extends BlockContainer{
     @Override
     public boolean onBlockActivated(World world,int x,int y,int z, EntityPlayer player, int Side, float hitX,float hitY, float hitZ){
 		
+    	if(player.getHeldItem() != null && FluidContainerRegistry.isEmptyContainer(player.getHeldItem())){
+    		if(world.getBlockTileEntity(x, y, z) instanceof TileEntityCarbonFormer){
+    			if(((TileEntityCarbonFormer)world.getBlockTileEntity(x, y, z)).tank.getFluidAmount() >= 1000){
+    				ItemStack item = FluidContainerRegistry.fillFluidContainer(new FluidStack(PlastiCraft.plastic_fluid, 1000), player.getHeldItem());
+    				if(item != null){
+    					((TileEntityCarbonFormer)world.getBlockTileEntity(x, y, z)).drain(ForgeDirection.NORTH, 1000, true);
+	    				player.inventory.setInventorySlotContents(player.inventory.currentItem, item);
+	    				return true;
+    				}
+    			}
+    		}
+    		
+    	}
+    	
     	if(player.isSneaking()){
     		return false;
     	}
@@ -218,14 +235,9 @@ public class carbonformer extends BlockContainer{
 
         keepInventory = false;
         par1World.setBlockMetadataWithNotify(par2, par3, par4, l, 2);
-
-        if (tileentity == null)
-        {
-            par1World.setBlockTileEntity(par2, par3, par4, tileentity);
-        }
-        else
-        {
-            tileentity.validate();
+        if(tileentity != null){
+        	tileentity.validate();
+        	par1World.setBlockTileEntity(par2, par3, par4, tileentity);
         }
     }
 

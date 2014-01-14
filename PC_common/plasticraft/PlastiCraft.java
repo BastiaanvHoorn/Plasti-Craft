@@ -117,6 +117,7 @@ public class PlastiCraft {
         	GameRegistry.addShapedRecipe(new ItemStack(Items.knife, 1), "xyy",
         			'x', new ItemStack(Items.plastic_Item),
         			'y', new ItemStack(Item.ingotIron));
+        	GameRegistry.addRecipe(new ItemStack(Items.lunchBox), "xxx", "x x", "xxx", 'x', new ItemStack(Items.plastic_Item));
         	
         	for (int i = 0; i < 64; i++)
         	{

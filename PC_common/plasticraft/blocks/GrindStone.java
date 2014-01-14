@@ -26,6 +26,7 @@ import net.minecraft.world.World;
 public class GrindStone extends BlockContainer {
 	
 	private boolean isActive;
+	private static boolean keepInventory;
 
 	public GrindStone(int id, boolean isActive)
 	{
@@ -59,28 +60,30 @@ public class GrindStone extends BlockContainer {
 	@Override
 	public void breakBlock(World world, int x, int y, int z, int id, int metadata)
 	{
-		TileEntity te = world.getBlockTileEntity(x, y, z);
-		
-		if(te != null && te instanceof IInventory){
-			TeGrindStone inv = (TeGrindStone)te;
+		if(!keepInventory){
+			TileEntity te = world.getBlockTileEntity(x, y, z);
 			
-			for(int i = 0; i < inv.getSizeInventory();i++){
-				ItemStack item = inv.getStackInSlotOnClosing(i);
+			if(te != null && te instanceof IInventory){
+				TeGrindStone inv = (TeGrindStone)te;
 				
-				if(item != null){
-					float spawnx = x + world.rand.nextFloat();
-					float spawny = y + world.rand.nextFloat();
-					float spawnz = z + world.rand.nextFloat();
+				for(int i = 0; i < inv.getSizeInventory();i++){
+					ItemStack item = inv.getStackInSlotOnClosing(i);
 					
-					EntityItem droppedItem = new EntityItem(world,spawnx,spawny,spawnz,item);
-					
-					float mult = 0.05F;
-					
-					droppedItem.motionX = (-0.5F + world.rand.nextFloat()) * mult;
-					droppedItem.motionY = (4 + world.rand.nextFloat()) * mult;
-					droppedItem.motionZ = (-0.5F + world.rand.nextFloat()) * mult;
-					
-					world.spawnEntityInWorld(droppedItem);
+					if(item != null){
+						float spawnx = x + world.rand.nextFloat();
+						float spawny = y + world.rand.nextFloat();
+						float spawnz = z + world.rand.nextFloat();
+						
+						EntityItem droppedItem = new EntityItem(world,spawnx,spawny,spawnz,item);
+						
+						float mult = 0.05F;
+						
+						droppedItem.motionX = (-0.5F + world.rand.nextFloat()) * mult;
+						droppedItem.motionY = (4 + world.rand.nextFloat()) * mult;
+						droppedItem.motionZ = (-0.5F + world.rand.nextFloat()) * mult;
+						
+						world.spawnEntityInWorld(droppedItem);
+					}
 				}
 			}
 		}
@@ -166,7 +169,7 @@ public class GrindStone extends BlockContainer {
     {
     	int l = world.getBlockMetadata(x, y, z);
         TileEntity tileentity = world.getBlockTileEntity(x, y, z);
-
+        keepInventory = true;
         if (state)
         {
             world.setBlock(x, y, z, Blocks.grindStone_grinding.blockID);
@@ -175,7 +178,7 @@ public class GrindStone extends BlockContainer {
         {
             world.setBlock(x, y, z, Blocks.grindStone_idle.blockID);
         }
-
+        keepInventory = false;
         world.setBlockMetadataWithNotify(x, y, z, l, 2);
 
         if (tileentity != null)
