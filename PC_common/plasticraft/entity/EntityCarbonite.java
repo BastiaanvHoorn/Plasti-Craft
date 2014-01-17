@@ -35,7 +35,7 @@ public class EntityCarbonite extends EntityMob {
 		this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setAttribute(8.0D);
 		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.23000000417232513D);
 		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(40.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setAttribute(1.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setAttribute(0.4D);
 	}
 	
 	@Override
