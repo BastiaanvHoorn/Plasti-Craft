@@ -19,3 +19,6 @@ Thumbs.db
 .loadpath
 *.launch
 .buildpath
+
+# Local ignore files #
+gig*
