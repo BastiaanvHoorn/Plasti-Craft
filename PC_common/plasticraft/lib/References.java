@@ -8,4 +8,5 @@ public class References {
 	public static final String FLUIDPLASTIC_TE_KEY = "fluidplasticte";
 	public static final String LUNCHBOX_TE_KEY = "lunchboxinventory";
 	public static final String GRINDSTONE_TE_KEY = "grindstoneinventory";
+	public static boolean doStill;
 }

@@ -2,8 +2,10 @@ package plasticraft.tileentities;
 
 import java.util.Random;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import plasticraft.blocks.Blocks;
+import plasticraft.lib.References;
 
 public class TeFluidPlastic extends TileEntity{
 
@@ -20,13 +22,26 @@ public class TeFluidPlastic extends TileEntity{
 	@Override
 	public void updateEntity(){
 		if(!this.worldObj.isRemote){
-			if(this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord) == 0){
-				this.counter++;
-				if(this.counter >= this.time){
-					this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, Blocks.BlockPlastic.blockID);
+			if(References.doStill){
+				if(this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord) == 0){
+					this.counter++;
+					if(this.counter >= this.time){
+						this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, Blocks.BlockPlastic.blockID);
+					}
 				}
 			}
 		}
 	}
 	
+	@Override
+	public void writeToNBT(NBTTagCompound compound){
+		compound.setInteger("time", this.time);
+		compound.setInteger("counter", this.counter);
+	}
+	
+	@Override
+	public void readFromNBT(NBTTagCompound compound){
+		this.counter = compound.getInteger("counter");
+		this.time = compound.getInteger("time");
+	}
 }

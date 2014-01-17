@@ -88,8 +88,10 @@ public class PlastiCraft {
             
             FluidRegistry.registerFluid(plastic_fluid);          
         	Blocks.init(config);
-        	Items.Init(config);            
-            
+        	Items.Init(config);     
+        	
+        	References.doStill = config.get("debug", "stillPlasticFluid", true).getBoolean(true);
+        			
             MinecraftForge.EVENT_BUS.register(new bucketevent());
             
             Entities.Init();
