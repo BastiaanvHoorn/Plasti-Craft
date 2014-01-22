@@ -8,14 +8,12 @@ import plasticraft.PlastiCraft;
 import plasticraft.items.Items;
 import plasticraft.items.LunchBox;
 import plasticraft.tileentities.TeGrindStone;
-import plasticraft.tileentities.TeLunchBox;
+import plasticraft.tileentities.TeTrashCan;
 import plasticraft.tileentities.TileEntityCarbonFormer;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 
 public class GuiHandler implements IGuiHandler{
-
-	private TeLunchBox tile;
 	
 	public GuiHandler(){
 		NetworkRegistry.instance().registerGuiHandler(PlastiCraft.instance, this);
@@ -32,13 +30,19 @@ public class GuiHandler implements IGuiHandler{
 				}
 			break;
 			case 1:
-				PlastiCraft.info(player.getCurrentEquippedItem().itemID == Items.lunchBox.itemID ? "true": "false");
 				if(player.getCurrentEquippedItem().itemID == Items.lunchBox.itemID){
 					return LunchBox.getContainer(player);
 				}
 				break;
 			case 2:
-				return new ContainerGrindStone(player.inventory, (TeGrindStone)te);
+				if(te != null && te instanceof TeGrindStone){
+					return new ContainerGrindStone(player.inventory, (TeGrindStone)te);
+				}
+				break;
+			case 3:
+				if(te != null && te instanceof TeTrashCan){
+					return new ContainerTrashCan(player.inventory, (TeTrashCan)te);
+				}
 		}
 		return null;
 	}
@@ -60,7 +64,14 @@ public class GuiHandler implements IGuiHandler{
 				}
 				break;
 			case 2:
-				return new GuiGrindStone(player.inventory, (TeGrindStone)te);
+				if(te != null && te instanceof TeGrindStone){
+					return new GuiGrindStone(player.inventory, (TeGrindStone)te);
+				}
+				break;
+			case 3:
+				if(te != null && te instanceof TeTrashCan){
+					return new GuiTrashCan(player.inventory, (TeTrashCan)te);
+				}
 		}
 		return null;
 	}

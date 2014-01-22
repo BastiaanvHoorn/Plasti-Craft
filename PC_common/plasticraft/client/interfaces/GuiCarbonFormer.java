@@ -10,6 +10,7 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import plasticraft.PlastiCraft;
 import plasticraft.blocks.Fluid_Plastic;
 import plasticraft.lib.References;
 import plasticraft.tileentities.TileEntityCarbonFormer;
@@ -29,7 +30,7 @@ public class GuiCarbonFormer extends GuiContainer{
 	}
 	
 	private static final ResourceLocation texture = new ResourceLocation(References.MOD_ID.toLowerCase(), "textures/gui/carbonformer.png");
-	private static final Icon plasticTexture = Fluid_Plastic.theIcon[0];
+	private static final ResourceLocation plasticTexture = new ResourceLocation(References.MOD_ID.toLowerCase(), "textures/blocks/fluidplastic_still.png");
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
@@ -41,14 +42,15 @@ public class GuiCarbonFormer extends GuiContainer{
 		
 		
 		i1 = this.carbonformer.getCookProgressScaled(34);
-			if(i1 != 0){
-			this.drawTexturedModalRect(guiLeft + 48, guiTop + 17, 176, 0, (int) i1 +1, 15);
+		if(i1 != 0){
+			this.drawTexturedModalRect(guiLeft + 48, guiTop + 16, 176, 0, (int) i1 +1, 15);
 		}
 		
 		int i2;
 		if(this.carbonformer.tank.getFluidAmount() != 0){
+			Minecraft.getMinecraft().getTextureManager().bindTexture(plasticTexture);
 			i2 = this.carbonformer.getFluidAmountScaled(32);
-			this.drawTexturedModelRectFromIcon(guiLeft + 100,guiTop + 17 + 32 - i2 , plasticTexture, 16, i2);
+			this.drawTexturedModalRect(guiLeft + 100,guiTop + 17 + 32 - i2 ,0, 0, 16, i2);
 		}
 		if(x <= guiLeft + 116 && x >= guiLeft + 100 && y <= guiTop + 49 && y >= guiTop + 17){
 			String text = GuiColor.YELLOW.toString() + this.carbonformer.tank.getFluidAmount() + "/" + this.carbonformer.tank.getCapacity()+"mB";

@@ -1,16 +1,16 @@
 package plasticraft.blocks;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraftforge.common.Configuration;
 import plasticraft.PlastiCraft;
 import plasticraft.lib.References;
 import plasticraft.tileentities.TeFluidPlastic;
 import plasticraft.tileentities.TeGrindStone;
-import plasticraft.tileentities.TeLunchBox;
+import plasticraft.tileentities.TeTrashCan;
 import plasticraft.tileentities.TileEntityCarbonFormer;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraftforge.common.Configuration;
 
 public class Blocks {
 	
@@ -21,6 +21,7 @@ public class Blocks {
      public static Block Fluid_Plastic_Block;
      public static Block grindStone_idle;
      public static Block grindStone_grinding;
+     public static Block trashCan;
      
 	public static void init(Configuration config){
 		
@@ -32,7 +33,7 @@ public class Blocks {
         carbon_former_idle.setCreativeTab(PlastiCraft.tabsPC);
         GameRegistry.registerTileEntity(TileEntityCarbonFormer.class, References.CARBONFORMER_TE_KEY);
         GameRegistry.registerTileEntity(TeFluidPlastic.class, References.FLUIDPLASTIC_TE_KEY);
-    	GameRegistry.registerTileEntity(TeLunchBox.class, References.LUNCHBOX_TE_KEY);
+        GameRegistry.registerTileEntity(TeTrashCan.class, References.TRASHCAN_TE_KEY);
         LanguageRegistry.addName(carbon_former_burning, "carbon former");
         GameRegistry.registerBlock(carbon_former_burning, "carbon_former_burning");
         LanguageRegistry.addName(block_Quicksand, "Quicksand");
@@ -55,6 +56,10 @@ public class Blocks {
         LanguageRegistry.addName(grindStone_grinding, "Grindstone");
         GameRegistry.registerTileEntity(TeGrindStone.class, References.GRINDSTONE_TE_KEY);
 		grindStone_idle.setCreativeTab(PlastiCraft.tabsPC);
+		
+		trashCan = new BlockTrashCan(config.getBlock("trashCan", 701).getInt(701), Material.iron);
+		GameRegistry.registerBlock(trashCan, "trashcan");
+		LanguageRegistry.addName(trashCan, "Trash Can");
 	}
 	
 	
