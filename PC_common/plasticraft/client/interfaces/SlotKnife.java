@@ -1,6 +1,6 @@
 package plasticraft.client.interfaces;
 
-import plasticraft.items.Items;
+import plasticraft.items.PCItems;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -13,7 +13,7 @@ public class SlotKnife extends Slot{
 	
 	@Override
 	public boolean isItemValid(ItemStack stack){
-		return stack.itemID == Items.knife.itemID;
+		return stack.getItem().equals(PCItems.knife);
 	}
 
 }

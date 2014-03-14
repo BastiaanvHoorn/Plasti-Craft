@@ -38,9 +38,9 @@ public class LunchBox extends Item{
 			IInventory inv = getBoxInventory(player);
 			ItemStack stack = inv.getStackInSlot(0);
 			if(stack != null){
-				if(stack.itemID == Items.steak.itemID){
+				if(stack.itemID == PCItems.steak.itemID){
 						this.itemUseDuration = 32;
-						ItemStack stack2 = Items.steak.onEaten(stack, player.worldObj, player);
+						ItemStack stack2 = PCItems.steak.onEaten(stack, player.worldObj, player);
 						inv.setInventorySlotContents(0, stack2);
 						inv.closeChest();
 				}
@@ -52,7 +52,7 @@ public class LunchBox extends Item{
 	
 	@Override
 	public EnumAction getItemUseAction(ItemStack stack){
-		if(stack.itemID == Items.lunchBox.itemID){
+		if(stack.itemID == PCItems.lunchBox.itemID){
 			return EnumAction.eat;
 		}else{
 			return null;
@@ -85,7 +85,7 @@ public class LunchBox extends Item{
 		IInventory boxInventory = getBoxInventory(player);
 		
 		if(boxInventory == null)
-			boxInventory = new BoxInventory(player, new ItemStack(Items.lunchBox));
+			boxInventory = new BoxInventory(player, new ItemStack(PCItems.lunchBox));
 		
 		GhostContainer container =new GhostContainer(player.inventory) {
 			@Override
@@ -115,7 +115,7 @@ public class LunchBox extends Item{
 	public static IInventory getBoxInventory(EntityPlayer player) {
 		SimpleInventory inv = null;
 		ItemStack held = player.getHeldItem();
-		if(held != null && held.itemID == Items.lunchBox.itemID){
+		if(held != null && held.itemID == PCItems.lunchBox.itemID){
 			inv = new BoxInventory(player, held);
 			inv.load(held.getTagCompound(), "contents");
 		}

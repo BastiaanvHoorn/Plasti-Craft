@@ -2,26 +2,28 @@ package plasticraft.blocks;
 
 import java.util.Random;
 
+import javax.swing.Icon;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import plasticraft.PlastiCraft;
 import plasticraft.lib.References;
 import plasticraft.tileentities.TileEntityCarbonFormer;
-import cpw.mods.fml.common.network.FMLNetworkHandler;
+import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -31,30 +33,29 @@ public class carbonformer extends BlockContainer{
 	private boolean isActive;
 	private static boolean keepInventory;
 	
-	public carbonformer(int id, Material Material,int amount, boolean state) {
-		super(id, Material);
-		setStepSound(soundStoneFootstep);
+	public carbonformer(Material Material,boolean state) {
+		super(Material);
+		setStepSound(Block.soundTypeStone);
 		setHardness(2F);
-		setLightValue(0.1F);
 		this.isActive = state;
 	}
 
 	
 	
     @SideOnly(Side.CLIENT)
-    public static Icon TopIcon;
+    public static IIcon TopIcon;
     @SideOnly(Side.CLIENT)
-    public static Icon BottomIcon;
+    public static IIcon BottomIcon;
     @SideOnly(Side.CLIENT)
-    public static Icon SideIcon;
+    public static IIcon SideIcon;
     @SideOnly(Side.CLIENT)
-    public static Icon FrontIcon_on;
+    public static IIcon FrontIcon_on;
     @SideOnly(Side.CLIENT)
-    public static Icon FrontIcon_off;
+    public static IIcon FrontIcon_off;
     
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister icon){
+    public void registerBlockIcons(IIconRegister icon){
     	TopIcon= icon.registerIcon(References.MOD_ID.toLowerCase() + ":carbonformer_top");
     	BottomIcon = icon.registerIcon(References.MOD_ID.toLowerCase() + ":carbonformer");
     	SideIcon = icon.registerIcon(References.MOD_ID.toLowerCase() + ":carbonformer_side");
@@ -75,33 +76,7 @@ public class carbonformer extends BlockContainer{
     {
         if (!par1World.isRemote)
         {
-            int l = par1World.getBlockId(par2, par3, par4 - 1);
-            int i1 = par1World.getBlockId(par2, par3, par4 + 1);
-            int j1 = par1World.getBlockId(par2 - 1, par3, par4);
-            int k1 = par1World.getBlockId(par2 + 1, par3, par4);
-            byte b0 = 3;
-
-            if (Block.opaqueCubeLookup[l] && !Block.opaqueCubeLookup[i1])
-            {
-                b0 = 3;
-            }
-
-            if (Block.opaqueCubeLookup[i1] && !Block.opaqueCubeLookup[l])
-            {
-                b0 = 2;
-            }
-
-            if (Block.opaqueCubeLookup[j1] && !Block.opaqueCubeLookup[k1])
-            {
-                b0 = 5;
-            }
-
-            if (Block.opaqueCubeLookup[k1] && !Block.opaqueCubeLookup[j1])
-            {
-                b0 = 4;
-            }
-
-            par1World.setBlockMetadataWithNotify(par2, par3, par4, b0, 2);
+            par1World.setBlockMetadataWithNotify(par2, par3, par4, 3, 2);
         }
     }
     
@@ -133,7 +108,7 @@ public class carbonformer extends BlockContainer{
     
     @Override
     @SideOnly(Side.CLIENT)
-    public Icon getIcon(int Side, int Metadata){
+    public IIcon getIcon(int Side, int Metadata){
     	if(Side == 0){
     		return BottomIcon;
     	} else if(Side == 1){
@@ -156,11 +131,11 @@ public class carbonformer extends BlockContainer{
     public boolean onBlockActivated(World world,int x,int y,int z, EntityPlayer player, int Side, float hitX,float hitY, float hitZ){
 		
     	if(player.getHeldItem() != null && FluidContainerRegistry.isEmptyContainer(player.getHeldItem())){
-    		if(world.getBlockTileEntity(x, y, z) instanceof TileEntityCarbonFormer){
-    			if(((TileEntityCarbonFormer)world.getBlockTileEntity(x, y, z)).tank.getFluidAmount() >= 1000){
+    		if(world.getTileEntity(x, y, z) instanceof TileEntityCarbonFormer){
+    			if(((TileEntityCarbonFormer)world.getTileEntity(x, y, z)).tank.getFluidAmount() >= 1000){
     				ItemStack item = FluidContainerRegistry.fillFluidContainer(new FluidStack(PlastiCraft.plastic_fluid, 1000), player.getHeldItem());
     				if(item != null){
-    					((TileEntityCarbonFormer)world.getBlockTileEntity(x, y, z)).drain(ForgeDirection.NORTH, 1000, true);
+    					((TileEntityCarbonFormer)world.getTileEntity(x, y, z)).drain(ForgeDirection.NORTH, 1000, true);
 	    				player.inventory.setInventorySlotContents(player.inventory.currentItem, item);
 	    				return true;
     				}
@@ -182,14 +157,9 @@ public class carbonformer extends BlockContainer{
     }
 
 	@Override
-	public TileEntity createNewTileEntity(World world) {
-		return new TileEntityCarbonFormer();
-	}
-	
-	@Override
-	public void breakBlock(World world, int x,int y,int z,int id, int metadata){
+	public void breakBlock(World world, int x,int y,int z, Block block, int metadata){
 		if(!keepInventory){
-			TileEntity te = world.getBlockTileEntity(x, y, z);
+			TileEntity te = world.getTileEntity(x, y, z);
 			if(te != null && te instanceof IInventory){
 				IInventory inv = (IInventory)te;
 				
@@ -215,29 +185,29 @@ public class carbonformer extends BlockContainer{
 			}
 		}
 		
-		super.breakBlock(world, x, y, z, id, metadata);
+		super.breakBlock(world, x, y, z, block, metadata);
 	}
 
     public static void updateFurnaceBlockState(boolean par0, World par1World, int par2, int par3, int par4)
     {
         int l = par1World.getBlockMetadata(par2, par3, par4);
-        TileEntity tileentity = par1World.getBlockTileEntity(par2, par3, par4);
+        TileEntity tileentity = par1World.getTileEntity(par2, par3, par4);
         keepInventory = true;
 
         if (par0)
         {
-            par1World.setBlock(par2, par3, par4, Blocks.carbon_former_burning.blockID);
+            par1World.setBlock(par2, par3, par4, PCBlocks.carbon_former_burning);
         }
         else
         {
-            par1World.setBlock(par2, par3, par4, Blocks.carbon_former_idle.blockID);
+            par1World.setBlock(par2, par3, par4, PCBlocks.carbon_former_idle);
         }
 
         keepInventory = false;
         par1World.setBlockMetadataWithNotify(par2, par3, par4, l, 2);
         if(tileentity != null){
         	tileentity.validate();
-        	par1World.setBlockTileEntity(par2, par3, par4, tileentity);
+        	par1World.setTileEntity(par2, par3, par4, tileentity);
         }
     }
 
@@ -279,4 +249,9 @@ public class carbonformer extends BlockContainer{
             }
         }
     }
+
+	@Override
+	public TileEntity createNewTileEntity(World var1, int var2) {
+		return new TileEntityCarbonFormer();
+	}
 }

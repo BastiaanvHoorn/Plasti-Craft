@@ -25,7 +25,7 @@ public class SimpleInventory implements IInventory{
 	public void load(NBTTagCompound tag, String string) {
 		if(tag == null)
 			return;
-		NBTTagList tag1 = tag.getTagList(string + "items");
+		NBTTagList tag1 = tag.getTagList(string + "items", 5);
 		
 		for(int i = 0; i < tag1.tagCount(); i++){
 			NBTTagCompound tag2 = (NBTTagCompound) tag1.tagAt(i);
@@ -122,6 +122,31 @@ public class SimpleInventory implements IInventory{
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
 		return false;
+	}
+	@Override
+	public String getInventoryName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public boolean hasCustomInventoryName() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public void markDirty() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void openInventory() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void closeInventory() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

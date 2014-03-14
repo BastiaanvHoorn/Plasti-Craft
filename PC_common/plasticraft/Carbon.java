@@ -1,20 +1,22 @@
 package plasticraft;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class Carbon {
- private static int[] carbon_id = {Item.diamond.itemID, Item.coal.itemID, Block.coalBlock.blockID};
+ private static Object[] carbon_obj = {Items.diamond, Items.coal, Blocks.coal_block};
  private static int[] carbon_amount = {1000, 100, 900};
  
- public boolean addCarbon(int id, int amount){
-	 if(id !=0 && amount!= 0){
-		 int lenght = carbon_id.length;
-		 if(carbon_id[lenght] > 0){
+ public boolean addCarbon(Object obj, int amount){
+	 if(obj != null && amount!= 0){
+		 int lenght = carbon_obj.length;
+		 if(carbon_obj[lenght] != null){
 			 return false;
 		 }else{
-			 carbon_id[lenght] = id;
+			 carbon_obj[lenght] = obj;
 			 return true;
 		 }
 	 }else{
@@ -23,9 +25,9 @@ public class Carbon {
  }
  
  public static boolean isCarbon(ItemStack stack){
-	 for(int i = 0; i < carbon_id.length; i++){
+	 for(int i = 0; i < carbon_obj.length; i++){
 		 if(stack!=null){
-		 if(stack.itemID == carbon_id[i]){
+		 if(stack.getItem().equals(carbon_obj[i])){
 			 return true;
 		 }
 	 }else{
@@ -37,8 +39,8 @@ public class Carbon {
  
  public static int produces(ItemStack stack){
 	 if(Carbon.isCarbon(stack)){
-		 for(int i = 0; i < carbon_id.length; i++){
-			 if(stack.itemID == carbon_id[i]){
+		 for(int i = 0; i < carbon_obj.length; i++){
+			 if(stack.getItem().equals(carbon_obj[i])){
 				 return carbon_amount[i];
 			 }
 		 }

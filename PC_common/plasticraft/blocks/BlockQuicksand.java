@@ -1,11 +1,13 @@
 package plasticraft.blocks;
 
+import javax.swing.Icon;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import plasticraft.lib.References;
 import cpw.mods.fml.relauncher.Side;
@@ -14,24 +16,24 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockQuicksand extends Block {
 		
 	
-	    public BlockQuicksand (int id, Material material) {
-	    	super(id, material);
+	    public BlockQuicksand (Material material) {
+	    	super(material);
 	        setHardness(0.5F);
-	        setStepSound(Block.soundGravelFootstep);
-	        setLightValue(0.1F);
+	        setStepSound(Block.soundTypeGravel);
+	        setLightLevel(1.0F);
 	        
 	    }
 	    
 	    @SideOnly(Side.CLIENT)
-	    public static Icon TopIcon;
+	    public static IIcon TopIcon;
 	    @SideOnly(Side.CLIENT)
-	    public static Icon BottomIcon;
+	    public static IIcon BottomIcon;
 	    @SideOnly(Side.CLIENT)
-	    public static Icon SideIcon;
+	    public static IIcon SideIcon;
 	    
 	    @Override
 	    @SideOnly(Side.CLIENT)
-	    public void registerIcons(IconRegister icon){
+	    public void registerBlockIcons(IIconRegister icon){
 	    	TopIcon= icon.registerIcon(References.MOD_ID.toLowerCase() + ":quicksand_top");
 	    	BottomIcon = icon.registerIcon(References.MOD_ID.toLowerCase() + ":quicksand");
 	    	SideIcon = icon.registerIcon(References.MOD_ID.toLowerCase() + ":quicksand_side");
@@ -39,7 +41,7 @@ public class BlockQuicksand extends Block {
 	    
 	    @Override
 	    @SideOnly(Side.CLIENT)
-	    public Icon getIcon(int Side, int Metadata){
+	    public IIcon getIcon(int Side, int Metadata){
 	    	if(Side == 0){
 	    		return BottomIcon;
 	    	} else if(Side == 1){

@@ -1,5 +1,6 @@
 package plasticraft.client.interfaces;
 
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
@@ -13,7 +14,7 @@ public class SlotDiamond extends Slot{
 	
 	@Override
 	public boolean isItemValid(ItemStack stack){
-		return stack.itemID == Item.diamond.itemID;
+		return stack.getItem().equals(Items.diamond);
 	}
 
 }

@@ -1,7 +1,7 @@
 package plasticraft.items;
 
 import plasticraft.PlastiCraft;
-import plasticraft.blocks.Blocks;
+import plasticraft.blocks.PCBlocks;
 import plasticraft.lib.References;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 
-public class Items {
+public class PCItems {
 
     public static Item plastic_Item;
     public static Item lunchBox;
@@ -27,7 +27,7 @@ public class Items {
     	GameRegistry.registerItem(lunchBox, "lunchbox");
     	LanguageRegistry.addName(lunchBox, "Lunch Box");
     	
-        bucketplastic = new BucketPlastic(config.getItem("bucketplastic", 602).getInt(602), Blocks.Fluid_Plastic_Block.blockID);
+        bucketplastic = new BucketPlastic(config.getItem("bucketplastic", 602).getInt(602), PCBlocks.Fluid_Plastic_Block.blockID);
         GameRegistry.registerItem(bucketplastic,"bucketplastic");
         FluidContainerRegistry.registerFluidContainer(PlastiCraft.plastic_fluid, new ItemStack(bucketplastic), new ItemStack(Item.bucketEmpty));
         LanguageRegistry.addName(bucketplastic, "Plastic Bucket");

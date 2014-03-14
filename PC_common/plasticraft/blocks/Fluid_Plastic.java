@@ -1,11 +1,13 @@
 package plasticraft.blocks;
 
+import javax.swing.Icon;
+
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
@@ -17,33 +19,32 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class Fluid_Plastic extends BlockFluidClassic implements ITileEntityProvider{
 
-	public static Icon[] theIcon;
+	public static IIcon[] theIcon;
 	
 	public TeFluidPlastic te;	
-	public Fluid_Plastic(int id, Fluid fluid, Material material) {
-		super(id, fluid, material);
-		setUnlocalizedName("plasticBlockfluid");
-		setTextureName(References.MOD_ID.toLowerCase() + ":fluidplastic_flowing");
+	public Fluid_Plastic(Fluid fluid, Material material) {
+		super(fluid, material);
+		setBlockTextureName(References.MOD_ID.toLowerCase() + ":fluidplastic_flowing");
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void registerIcons(IconRegister register){
+	public void registerBlockIcons(IIconRegister register){
 		blockIcon = register.registerIcon(this.getTextureName());
-		theIcon = new Icon[] {register.registerIcon(References.MOD_ID.toLowerCase() + ":fluidplastic_still"), register.registerIcon(References.MOD_ID.toLowerCase() + ":fluidplastic_flowing")};
+		theIcon = new IIcon[] {register.registerIcon(References.MOD_ID.toLowerCase() + ":fluidplastic_still"), register.registerIcon(References.MOD_ID.toLowerCase() + ":fluidplastic_flowing")};
 		PlastiCraft.plastic_fluid.setIcons(theIcon[0], theIcon[1]);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world) {
-		return new TeFluidPlastic();
-	}
-	
-	@Override
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity){
 		super.onEntityCollidedWithBlock(world, x, y, z, entity);
-		entity.setFire(5);
+		entity.setFire(15);
 		entity.handleWaterMovement();
+	}
+
+	@Override
+	public TileEntity createNewTileEntity(World var1, int var2) {
+		return new TeFluidPlastic();
 	}
 	
 }

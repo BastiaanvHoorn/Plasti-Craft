@@ -1,6 +1,6 @@
 package plasticraft.client.interfaces;
 
-import plasticraft.items.Items;
+import plasticraft.items.PCItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,7 +27,7 @@ public class BoxInventory extends SimpleInventory {
 	}
 	private void refreshNBT() {
 		ItemStack held = playerOriginal.getHeldItem();
-		if(held != null && held.itemID == Items.lunchBox.itemID){
+		if(held != null && held.getItem().equals(PCItems.lunchBox)){
 			held.setTagCompound(boxOriginal.getTagCompound());
 		}
 		
@@ -48,7 +48,7 @@ public class BoxInventory extends SimpleInventory {
 	
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack stack){
-		if(stack.itemID == Items.steak.itemID)
+		if(stack.getItem().equals(PCItems.steak))
 			return true;
 		return false;
 	}

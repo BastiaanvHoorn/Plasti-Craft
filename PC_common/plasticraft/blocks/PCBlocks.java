@@ -2,7 +2,7 @@ package plasticraft.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.config.Configuration;
 import plasticraft.PlastiCraft;
 import plasticraft.lib.References;
 import plasticraft.tileentities.TeFluidPlastic;
@@ -12,7 +12,7 @@ import plasticraft.tileentities.TileEntityCarbonFormer;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
-public class Blocks {
+public class PCBlocks {
 	
 	 public static Block block_Quicksand;
      public static Block carbon_former_idle;
@@ -21,45 +21,41 @@ public class Blocks {
      public static Block Fluid_Plastic_Block;
      public static Block grindStone_idle;
      public static Block grindStone_grinding;
-     public static Block trashCan;
+     public static Block trashCan; 
+     public static Block fluidGasBlock;
      
-	public static void init(Configuration config){
+	public static void init(){
 		
-        block_Quicksand =  new BlockQuicksand(config.getBlock("Quicksand", 500).getInt(500),Material.ground).setUnlocalizedName("quicksand");
-        carbon_former_idle = new carbonformer(config.getBlock("carbonformer", 503).getInt(503),Material.iron, 16000, false).setUnlocalizedName("carbonformer_idle");
-        carbon_former_burning = new carbonformer(config.getBlock("carbonformer", 503).getInt() + 1, Material.iron, 16000, true).setUnlocalizedName("carbonformer_burning");
-        LanguageRegistry.addName(carbon_former_idle, "carbon former");
+        block_Quicksand =  new BlockQuicksand(Material.ground);
+        carbon_former_idle = new carbonformer(Material.iron,false);
+        carbon_former_burning = new carbonformer(Material.iron,true);
         GameRegistry.registerBlock(carbon_former_idle,"carbonformer_idle");
         carbon_former_idle.setCreativeTab(PlastiCraft.tabsPC);
         GameRegistry.registerTileEntity(TileEntityCarbonFormer.class, References.CARBONFORMER_TE_KEY);
         GameRegistry.registerTileEntity(TeFluidPlastic.class, References.FLUIDPLASTIC_TE_KEY);
         GameRegistry.registerTileEntity(TeTrashCan.class, References.TRASHCAN_TE_KEY);
-        LanguageRegistry.addName(carbon_former_burning, "carbon former");
         GameRegistry.registerBlock(carbon_former_burning, "carbon_former_burning");
-        LanguageRegistry.addName(block_Quicksand, "Quicksand");
         GameRegistry.registerBlock(block_Quicksand,"quicksand");
         block_Quicksand.setCreativeTab(PlastiCraft.tabsPC);
         
-        BlockPlastic = new BlockPlastic(config.getBlock("PlasticBlock", 505).getInt());
+        BlockPlastic = new BlockPlastic();
         GameRegistry.registerBlock(BlockPlastic, "BlockPlastic");
-        LanguageRegistry.addName(BlockPlastic, "Plastic Block");
         
-        Fluid_Plastic_Block = new Fluid_Plastic(PlastiCraft.fluidPlasticId, PlastiCraft.plastic_fluid, PlastiCraft.plastic);
+        Fluid_Plastic_Block = new Fluid_Plastic(PlastiCraft.plastic_fluid, PlastiCraft.plastic);
         GameRegistry.registerBlock(Fluid_Plastic_Block, "plasticBlockfluid");
-        LanguageRegistry.addName(Fluid_Plastic_Block, "Plastic");
         
-        grindStone_idle = new GrindStone(config.getBlock("grindStone", 700).getInt(700), false).setUnlocalizedName("grindStone_idle");
-        grindStone_grinding = new GrindStone(config.getBlock("grindStone", 700).getInt() + 1, true).setUnlocalizedName("grindStone_grinding");
+        grindStone_idle = new GrindStone(false);
+        grindStone_grinding = new GrindStone(true);
         GameRegistry.registerBlock(grindStone_idle, "grindStone_idle");
         GameRegistry.registerBlock(grindStone_grinding, "grindStone_grinding");
-        LanguageRegistry.addName(grindStone_idle, "Grindstone");
-        LanguageRegistry.addName(grindStone_grinding, "Grindstone");
         GameRegistry.registerTileEntity(TeGrindStone.class, References.GRINDSTONE_TE_KEY);
 		grindStone_idle.setCreativeTab(PlastiCraft.tabsPC);
 		
-		trashCan = new BlockTrashCan(config.getBlock("trashCan", 701).getInt(701), Material.iron);
+		trashCan = new BlockTrashCan(Material.iron);
 		GameRegistry.registerBlock(trashCan, "trashcan");
-		LanguageRegistry.addName(trashCan, "Trash Can");
+		
+		fluidGasBlock = new FluidGas(PlastiCraft.gasFluid, PlastiCraft.plastic);
+		GameRegistry.registerBlock(fluidGasBlock, "fluidGas");
 	}
 	
 	

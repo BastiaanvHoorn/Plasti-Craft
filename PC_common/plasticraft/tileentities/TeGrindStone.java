@@ -17,9 +17,9 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import plasticraft.PlastiCraft;
-import plasticraft.blocks.Blocks;
+import plasticraft.blocks.PCBlocks;
 import plasticraft.blocks.GrindStone;
-import plasticraft.items.Items;
+import plasticraft.items.PCItems;
 
 public class TeGrindStone extends TileEntity implements ISidedInventory{
 
@@ -244,7 +244,7 @@ public class TeGrindStone extends TileEntity implements ISidedInventory{
 	{
 		if (i == 0)
 		{
-			if (itemstack.itemID == Items.knife.itemID)
+			if (itemstack.itemID == PCItems.knife.itemID)
 			{
 				return true;
 			}
@@ -255,7 +255,7 @@ public class TeGrindStone extends TileEntity implements ISidedInventory{
 		}
 		else if (i == 1)
 		{
-			if (itemstack.itemID == Items.grindFrame.itemID)
+			if (itemstack.itemID == PCItems.grindFrame.itemID)
 			{
 				return true;
 			}

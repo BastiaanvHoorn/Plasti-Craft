@@ -112,7 +112,7 @@ public class GuiGrindStone extends GuiContainer {
 				color = GuiColor.LIME.toString();
 			}
 			
-			this.drawHoveringText(Lists.newArrayList(color + hoverText, "Durability"),x , y , fontRenderer);
+			this.drawHoveringText(Lists.newArrayList(color + hoverText, "Durability"),x , y , fontRendererObj);
 			
 		}
 	}
@@ -120,7 +120,7 @@ public class GuiGrindStone extends GuiContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
-		this.fontRenderer.drawString(this.teGrindStone.getInvName(), 50, 6, 4210752);
+		this.fontRendererObj.drawString(this.teGrindStone.getInvName(), 50, 6, 4210752);
 	}
 	
 	@Override

@@ -12,7 +12,7 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-import plasticraft.items.Items;
+import plasticraft.items.PCItems;
 
 public class EntityCarbonite extends EntityMob {
 
@@ -31,11 +31,11 @@ public class EntityCarbonite extends EntityMob {
 	@Override
 	protected void applyEntityAttributes(){
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.followRange).setAttribute(50.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setAttribute(8.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.23000000417232513D);
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(40.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setAttribute(0.4D);
+		this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40.0D);;
+		this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(8.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23000000417232513D);
+		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setBaseValue(0.4D);
 	}
 	
 	@Override
@@ -48,10 +48,6 @@ public class EntityCarbonite extends EntityMob {
 		return this.getAttackTarget() == null ? 3: 3 + (int)(this.getHealth() - 1.0F);
 	}
 	
-	@Override
-	protected int getDropItemId(){
-		return Items.plastic_Item.itemID;
-	}
 	
 	@Override
 	protected boolean canDespawn(){

@@ -11,7 +11,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import plasticraft.PlastiCraft;
-import plasticraft.items.Items;
+import plasticraft.items.PCItems;
 import plasticraft.tileentities.TeGrindStone;
 
 public class ContainerGrindStone extends Container{

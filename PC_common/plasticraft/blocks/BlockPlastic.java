@@ -7,12 +7,11 @@ import net.minecraft.block.material.Material;
 
 public class BlockPlastic extends Block {
 
-	public BlockPlastic(int par1) {
-		super(par1, Material.iron);
+	public BlockPlastic() {
+		super(Material.iron);
 		setCreativeTab(PlastiCraft.tabsPC);
-		setUnlocalizedName("PlasticBlock");
-		setTextureName(References.MOD_ID +":BlockPlastic");
-		setStepSound(Block.soundMetalFootstep);
+		setBlockTextureName(References.MOD_ID +":BlockPlastic");
+		setStepSound(Block.soundTypeMetal);
 		setHardness(2F);
 		setResistance(0.5F);
 	}

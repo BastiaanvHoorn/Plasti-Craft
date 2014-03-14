@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import plasticraft.PlastiCraft;
-import plasticraft.items.Items;
+import plasticraft.items.PCItems;
 import plasticraft.items.LunchBox;
 import plasticraft.tileentities.TeGrindStone;
 import plasticraft.tileentities.TeTrashCan;
@@ -16,12 +16,12 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 public class GuiHandler implements IGuiHandler{
 	
 	public GuiHandler(){
-		NetworkRegistry.instance().registerGuiHandler(PlastiCraft.instance, this);
+		NetworkRegistry.INSTANCE.registerGuiHandler(PlastiCraft.instance, this);
 	}
 	
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		TileEntity te = world.getBlockTileEntity(x, y, z);
+		TileEntity te = world.getTileEntity(x, y, z);
 		
 		switch(ID){
 			case 0:
@@ -30,7 +30,7 @@ public class GuiHandler implements IGuiHandler{
 				}
 			break;
 			case 1:
-				if(player.getCurrentEquippedItem().itemID == Items.lunchBox.itemID){
+				if(player.getCurrentEquippedItem().getItem().equals(PCItems.lunchBox)){
 					return LunchBox.getContainer(player);
 				}
 				break;
@@ -49,7 +49,7 @@ public class GuiHandler implements IGuiHandler{
 
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		TileEntity te = world.getBlockTileEntity(x, y, z);
+		TileEntity te = world.getTileEntity(x, y, z);
 		
 		switch(ID){
 			case 0:
@@ -59,7 +59,7 @@ public class GuiHandler implements IGuiHandler{
 			break;
 			case 1:
 				ItemStack held = player.getHeldItem();
-				if(held.itemID == Items.lunchBox.itemID){
+				if(held.getItem().equals(PCItems.lunchBox)){
 					return new GuiLunchBox(player, LunchBox.getBoxInventory(player), held);
 				}
 				break;

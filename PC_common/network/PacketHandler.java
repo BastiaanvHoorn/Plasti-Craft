@@ -1,22 +1,20 @@
 package network;
 
+import ibxm.Player;
+
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet250CustomPayload;
+import net.minecraft.network.EnumConnectionState;
+import net.minecraft.util.IChatComponent;
 import plasticraft.client.interfaces.ContainerGrindStone;
 import plasticraft.tileentities.TeGrindStone;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
-
-import cpw.mods.fml.common.network.IPacketHandler;
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
 
 public class PacketHandler implements IPacketHandler{
 	
@@ -61,5 +59,4 @@ public class PacketHandler implements IPacketHandler{
 			System.err.append("failed to send packet");
 		}
 	}
-
 }

@@ -1,6 +1,5 @@
 package plasticraft.blocks;
 
-import cpw.mods.fml.common.network.FMLNetworkHandler;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,19 +7,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import plasticraft.PlastiCraft;
 import plasticraft.tileentities.TeTrashCan;
+import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 
 public class BlockTrashCan extends BlockContainer {
 
-	public BlockTrashCan(int id, Material material) {
-		super(id, material);
+	public BlockTrashCan(Material material) {
+		super(material);
 		setCreativeTab(PlastiCraft.tabsPC);
-		setUnlocalizedName("trashCan");
 		setHardness(3F);
-	}
-
-	@Override
-	public TileEntity createNewTileEntity(World world) {
-		return new TeTrashCan();
 	}
 	
 	@Override
@@ -34,6 +28,12 @@ public class BlockTrashCan extends BlockContainer {
 			return true;
 		}
 		return true;
+	}
+
+	@Override
+	public TileEntity createNewTileEntity(World var1, int var2) {
+		// TODO Auto-generated method stub
+		return new TeTrashCan();
 	}
 
 }

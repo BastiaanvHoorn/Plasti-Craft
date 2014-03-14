@@ -10,7 +10,7 @@ import net.minecraft.enchantment.EnchantmentDamage;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnumEnchantmentType;
-import plasticraft.items.Items;
+import plasticraft.items.PCItems;
 import plasticraft.PlastiCraft;
 import plasticraft.lib.References;
 

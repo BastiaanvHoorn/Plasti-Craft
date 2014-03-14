@@ -5,13 +5,10 @@ import java.util.Arrays;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-import plasticraft.PlastiCraft;
-import plasticraft.blocks.Fluid_Plastic;
 import plasticraft.lib.References;
 import plasticraft.tileentities.TileEntityCarbonFormer;
 import cpw.mods.fml.relauncher.Side;
@@ -57,7 +54,7 @@ public class GuiCarbonFormer extends GuiContainer{
 			if(this.carbonformer.tank.getFluid()!= null){
 				text += "\n" + this.carbonformer.tank.getFluid().getFluid().getName();
 			}
-			this.drawHoveringText(Arrays.asList(text.split("\n")),x , y , fontRenderer);
+			this.drawHoveringText(Arrays.asList(text.split("\n")),x , y , fontRendererObj);
 		}
 	}
 	

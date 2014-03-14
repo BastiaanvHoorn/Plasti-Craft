@@ -2,35 +2,35 @@ package plasticraft.blocks;
 
 import java.util.Random;
 
-import cpw.mods.fml.common.network.FMLNetworkHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import plasticraft.PlastiCraft;
-import plasticraft.lib.References;
-import plasticraft.tileentities.TeGrindStone;
+import javax.swing.Icon;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.Icon;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import plasticraft.PlastiCraft;
+import plasticraft.lib.References;
+import plasticraft.tileentities.TeGrindStone;
+import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GrindStone extends BlockContainer {
 	
 	private boolean isActive;
 	private static boolean keepInventory;
 
-	public GrindStone(int id, boolean isActive)
+	public GrindStone(boolean isActive)
 	{
-		super(id, Material.anvil);
+		super(Material.anvil);
 		this.setHardness(4F);
 		this.isActive = isActive;
 	}
@@ -52,16 +52,10 @@ public class GrindStone extends BlockContainer {
     }
 	
 	@Override
-	public TileEntity createNewTileEntity(World world)
-	{
-		return new TeGrindStone();
-	}
-	
-	@Override
-	public void breakBlock(World world, int x, int y, int z, int id, int metadata)
+	public void breakBlock(World world, int x, int y, int z, Block id, int metadata)
 	{
 		if(!keepInventory){
-			TileEntity te = world.getBlockTileEntity(x, y, z);
+			TileEntity te = world.getTileEntity(x, y, z);
 			
 			if(te != null && te instanceof IInventory){
 				TeGrindStone inv = (TeGrindStone)te;
@@ -91,15 +85,15 @@ public class GrindStone extends BlockContainer {
 	}
 	
 	@SideOnly(Side.CLIENT)
-    public static Icon TopIcon_on;
+    public static IIcon TopIcon_on;
 	@SideOnly(Side.CLIENT)
-	public static Icon TopIcon_off;
+	public static IIcon TopIcon_off;
     @SideOnly(Side.CLIENT)
-    public static Icon SideIcon;
+    public static IIcon SideIcon;
     
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister icon)
+    public void registerBlockIcons(IIconRegister icon)
     {
     	TopIcon_on = icon.registerIcon(References.MOD_ID.toLowerCase() + ":grindStone_top_on");
     	TopIcon_off = icon.registerIcon(References.MOD_ID.toLowerCase() +":grindStone_top_off");
@@ -109,7 +103,7 @@ public class GrindStone extends BlockContainer {
     
     @Override
     @SideOnly(Side.CLIENT)
-    public Icon getIcon(int Side, int Metadata)
+    public IIcon getIcon(int Side, int Metadata)
     {
     	if (Side == 1)
     	{
@@ -168,15 +162,15 @@ public class GrindStone extends BlockContainer {
     public static void updateBlockState(boolean state, World world, int x, int y, int z)
     {
     	int l = world.getBlockMetadata(x, y, z);
-        TileEntity tileentity = world.getBlockTileEntity(x, y, z);
+        TileEntity tileentity = world.getTileEntity(x, y, z);
         keepInventory = true;
         if (state)
         {
-            world.setBlock(x, y, z, Blocks.grindStone_grinding.blockID);
+            world.setBlock(x, y, z, PCBlocks.grindStone_grinding);
         }
         else
         {
-            world.setBlock(x, y, z, Blocks.grindStone_idle.blockID);
+            world.setBlock(x, y, z, PCBlocks.grindStone_idle);
         }
         keepInventory = false;
         world.setBlockMetadataWithNotify(x, y, z, l, 2);
@@ -184,7 +178,12 @@ public class GrindStone extends BlockContainer {
         if (tileentity != null)
         {
             tileentity.validate();
-            world.setBlockTileEntity(x, y, z, tileentity);
+            world.setTileEntity(x, y, z, tileentity);
         }
     }
+
+	@Override
+	public TileEntity createNewTileEntity(World var1, int var2) {
+		return new TeGrindStone();
+	}
 }

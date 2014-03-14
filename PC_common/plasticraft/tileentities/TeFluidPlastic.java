@@ -4,7 +4,7 @@ import java.util.Random;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import plasticraft.blocks.Blocks;
+import plasticraft.blocks.PCBlocks;
 import plasticraft.lib.References;
 
 public class TeFluidPlastic extends TileEntity{
@@ -26,7 +26,7 @@ public class TeFluidPlastic extends TileEntity{
 				if(this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord) == 0){
 					this.counter++;
 					if(this.counter >= this.time){
-						this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, Blocks.BlockPlastic.blockID);
+						this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, PCBlocks.BlockPlastic.blockID);
 					}
 				}
 			}
