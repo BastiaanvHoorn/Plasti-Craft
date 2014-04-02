@@ -26,7 +26,7 @@ public class TeFluidPlastic extends TileEntity{
 				if(this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord) == 0){
 					this.counter++;
 					if(this.counter >= this.time){
-						this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, PCBlocks.BlockPlastic.blockID);
+						this.worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, PCBlocks.BlockPlastic);
 					}
 				}
 			}

@@ -1,24 +1,18 @@
 package plasticraft.items;
 
-import javax.swing.text.html.parser.Entity;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import plasticraft.PlastiCraft;
-import plasticraft.entity.EntityCarbonite;
-import plasticraft.lib.References;
-import net.minecraft.entity.EntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemMonsterPlacer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import plasticraft.PlastiCraft;
+import plasticraft.entity.EntityCarbonite;
+import plasticraft.lib.References;
 
 public class SpawnCarbonite extends Item{
 
-	public SpawnCarbonite(int par1) {
-		super(par1);
+	public SpawnCarbonite() {
+		super();
 		this.setCreativeTab(PlastiCraft.tabsPC);
 		this.setUnlocalizedName("Spawn Carbonite");
 		setTextureName(References.MOD_ID.toLowerCase() + ":spawnCarbonite");
@@ -63,7 +57,7 @@ public class SpawnCarbonite extends Item{
 			entity.setLocationAndAngles(posX, posY, posZ, MathHelper.wrapAngleTo180_float(world.rand.nextFloat() * 360.0F), 0.0F);
 			entity.rotationYawHead = entity.rotationYaw;
 			entity.renderYawOffset = entity.rotationYaw;
-			entity.onSpawnWithEgg((EntityLivingData)null);
+			entity.onSpawnWithEgg(null);
 			world.spawnEntityInWorld(entity);
 			return true;
 		}

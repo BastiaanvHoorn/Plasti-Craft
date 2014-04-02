@@ -1,62 +1,32 @@
 package plasticraft.items;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 import plasticraft.PlastiCraft;
 import plasticraft.blocks.PCBlocks;
-import plasticraft.lib.References;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.Configuration;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 
 public class PCItems {
 
     public static Item plastic_Item;
-    public static Item lunchBox;
     public static Item bucketplastic;
-    public static Item steak;
-    public static Item knife;
-    public static Item grindFrame;
-    public static Item sliceBread;
     public static Item spawnCarbonite;
 	
-	public static void Init(Configuration config){
-    	lunchBox = new LunchBox(config.getItem("lunch box", 1000).getInt(1000)).setUnlocalizedName("lunchbox");
-    	GameRegistry.registerItem(lunchBox, "lunchbox");
-    	LanguageRegistry.addName(lunchBox, "Lunch Box");
+	public static void Init(){
     	
-        bucketplastic = new BucketPlastic(config.getItem("bucketplastic", 602).getInt(602), PCBlocks.Fluid_Plastic_Block.blockID);
+        bucketplastic = new BucketPlastic(PCBlocks.Fluid_Plastic_Block);
         GameRegistry.registerItem(bucketplastic,"bucketplastic");
-        FluidContainerRegistry.registerFluidContainer(PlastiCraft.plastic_fluid, new ItemStack(bucketplastic), new ItemStack(Item.bucketEmpty));
-        LanguageRegistry.addName(bucketplastic, "Plastic Bucket");
+        FluidContainerRegistry.registerFluidContainer(PlastiCraft.plastic_fluid, new ItemStack(bucketplastic), new ItemStack(Items.bucket));
         
         
-        plastic_Item= new Plastic(config.getBlock("Plastic", 501).getInt(501)).setUnlocalizedName("plastic");
-        LanguageRegistry.addName(plastic_Item, "Plastic");
+        plastic_Item= new Plastic().setUnlocalizedName("plastic");
         GameRegistry.registerItem(plastic_Item, "plastic");
         plastic_Item.setCreativeTab(PlastiCraft.tabsPC);
         
-        steak = new Sandwich(config.getItem("hamburger", 600).getInt(), 10 , false, 10, 5, 1).setTextureName(References.MOD_ID.toLowerCase()+":hamburgerSandwich");
-        GameRegistry.registerItem(steak, "hamburger");
-        LanguageRegistry.addName(steak, "Hamburger sandwich");
-        
-        knife = new Knife(config.getItem("knife", 603).getInt()).setUnlocalizedName("knife");
-        GameRegistry.registerItem(knife, "knife");
-        LanguageRegistry.addName(knife, "Knife");
-        
-        sliceBread = new SliceBread(config.getItem("slicebread", 604).getInt()).setUnlocalizedName("slicebread");
-        GameRegistry.registerItem(sliceBread, "slicebread");
-        LanguageRegistry.addName(sliceBread, "Bread Slice");
-        
-        grindFrame = new GrindFrame(config.getItem("grindframe", 605).getInt()).setUnlocalizedName("grindframe");
-        GameRegistry.registerItem(grindFrame, "grindframe");
-        LanguageRegistry.addName(grindFrame, "Grindframe");
-        
-        spawnCarbonite = new SpawnCarbonite(config.getItem("spawncarbonite", 606).getInt());
+        spawnCarbonite = new SpawnCarbonite();
         GameRegistry.registerItem(spawnCarbonite, "spawncarbonite");
-        LanguageRegistry.addName(spawnCarbonite, "Spawn Carbonite");
 	}
 	
 }

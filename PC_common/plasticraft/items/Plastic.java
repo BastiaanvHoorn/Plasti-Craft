@@ -5,8 +5,8 @@ import net.minecraft.item.Item;
 
 public class Plastic extends Item {
 
-	public Plastic(int par1) {
-		super(par1);
+	public Plastic() {
+		super();
 		setTextureName(References.MOD_ID.toLowerCase() + ":plastic");
 	}
 

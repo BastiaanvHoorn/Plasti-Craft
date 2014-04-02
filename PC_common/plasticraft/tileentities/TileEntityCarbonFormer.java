@@ -7,7 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -53,16 +53,11 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 				this.setInventorySlotContents(i, null);
 			}else{
 				itemstack = itemstack.splitStack(count);
-				this.onInventoryChanged();
 			}
 		}
 		return itemstack;
 	}
 	
-	@Override
-	public void onInventoryChanged(){
-		super.onInventoryChanged();
-	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
@@ -80,17 +75,6 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 			this.items[i] = itemstack;
 		}
 		
-		this.onInventoryChanged();
-	}
-
-	@Override
-	public String getInvName() {
-		return "Carbon Former";
-	}
-
-	@Override
-	public boolean isInvNameLocalized() {
-		return true;
 	}
 
 	@Override
@@ -102,12 +86,6 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
 		return entityplayer.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) <= 64;
 	}
-
-	@Override
-	public void openChest() {}
-
-	@Override
-	public void closeChest() {}
 
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
@@ -154,10 +132,10 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 			this.tank.fill(new FluidStack(PlastiCraft.plastic_fluid, compound.getInteger("tankAmount")), true);
 		}
 		
-		NBTTagList items = compound.getTagList("items");
+		NBTTagList items = compound.getTagList("items", 10);
 		
 		for(int i = 0; i < items.tagCount(); i++){
-			NBTTagCompound item = (NBTTagCompound)items.tagAt(i);
+			NBTTagCompound item = (NBTTagCompound)items.getCompoundTagAt(i);
 			int slot = item.getByte("slot");
 			
 			if(slot >= 0 && slot < getSizeInventory()){
@@ -216,7 +194,7 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 					if(this.items[1] != null){
 						--this.items[1].stackSize;
 						if(this.items[1].stackSize == 0){
-							this.items[1] = this.items[1].getItem().getContainerItemStack(items[1]);
+							this.items[1] = this.items[1].getItem().getContainerItem(items[1]);
 						}
 					}
 				}
@@ -240,7 +218,6 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 		}
 			
 		if(flag1){
-			this.onInventoryChanged();
 		}
 			
 
@@ -298,15 +275,10 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 	}
 
 	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+	public int fill(net.minecraftforge.common.util.ForgeDirection from, FluidStack resource, boolean doFill) {
 		return tank.fill(resource, doFill);
 	}
 
-
-	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-		return tank.drain(maxDrain, doDrain);
-	}
 
 	@Override
 	public boolean canFill(ForgeDirection from, Fluid fluid) {
@@ -324,7 +296,7 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+	public FluidStack drain(net.minecraftforge.common.util.ForgeDirection from, FluidStack resource, boolean doDrain) {
 		if(doDrain){
 		tank.drain(resource.amount, true);
 		return new FluidStack(PlastiCraft.plastic_fluid, tank.getFluidAmount());
@@ -336,6 +308,41 @@ public class TileEntityCarbonFormer extends TileEntity implements ISidedInventor
 	public CarbonTank getTank() {
 		return this.tank;
 	}
+
+	@Override
+	public String getInventoryName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean hasCustomInventoryName() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void openInventory() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void closeInventory() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+		if(doDrain){
+			tank.drain(maxDrain, true);
+			return new FluidStack(PlastiCraft.plastic_fluid, tank.getFluidAmount());
+			}else{
+				return new FluidStack(PlastiCraft.plastic_fluid, tank.getFluidAmount());
+			}
+	}
+
 
 
 

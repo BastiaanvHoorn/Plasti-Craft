@@ -14,7 +14,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-import network.PacketHandler;
+import network.packetPipeLine;
 import plasticraft.blocks.PCBlocks;
 import plasticraft.entity.Entities;
 import plasticraft.events.bucketevent;
@@ -50,7 +50,7 @@ public class PlastiCraft {
         
         public static int LunchBoxId;
         
-        public static Logger pcLog = Logger.getLogger("PLastiCraft");
+        public static Logger pcLog = Logger.getLogger("PlastiCraft");
         
         public static Fluid plastic_fluid;
         public static Fluid gasFluid;
@@ -59,6 +59,7 @@ public class PlastiCraft {
         
         public static Material plastic;
         
+        public packetPipeLine pipeLine = new packetPipeLine();
         
         @EventHandler
         public void preInit(FMLPreInitializationEvent event) {
@@ -67,9 +68,6 @@ public class PlastiCraft {
         
         @EventHandler
         public void load(FMLInitializationEvent event) {
-    		pcLog.setParent((Logger) FMLLog.getLogger());
-    		pcLog.info("PlastiCraft preInitialization started");
-    		
         	config.load();
         	
         	tabsPC = new CreativeTabs("PlastiTab"){
@@ -80,9 +78,10 @@ public class PlastiCraft {
 				}
         	};
         	
+        	packetPipeLine.instance.initialize();
+        	
             plastic = new MaterialLiquid(MapColor.ironColor);
             plastic_fluid = new PlasticFluid("Plastic").setBlock(PCBlocks.Fluid_Plastic_Block);
-            gasFluid = new gasFluid("gas").setBlock(PCBlocks.fluidGasBlock);
             
             FluidRegistry.registerFluid(plastic_fluid);
             FluidRegistry.registerFluid(gasFluid);
@@ -92,7 +91,6 @@ public class PlastiCraft {
         	References.doStill = config.get("debug", "stillPlasticFluid", true).getBoolean(true);
         			
             MinecraftForge.EVENT_BUS.register(new bucketevent());
-            
             Entities.Init();
             
     		config.save();
@@ -112,27 +110,10 @@ public class PlastiCraft {
         	
         	GameRegistry.addShapelessRecipe(new ItemStack(PCItems.plastic_Item, 9), new ItemStack(PCBlocks.BlockPlastic,1));
         	
-        	GameRegistry.addRecipe(new ItemStack(PCItems.steak, 1), "x", "y", "x", 'x', new ItemStack(PCItems.sliceBread), 'y', new ItemStack(Item.beefCooked));
-        	
-        	GameRegistry.addShapedRecipe(new ItemStack(PCItems.knife, 1), "xyy",
-        			'x', new ItemStack(PCItems.plastic_Item),
-        			'y', new ItemStack(Items.ingotIron));
-        	GameRegistry.addRecipe(new ItemStack(PCItems.lunchBox), "xxx", "x x", "xxx", 'x', new ItemStack(PCItems.plastic_Item));
-        	
-        	for (int i = 0; i < 64; i++)
-        	{
-        		GameRegistry.addShapelessRecipe(new ItemStack(PCItems.sliceBread, 4), new Object[]
-        			{Items.bread, new ItemStack(PCItems.knife, 1, i)});	
-        	}
-        	
-        	GameRegistry.addShapedRecipe(new ItemStack(PCItems.grindFrame), "   ", "x x", "yyy",
-        			'x', new ItemStack(Items.flint),
-        			'y', new ItemStack(PCItems.plastic_Item));
-        }
-        
+        }       
         @EventHandler
         public void postInit(FMLPostInitializationEvent event) {
-                // Stub Method
+        	packetPipeLine.instance.postInitialise();
         }
         
         /*

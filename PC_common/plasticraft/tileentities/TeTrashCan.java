@@ -35,16 +35,6 @@ public class TeTrashCan extends TileEntity implements IInventory {
 	}
 
 	@Override
-	public String getInvName() {
-		return "Trashcan";
-	}
-
-	@Override
-	public boolean isInvNameLocalized() {
-		return true;
-	}
-
-	@Override
 	public int getInventoryStackLimit() {
 		return 64;
 	}
@@ -56,14 +46,24 @@ public class TeTrashCan extends TileEntity implements IInventory {
 	}
 
 	@Override
-	public void openChest() {}
-
-	@Override
-	public void closeChest() {}
-
-	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
 		return true;
 	}
+
+	@Override
+	public String getInventoryName() {
+		return null;
+	}
+
+	@Override
+	public boolean hasCustomInventoryName() {
+		return false;
+	}
+
+	@Override
+	public void openInventory() {}
+
+	@Override
+	public void closeInventory() {}
 
 }

@@ -121,7 +121,7 @@ public class CarbonTank implements IFluidTank{
 
 	            if (this.te != null)
 	            {
-	                FluidEvent.fireEvent(new FluidEvent.FluidFillingEvent(fluid, this.te.worldObj, this.te.xCoord, this.te.yCoord, this.te.zCoord, (IFluidTank)this));
+	                FluidEvent.fireEvent(new FluidEvent.FluidFillingEvent(fluid, this.te.getWorldObj(), this.te.xCoord, this.te.yCoord, this.te.zCoord, (IFluidTank)this));
 	            }
 	            return this.fluid.amount;
 	        }
@@ -144,7 +144,7 @@ public class CarbonTank implements IFluidTank{
 
 	        if (this.te != null)
 	        {
-	            FluidEvent.fireEvent(new FluidEvent.FluidFillingEvent(this.fluid, this.te.worldObj, this.te.xCoord, this.te.yCoord, this.te.zCoord, (IFluidTank)this));
+	            FluidEvent.fireEvent(new FluidEvent.FluidFillingEvent(this.fluid, this.te.getWorldObj(), this.te.xCoord, this.te.yCoord, this.te.zCoord, (IFluidTank)this));
 	        }
 	        return filled;
 		 }else{
@@ -176,7 +176,7 @@ public class CarbonTank implements IFluidTank{
 
 	            if (this.te != null)
 	            {
-	                FluidEvent.fireEvent(new FluidEvent.FluidDrainingEvent(fluid, this.te.worldObj, this.te.xCoord, this.te.yCoord, this.te.zCoord, (IFluidTank)this));
+	                FluidEvent.fireEvent(new FluidEvent.FluidDrainingEvent(fluid, this.te.getWorldObj(), this.te.xCoord, this.te.yCoord, this.te.zCoord, (IFluidTank)this));
 	            }
 	        }
 	        return stack;
