@@ -53,7 +53,6 @@ public class PlastiCraft {
         public static Logger pcLog = Logger.getLogger("PlastiCraft");
         
         public static Fluid plastic_fluid;
-        public static Fluid gasFluid;
         
         public static CreativeTabs tabsPC; 
         
@@ -78,13 +77,12 @@ public class PlastiCraft {
 				}
         	};
         	
-        	packetPipeLine.instance.initialize();
+        	pipeLine.initialize();
         	
             plastic = new MaterialLiquid(MapColor.ironColor);
             plastic_fluid = new PlasticFluid("Plastic").setBlock(PCBlocks.Fluid_Plastic_Block);
             
             FluidRegistry.registerFluid(plastic_fluid);
-            FluidRegistry.registerFluid(gasFluid);
         	plasticraft.blocks.PCBlocks.init();
         	plasticraft.items.PCItems.Init();     
         	
@@ -113,7 +111,7 @@ public class PlastiCraft {
         }       
         @EventHandler
         public void postInit(FMLPostInitializationEvent event) {
-        	packetPipeLine.instance.postInitialise();
+        	pipeLine.postInitialise();
         }
         
         /*

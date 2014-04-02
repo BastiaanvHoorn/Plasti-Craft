@@ -1,0 +1,9 @@
+tile.CarbonFormer.name=Carbon Former
+tile.BlockPlastic.name=Block of Plastic
+tile.FluidPlastic.name=Fluid Plastic
+tile.TrashCan.name=Trash Can
+tile.Quicksand.name=Quicksand
+item.bucketplastic.name=Bucket of Plastic
+item.plastic.name=Plastic
+item.Spawn Carbonite.name=Spawn Carbonite
+itemGroup.PlastiTab=PlastiCraft

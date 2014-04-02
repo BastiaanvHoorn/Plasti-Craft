@@ -25,6 +25,10 @@ public class GuiHandler implements IGuiHandler{
 					return new ContainerCarbonformer(player.inventory, (TileEntityCarbonFormer)te);
 				}
 			break;
+			case 1:
+				if(player != null){
+					return new ContainerClone(player.inventory);
+				}
 			case 3:
 				if(te != null && te instanceof TeTrashCan){
 					return new ContainerTrashCan(player.inventory, (TeTrashCan)te);
