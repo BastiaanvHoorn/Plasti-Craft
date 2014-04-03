@@ -3,6 +3,7 @@ package plasticraft.client;
 import plasticraft.CommonProxy;
 import plasticraft.client.interfaces.GuiHandler;
 import plasticraft.entity.EntityCarbonite;
+import plasticraft.entity.EntityClone;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class ClientProxy extends CommonProxy {
@@ -10,6 +11,7 @@ public class ClientProxy extends CommonProxy {
 	public void registerRenderers(){
 		new GuiHandler();
 		RenderingRegistry.registerEntityRenderingHandler(EntityCarbonite.class, new RenderCarbonite());
+		RenderingRegistry.registerEntityRenderingHandler(EntityClone.class, new RenderClone());
 	}
         
 }

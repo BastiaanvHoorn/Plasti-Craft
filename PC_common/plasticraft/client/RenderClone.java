@@ -1,16 +1,15 @@
 package plasticraft.client;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import plasticraft.lib.References;
 
-public class RenderClone extends RenderPlayer{
+public class RenderClone extends RendererLivingEntity{
 
 	private ResourceLocation rs = new ResourceLocation(References.MOD_ID.toLowerCase() + ":textures/entities/Clone.png");
-	public RenderClone(ModelBase par1ModelBase, float par2) {
-		super();
+	public RenderClone() {
+		super(new ModelClone(0.0F), 0.5F);
 	}
 
 	@Override
