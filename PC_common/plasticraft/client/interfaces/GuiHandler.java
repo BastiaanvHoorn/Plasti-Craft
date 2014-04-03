@@ -1,9 +1,11 @@
 package plasticraft.client.interfaces;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import plasticraft.PlastiCraft;
+import plasticraft.entity.EntityClone;
 import plasticraft.tileentities.TeTrashCan;
 import plasticraft.tileentities.TileEntityCarbonFormer;
 import cpw.mods.fml.common.network.IGuiHandler;
@@ -26,9 +28,12 @@ public class GuiHandler implements IGuiHandler{
 				}
 			break;
 			case 1:
-				if(player != null){
-					return new ContainerClone(player.inventory);
+				Entity e = world.getEntityByID(x);
+				if(e != null && e instanceof EntityClone){
+					PlastiCraft.info("server");
+					return new ContainerClone(player.inventory, (EntityClone)e);
 				}
+			break;
 			case 3:
 				if(te != null && te instanceof TeTrashCan){
 					return new ContainerTrashCan(player.inventory, (TeTrashCan)te);
@@ -45,6 +50,13 @@ public class GuiHandler implements IGuiHandler{
 			case 0:
 				if(te != null && te instanceof TileEntityCarbonFormer){
 					return new GuiCarbonFormer(player.inventory,(TileEntityCarbonFormer)te);
+				}
+			break;
+			case 1:
+				Entity e = world.getEntityByID(x);
+				if(e != null && e instanceof EntityClone){
+					PlastiCraft.info("Client");
+					return new GuiClone(player.inventory, (EntityClone)e);
 				}
 			break;
 			case 3:

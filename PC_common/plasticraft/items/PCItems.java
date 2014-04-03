@@ -13,7 +13,8 @@ public class PCItems {
     public static Item plastic_Item;
     public static Item bucketplastic;
     public static Item spawnCarbonite;
-	
+    public static Item spawnClone;
+    
 	public static void Init(){
     	
         bucketplastic = new BucketPlastic(PCBlocks.Fluid_Plastic_Block);
@@ -27,6 +28,9 @@ public class PCItems {
         
         spawnCarbonite = new SpawnCarbonite();
         GameRegistry.registerItem(spawnCarbonite, "spawncarbonite");
+        
+        spawnClone = new SpawnClone();
+        GameRegistry.registerItem(spawnClone, "spawnClone");
 	}
 	
 }

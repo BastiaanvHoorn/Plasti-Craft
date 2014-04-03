@@ -16,17 +16,17 @@ public class EntityClone extends EntityLiving implements IInventory{
 	@Override
 	public boolean interact(EntityPlayer player){
 		if(!this.worldObj.isRemote){
-			FMLNetworkHandler.openGui(player, PlastiCraft.instance, 1, this.worldObj, (int)this.posX, (int)this.posY, (int)this.posZ);
+			FMLNetworkHandler.openGui(player, PlastiCraft.instance, 1, this.worldObj, this.getEntityId(), (int)this.posY, (int)this.posZ);
 		}
 		return true;
 	}
 	
-	public EntityClone(World par1World, boolean printed) {
+	public EntityClone(World par1World) {
 		super(par1World);
-		this.printed = printed;
+		this.printed = false;
 		items = new ItemStack[2];
 	}
-
+	
 	@Override
 	public int getSizeInventory() {
 		if(printed){
@@ -91,8 +91,8 @@ public class EntityClone extends EntityLiving implements IInventory{
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		return entityplayer.getDistanceSq(this.posX + 0.5, this.posY + 0.5, this.posZ + 0.5) <= 64;
-		}
+		return this.isDead ? false : entityplayer.getDistanceSqToEntity(this) <= 64.0D;
+	}
 
 	@Override
 	public void openInventory() {
