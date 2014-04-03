@@ -1,9 +1,9 @@
 package plasticraft.blocks;
 
-import plasticraft.PlastiCraft;
-import plasticraft.lib.References;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import plasticraft.PlastiCraft;
+import plasticraft.lib.References;
 
 public class BlockPlastic extends Block {
 
