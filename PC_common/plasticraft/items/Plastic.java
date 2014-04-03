@@ -1,7 +1,7 @@
 package plasticraft.items;
 
-import plasticraft.lib.References;
 import net.minecraft.item.Item;
+import plasticraft.lib.References;
 
 public class Plastic extends Item {
 

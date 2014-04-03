@@ -1,9 +1,9 @@
 package plasticraft.client;
 
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import plasticraft.CommonProxy;
 import plasticraft.client.interfaces.GuiHandler;
 import plasticraft.entity.EntityCarbonite;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class ClientProxy extends CommonProxy {
 	@Override

@@ -1,7 +1,5 @@
 package plasticraft.blocks;
 
-import javax.swing.Icon;
-
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;

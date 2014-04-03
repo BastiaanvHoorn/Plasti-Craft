@@ -1,12 +1,12 @@
 package plasticraft.entity;
 
-import plasticraft.PlastiCraft;
-import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import plasticraft.PlastiCraft;
+import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 
 public class EntityClone extends EntityLiving implements IInventory{
 	

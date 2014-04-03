@@ -1,11 +1,12 @@
 package plasticraft.client.interfaces;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.opengl.GL11;
+
 import plasticraft.entity.EntityClone;
 import plasticraft.lib.References;
 import cpw.mods.fml.relauncher.Side;

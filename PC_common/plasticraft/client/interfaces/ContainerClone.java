@@ -1,10 +1,9 @@
 package plasticraft.client.interfaces;
 
-import plasticraft.entity.EntityClone;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import plasticraft.entity.EntityClone;
 
 public class ContainerClone extends Container {
 

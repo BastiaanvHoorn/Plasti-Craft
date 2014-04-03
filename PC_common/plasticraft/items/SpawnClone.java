@@ -1,14 +1,13 @@
 package plasticraft.items;
 
-import plasticraft.PlastiCraft;
-import plasticraft.entity.EntityCarbonite;
-import plasticraft.entity.EntityClone;
-import plasticraft.lib.References;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import plasticraft.PlastiCraft;
+import plasticraft.entity.EntityClone;
+import plasticraft.lib.References;
 
 public class SpawnClone extends Item {
 	public SpawnClone() {
