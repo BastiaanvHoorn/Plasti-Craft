@@ -11,7 +11,6 @@ import plasticraft.lib.References;
 
 public class SpawnClone extends Item {
 	public SpawnClone() {
-		super();
 		this.setCreativeTab(PlastiCraft.tabsPC);
 		this.setUnlocalizedName("Spawn Clone");
 		setTextureName(References.MOD_ID.toLowerCase() + ":spawnClone");

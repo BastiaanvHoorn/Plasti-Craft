@@ -6,4 +6,5 @@ tile.Quicksand.name=Quicksand
 item.bucketplastic.name=Bucket of Plastic
 item.plastic.name=Plastic
 item.Spawn Carbonite.name=Spawn Carbonite
-itemGroup.PlastiTab=PlastiCraft
+itemGroup.PlastiCraft=PlastiCraft
+entity.pc.EntityClone.name=Clone

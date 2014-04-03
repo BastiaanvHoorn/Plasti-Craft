@@ -9,7 +9,7 @@ public class RenderClone extends RendererLivingEntity{
 
 	private ResourceLocation rs = new ResourceLocation(References.MOD_ID.toLowerCase() + ":textures/entities/Clone.png");
 	public RenderClone() {
-		super(new ModelClone(0.0F), 0.5F);
+		super(new ModelClone(0.5F), 0.5F);
 	}
 
 	@Override

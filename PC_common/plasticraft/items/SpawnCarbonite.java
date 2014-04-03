@@ -12,7 +12,6 @@ import plasticraft.lib.References;
 public class SpawnCarbonite extends Item{
 
 	public SpawnCarbonite() {
-		super();
 		this.setCreativeTab(PlastiCraft.tabsPC);
 		this.setUnlocalizedName("Spawn Carbonite");
 		setTextureName(References.MOD_ID.toLowerCase() + ":spawnCarbonite");

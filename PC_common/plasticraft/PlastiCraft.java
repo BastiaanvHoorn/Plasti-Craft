@@ -52,7 +52,7 @@ public class PlastiCraft {
         
         public static Fluid plastic_fluid;
         
-        public static CreativeTabs tabsPC; 
+        public static CreativeTabs tabsPC = new PlastiTab(CreativeTabs.getNextID(), "PlastiCraft"); 
         
         public static Material plastic;
         
@@ -66,14 +66,6 @@ public class PlastiCraft {
         @EventHandler
         public void load(FMLInitializationEvent event) {
         	config.load();
-        	
-        	tabsPC = new CreativeTabs("PlastiTab"){
-
-				@Override
-				public Item getTabIconItem() {
-					return PCItems.plastic_Item;
-				}
-        	};
         	
         	pipeLine.initialize();
         	
@@ -105,7 +97,6 @@ public class PlastiCraft {
         			'x', new ItemStack(PCItems.plastic_Item));
         	
         	GameRegistry.addShapelessRecipe(new ItemStack(PCItems.plastic_Item, 9), new ItemStack(PCBlocks.BlockPlastic,1));
-        	
         }       
         @EventHandler
         public void postInit(FMLPostInitializationEvent event) {

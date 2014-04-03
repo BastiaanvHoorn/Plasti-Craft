@@ -14,6 +14,7 @@ public class PCItems {
     public static Item bucketplastic;
     public static Item spawnCarbonite;
     public static Item spawnClone;
+    public static Item LocationSetter;
     
 	public static void Init(){
     	
@@ -31,6 +32,9 @@ public class PCItems {
         
         spawnClone = new SpawnClone();
         GameRegistry.registerItem(spawnClone, "spawnClone");
+        
+        LocationSetter = new LocationSetter();
+        GameRegistry.registerItem(LocationSetter, "locationsetter");
 	}
 	
 }

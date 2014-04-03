@@ -4,8 +4,10 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import plasticraft.PlastiCraft;
+import plasticraft.items.PCItems;
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 
 public class EntityClone extends EntityLiving implements IInventory{
@@ -15,29 +17,41 @@ public class EntityClone extends EntityLiving implements IInventory{
 	
 	@Override
 	public boolean interact(EntityPlayer player){
-		if(!this.worldObj.isRemote){
+		if(player.inventory.getCurrentItem().getItem().equals(PCItems.LocationSetter)){
+			if(player.inventory.getCurrentItem().stackTagCompound != null){
+				NBTTagCompound compound = player.inventory.getCurrentItem().stackTagCompound;
+				this.setAIDestination((double)compound.getInteger("x"), (double)compound.getInteger("y"), (double)compound.getInteger("z"));
+				return true;
+			}
+		}
+		if(!this.worldObj.isRemote && !player.inventory.getCurrentItem().getItem().equals(PCItems.LocationSetter)){
 			FMLNetworkHandler.openGui(player, PlastiCraft.instance, 1, this.worldObj, this.getEntityId(), (int)this.posY, (int)this.posZ);
 		}
 		return true;
 	}
 	
+	
 	public EntityClone(World par1World) {
 		super(par1World);
-		this.printed = false;
 		items = new ItemStack[2];
 	}
 	
 	@Override
+	public boolean isAIEnabled(){
+		return true;
+	}
+	
+	@Override
 	public int getSizeInventory() {
-		if(printed){
+		if(getPrinted()){
 			return 2;
 		}
 		return 1;
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int var1) {
-		return items[var1];
+	public ItemStack getStackInSlot(int i) {
+		return items[i];
 	}
 
 	@Override
@@ -106,5 +120,17 @@ public class EntityClone extends EntityLiving implements IInventory{
 	public boolean isItemValidForSlot(int var1, ItemStack var2) {
 		return true;
 	}
-
+	
+	public void setPrinted(boolean flag){
+		this.printed = flag;
+	}
+	
+	public boolean getPrinted(){
+		return printed;
+	}
+	
+	public void setAIDestination(double x, double y, double z){
+		this.getNavigator().tryMoveToXYZ(x, y, z, 0.9D);
+	}
+	
 }
