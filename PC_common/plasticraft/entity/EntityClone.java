@@ -1,6 +1,9 @@
 package plasticraft.entity;
 
+import java.util.ArrayList;
+
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -17,14 +20,22 @@ public class EntityClone extends EntityLiving implements IInventory{
 	
 	@Override
 	public boolean interact(EntityPlayer player){
-		if(player.inventory.getCurrentItem().getItem().equals(PCItems.LocationSetter)){
-			if(player.inventory.getCurrentItem().stackTagCompound != null){
-				NBTTagCompound compound = player.inventory.getCurrentItem().stackTagCompound;
-				this.setAIDestination((double)compound.getInteger("x"), (double)compound.getInteger("y"), (double)compound.getInteger("z"));
-				return true;
+		if(player.inventory.getCurrentItem() != null){
+			if(player.inventory.getCurrentItem().getItem().equals(PCItems.LocationSetter)){
+				if(player.inventory.getCurrentItem().stackTagCompound != null){
+					NBTTagCompound compound = player.inventory.getCurrentItem().stackTagCompound;
+					this.setAIDestination((double)compound.getInteger("x"), (double)compound.getInteger("y"), (double)compound.getInteger("z"));
+					return true;
+				}
+			}else if(player.inventory.getCurrentItem().getItem().equals(PCItems.BlockBreaker)){
+				if(player.inventory.getCurrentItem().stackTagCompound != null){
+					NBTTagCompound compound = player.inventory.getCurrentItem().stackTagCompound;
+					this.breakBlock(compound.getInteger("x"), compound.getInteger("y"), compound.getInteger("z"));
+					return true;
+				}
 			}
 		}
-		if(!this.worldObj.isRemote && !player.inventory.getCurrentItem().getItem().equals(PCItems.LocationSetter)){
+		if(!this.worldObj.isRemote ){
 			FMLNetworkHandler.openGui(player, PlastiCraft.instance, 1, this.worldObj, this.getEntityId(), (int)this.posY, (int)this.posZ);
 		}
 		return true;
@@ -133,4 +144,32 @@ public class EntityClone extends EntityLiving implements IInventory{
 		this.getNavigator().tryMoveToXYZ(x, y, z, 0.9D);
 	}
 	
+	public void breakBlock(int x, int y, int z){
+		if(!this.worldObj.isRemote){
+			setAIDestination((double)x, (double)y, (double)z);
+			if(this.worldObj.isAirBlock(x, y, z) == false){
+				ArrayList<ItemStack> items = this.worldObj.getBlock(x, y, z).getDrops(this.worldObj, x, y, z, this.worldObj.getBlockMetadata(x, y, z), 0);
+				PlastiCraft.info("arraylist gotten");
+				for(int i = 0;i < items.size(); i++){
+					ItemStack item = items.get(i);
+					float spawnx = x + this.worldObj.rand.nextFloat();
+					float spawny = y + this.worldObj.rand.nextFloat();
+					float spawnz = z + this.worldObj.rand.nextFloat();
+				
+					EntityItem entity = new EntityItem(this.worldObj, spawnx, spawny, spawnz, item);
+			
+					float mult = 0.05F;
+					
+					entity.motionX = (-0.5F + this.worldObj.rand.nextFloat()) * mult;
+					entity.motionY = (4 + this.worldObj.rand.nextFloat()) * mult;
+					entity.motionZ = (-0.5F + this.worldObj.rand.nextFloat()) * mult;
+				
+					this.worldObj.spawnEntityInWorld(entity);
+					PlastiCraft.info("item added");
+				}
+				PlastiCraft.info("Out of loop");
+			}
+			this.worldObj.setBlockToAir(x, y, z);
+		}
+	}
 }

@@ -61,13 +61,7 @@ public class PlastiCraft {
         @EventHandler
         public void preInit(FMLPreInitializationEvent event) {
         	config = new Configuration(((FMLPreInitializationEvent) event).getSuggestedConfigurationFile());
-        }
-        
-        @EventHandler
-        public void load(FMLInitializationEvent event) {
         	config.load();
-        	
-        	pipeLine.initialize();
         	
             plastic = new MaterialLiquid(MapColor.ironColor);
             plastic_fluid = new PlasticFluid("Plastic").setBlock(PCBlocks.Fluid_Plastic_Block);
@@ -85,6 +79,11 @@ public class PlastiCraft {
     		pcLog.info("PlastiCraft succesfully loaded");
         	proxy.registerRenderers();
         	
+        }
+        
+        @EventHandler
+        public void load(FMLInitializationEvent event) {
+        	pipeLine.initialize();
         	GameRegistry.addRecipe(new ItemStack(PCBlocks.block_Quicksand,2), "xyx","yzy","xyx",
         	'x', new ItemStack(Blocks.dirt),'y',new ItemStack(Blocks.gravel),'z',new ItemStack(Items.water_bucket)
         		);

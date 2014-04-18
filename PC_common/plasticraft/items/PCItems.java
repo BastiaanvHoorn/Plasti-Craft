@@ -15,6 +15,7 @@ public class PCItems {
     public static Item spawnCarbonite;
     public static Item spawnClone;
     public static Item LocationSetter;
+	public static Item BlockBreaker;
     
 	public static void Init(){
     	
@@ -35,6 +36,9 @@ public class PCItems {
         
         LocationSetter = new LocationSetter();
         GameRegistry.registerItem(LocationSetter, "locationsetter");
+        
+        BlockBreaker = new BlockBreaker();
+        GameRegistry.registerItem(BlockBreaker, "blockbreaker");
 	}
 	
 }
