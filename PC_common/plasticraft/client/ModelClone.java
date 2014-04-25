@@ -18,6 +18,8 @@ public class ModelClone extends ModelBase{
     public ModelRenderer bipedLeftLeg;
     public ModelRenderer bipedEars;
     public ModelRenderer bipedCloak;
+	public int heldItemLeft;
+	public int heldItemRight;
 	
     public ModelClone(float par1)
     {
@@ -117,7 +119,14 @@ public class ModelClone extends ModelBase{
             this.bipedLeftLeg.rotateAngleY = -((float)Math.PI / 10F);
         }
 
+        if(this.heldItemLeft != 0){
+        	this.bipedLeftArm.rotateAngleX = this.bipedLeftArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F) * (float)this.heldItemLeft;
+        }
         
+        if (this.heldItemRight != 0)
+        {
+            this.bipedRightArm.rotateAngleX = this.bipedRightArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F) * (float)this.heldItemRight;
+        }
 
         this.bipedRightArm.rotateAngleY = 0.0F;
         this.bipedLeftArm.rotateAngleY = 0.0F;

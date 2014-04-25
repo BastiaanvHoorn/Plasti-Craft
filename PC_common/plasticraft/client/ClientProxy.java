@@ -11,7 +11,7 @@ public class ClientProxy extends CommonProxy {
 	public void registerRenderers(){
 		new GuiHandler();
 		RenderingRegistry.registerEntityRenderingHandler(EntityCarbonite.class, new RenderCarbonite());
-		RenderingRegistry.registerEntityRenderingHandler(EntityClone.class, new RenderClone());
+		RenderingRegistry.registerEntityRenderingHandler(EntityClone.class, new RenderClone(new ModelClone(0.5F)));
 	}
         
 }
