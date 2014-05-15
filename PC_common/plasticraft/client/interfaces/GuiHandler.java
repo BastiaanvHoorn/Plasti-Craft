@@ -30,7 +30,6 @@ public class GuiHandler implements IGuiHandler{
 			case 1:
 				Entity e = world.getEntityByID(x);
 				if(e != null && e instanceof EntityClone){
-					PlastiCraft.info("server");
 					return new ContainerClone(player.inventory, (EntityClone)e);
 				}
 			break;
@@ -55,7 +54,6 @@ public class GuiHandler implements IGuiHandler{
 			case 1:
 				Entity e = world.getEntityByID(x);
 				if(e != null && e instanceof EntityClone){
-					PlastiCraft.info("Client");
 					return new GuiClone(player.inventory, (EntityClone)e);
 				}
 			break;
