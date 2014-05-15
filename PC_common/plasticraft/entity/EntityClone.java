@@ -13,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import network.ClonePickupPacket;
 import plasticraft.PlastiCraft;
 import plasticraft.items.PCItems;
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
@@ -195,7 +196,8 @@ public class EntityClone extends EntityLiving implements IInventory{
 				}
 			}
 		}
-			Iterator iterator = this.worldObj.getEntitiesWithinAABB(EntityItem.class, this.boundingBox.expand(0.5D, 0.0D, 0.5D)).iterator();
+		if(!this.worldObj.isRemote){	
+		Iterator iterator = this.worldObj.getEntitiesWithinAABB(EntityItem.class, this.boundingBox.expand(0.5D, 0.0D, 0.5D)).iterator();
 
 	        while (iterator.hasNext())
 	        {
@@ -222,22 +224,26 @@ public class EntityClone extends EntityLiving implements IInventory{
                     }
                 }
 	        }
+		}
 		
 		super.onUpdate();
 	}
 
 
 	public void tryToPickupEntity(EntityItem entity) {
+		if(!this.worldObj.isRemote) PlastiCraft.info("Server called once");
 		ItemStack stack = entity.getEntityItem();
 		if(stack != null && stack.stackSize > 0 && stack.getItem() != null){
+			if(!this.worldObj.isRemote) PlastiCraft.info("Server called twice");
 			try{
 				int i;
-				
+				if(!this.worldObj.isRemote)PlastiCraft.info(stack.isItemDamaged());
 				if(stack.isItemDamaged()){
 					i = this.getFirstEmptyStack();
 					
 					if(i >= 0){
 						this.items[i] = ItemStack.copyItemStack(stack);
+						
 						this.items[i].animationsToGo = 5;
 						stack.stackSize = 0;
 					}
@@ -253,9 +259,15 @@ public class EntityClone extends EntityLiving implements IInventory{
 				PlastiCraft.info("Unable to pickup item");			
 			}
 		}
+		for(int i = 0; i < this.getSizeInventory(); i++){
+			if(this.getStackInSlot(i) != null){
+				PlastiCraft.pipeLine.sendToAll(new ClonePickupPacket(this.getStackInSlot(i),this.getEntityId(), i)/*, this.worldObj.provider.dimensionId*/);
+			}
+		}
 	}
 	
-	private int storePartialItemStack(ItemStack stack) {
+	public int storePartialItemStack(ItemStack stack) {
+		if(!this.worldObj.isRemote) PlastiCraft.info("server called");
 		Item item = stack.getItem();
         int i = stack.stackSize;
         int j;
@@ -323,8 +335,8 @@ public class EntityClone extends EntityLiving implements IInventory{
 	}
 
 
-	private int storeItemStack(ItemStack stack) {
-		for (int i = 0; i < this.items.length; ++i)
+	public int storeItemStack(ItemStack stack) {
+		for (int i = 0; i < this.getSizeInventory(); ++i)
         {
             if (this.items[i] != null && this.items[i].getItem() == stack.getItem() && this.items[i].isStackable() && this.items[i].stackSize < this.items[i].getMaxStackSize() && this.items[i].stackSize < this.getInventoryStackLimit() && (!this.items[i].getHasSubtypes() || this.items[i].getItemDamage() == stack.getItemDamage()) && ItemStack.areItemStackTagsEqual(this.items[i], stack))
             {
@@ -337,7 +349,7 @@ public class EntityClone extends EntityLiving implements IInventory{
 
 
 	public int getFirstEmptyStack(){
-		for (int i = 0; i < this.items.length; ++i)
+		for (int i = 0; i < this.getSizeInventory(); ++i)
         {
             if (this.items[i] == null)
             {

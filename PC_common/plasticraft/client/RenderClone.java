@@ -89,7 +89,7 @@ public class RenderClone extends RenderLiving{
             }else
             {
                 f1 = 0.375F;
-                GL11.glTranslatef(0.25F, 0.1875F, -0.1875F);
+                GL11.glTranslatef(0F, 0.1875F, -0.4F);
                 GL11.glScalef(f1, f1, f1);
                 GL11.glRotatef(60.0F, 0.0F, 0.0F, 1.0F);
                 GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);

@@ -131,7 +131,7 @@ public class packetPipeLine extends MessageToMessageCodec<FMLProxyPacket, Abstra
             }
         });
     }
-	
+    
 	@SideOnly(Side.CLIENT)
 	private EntityPlayer getClientPlayer() {
 		return Minecraft.getMinecraft().thePlayer;
@@ -205,6 +205,11 @@ public class packetPipeLine extends MessageToMessageCodec<FMLProxyPacket, Abstra
 
 	public void initialize() {
 		this.channels = NetworkRegistry.INSTANCE.newChannel("PlastiCraft", this);
+		registerPackets();
+	}
+
+	private void registerPackets() {
+		registerPacket(ClonePickupPacket.class);
 	}
 
 }

@@ -56,7 +56,7 @@ public class PlastiCraft {
         
         public static Material plastic;
         
-        public packetPipeLine pipeLine = new packetPipeLine();
+        public static packetPipeLine pipeLine = new packetPipeLine();
         
         @EventHandler
         public void preInit(FMLPreInitializationEvent event) {

@@ -55,6 +55,7 @@ public class SpawnClone extends Item {
 			entity.setLocationAndAngles(posX, posY, posZ, MathHelper.wrapAngleTo180_float(world.rand.nextFloat() * 360.0F), 0.0F);
 			entity.rotationYawHead = entity.rotationYaw;
 			entity.renderYawOffset = entity.rotationYaw;
+			entity.setPrinted(true);
 			entity.onSpawnWithEgg(null);
 			world.spawnEntityInWorld(entity);
 			return true;
