@@ -1,11 +1,13 @@
 package plasticraft.client;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
+
+import org.lwjgl.opengl.GL11;
+
+import plasticraft.entity.EntityClone;
 
 public class ModelClone extends ModelBase{
 
@@ -94,7 +96,7 @@ public class ModelClone extends ModelBase{
         }
     }
     
-    public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
+    public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity entity)
     {
         this.bipedHead.rotateAngleY = par4 / (180F / (float)Math.PI);
         this.bipedHead.rotateAngleX = par5 / (180F / (float)Math.PI);
@@ -119,13 +121,13 @@ public class ModelClone extends ModelBase{
             this.bipedLeftLeg.rotateAngleY = -((float)Math.PI / 10F);
         }
 
-        if(this.heldItemLeft != 0){
-        	this.bipedLeftArm.rotateAngleX = this.bipedLeftArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F) * (float)this.heldItemLeft;
+        if(((EntityClone)entity).getStackInSlot(1) != null){
+        	this.bipedLeftArm.rotateAngleX = this.bipedLeftArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F) * (((EntityClone)entity).getStackInSlot(1) == null ? 0:1) ;
         }
         
-        if (this.heldItemRight != 0)
+        if (((EntityClone)entity).getStackInSlot(0) != null)
         {
-            this.bipedRightArm.rotateAngleX = this.bipedRightArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F) * (float)this.heldItemRight;
+            this.bipedRightArm.rotateAngleX = this.bipedRightArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F) * (((EntityClone)entity).getStackInSlot(0) == null ? 0:1);
         }
 
         this.bipedRightArm.rotateAngleY = 0.0F;

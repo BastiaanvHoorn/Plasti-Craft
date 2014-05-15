@@ -24,7 +24,6 @@ public class ClonePickupPacket extends AbstractPacket {
 	}
 	
 	public ClonePickupPacket(ItemStack stack, int cloneID, int slot){
-		PlastiCraft.info(cloneID);
 		this.stack = stack;
 		this.cloneID = cloneID;
 		this.slot = slot;

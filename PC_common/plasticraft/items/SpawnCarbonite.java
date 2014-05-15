@@ -23,7 +23,6 @@ public class SpawnCarbonite extends Item{
 		if (!world.isRemote)
 		{
 			EntityCarbonite entity = new EntityCarbonite(world);
-			PlastiCraft.info(side);
 			
 			float posX = x + 0.5F;
 			float posY = y;

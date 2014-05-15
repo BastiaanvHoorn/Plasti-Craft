@@ -1,6 +1,7 @@
 package plasticraft;
 
-import java.util.logging.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
 
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -46,9 +47,7 @@ public class PlastiCraft {
         
         private static Configuration config;
         
-        public static int LunchBoxId;
-        
-        public static Logger pcLog = Logger.getLogger("PlastiCraft");
+        public static org.apache.logging.log4j.Logger pcLog = LogManager.getLogger("PlastiCraft");
         
         public static Fluid plastic_fluid;
         
@@ -124,4 +123,8 @@ public class PlastiCraft {
         {
         	pcLog.info(String.valueOf(text));
         }
+
+		public static void info(double text) {
+			pcLog.info(String.valueOf(text));
+		}
 }

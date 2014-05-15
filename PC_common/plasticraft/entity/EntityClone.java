@@ -12,6 +12,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import network.ClonePickupPacket;
 import plasticraft.PlastiCraft;
@@ -231,13 +232,10 @@ public class EntityClone extends EntityLiving implements IInventory{
 
 
 	public void tryToPickupEntity(EntityItem entity) {
-		if(!this.worldObj.isRemote) PlastiCraft.info("Server called once");
 		ItemStack stack = entity.getEntityItem();
 		if(stack != null && stack.stackSize > 0 && stack.getItem() != null){
-			if(!this.worldObj.isRemote) PlastiCraft.info("Server called twice");
 			try{
 				int i;
-				if(!this.worldObj.isRemote)PlastiCraft.info(stack.isItemDamaged());
 				if(stack.isItemDamaged()){
 					i = this.getFirstEmptyStack();
 					
@@ -261,13 +259,12 @@ public class EntityClone extends EntityLiving implements IInventory{
 		}
 		for(int i = 0; i < this.getSizeInventory(); i++){
 			if(this.getStackInSlot(i) != null){
-				PlastiCraft.pipeLine.sendToAll(new ClonePickupPacket(this.getStackInSlot(i),this.getEntityId(), i)/*, this.worldObj.provider.dimensionId*/);
+				PlastiCraft.pipeLine.sendToDimension(new ClonePickupPacket(this.getStackInSlot(i),this.getEntityId(), i), this.worldObj.provider.dimensionId);
 			}
 		}
 	}
 	
 	public int storePartialItemStack(ItemStack stack) {
-		if(!this.worldObj.isRemote) PlastiCraft.info("server called");
 		Item item = stack.getItem();
         int i = stack.stackSize;
         int j;
@@ -359,4 +356,24 @@ public class EntityClone extends EntityLiving implements IInventory{
 
         return -1;
 	}
+	
+	@Override
+	public void onDeath(DamageSource par1DamageSource){
+		for(int i = 0; i < this.getSizeInventory(); i++){
+			ItemStack stack = this.getStackInSlotOnClosing(i);
+			if(stack != null){
+				EntityItem entity = new EntityItem(this.worldObj, this.posX + this.worldObj.rand.nextDouble(), this.posY + this.worldObj.rand.nextDouble(), this.posZ + this.worldObj.rand.nextDouble(), stack);
+				entity.motionX = this.worldObj.rand.nextDouble() * 0.05;
+				entity.motionY = (4 + this.worldObj.rand.nextDouble()) * 0.05;
+				entity.motionZ = this.worldObj.rand.nextDouble() * 0.05;
+				entity.age = 0;
+				this.worldObj.spawnEntityInWorld(entity);
+				PlastiCraft.info(entity.motionY);
+				PlastiCraft.info(entity.posX);
+				PlastiCraft.info(entity.posY);
+				PlastiCraft.info(entity.posZ);
+			}
+		}
+	}
+	
 }

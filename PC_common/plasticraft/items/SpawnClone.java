@@ -22,7 +22,6 @@ public class SpawnClone extends Item {
 		if (!world.isRemote)
 		{
 			EntityClone entity = new EntityClone(world);
-			PlastiCraft.info(side);
 			
 			float posX = x + 0.5F;
 			float posY = y;

@@ -26,7 +26,6 @@ public class ContainerClone extends Container {
 				addSlotToContainer(new Slot(player,x + y * 9 + 9,8 + 18 * x, 72 + y * 18));
 			}
 		}
-		PlastiCraft.info(entity.getStackInSlot(0) == null);
 	}
 
 	@Override
