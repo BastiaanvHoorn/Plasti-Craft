@@ -53,17 +53,18 @@ public class carbonformer extends BlockContainer{
     
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister icon){
+    public void registerBlockIcons(IIconRegister icon){//register all icons(for the sides)
     	TopIcon= icon.registerIcon(References.MOD_ID.toLowerCase() + ":carbonformer_top");
     	BottomIcon = icon.registerIcon(References.MOD_ID.toLowerCase() + ":carbonformer");
     	SideIcon = icon.registerIcon(References.MOD_ID.toLowerCase() + ":carbonformer_side");
     	FrontIcon_on = icon.registerIcon(References.MOD_ID.toLowerCase() + ":carbonformer_front_on");
     	FrontIcon_off = icon.registerIcon(References.MOD_ID.toLowerCase() +":carbonformer_front_off");
     }
-    
-    public void onBlockAdded(World par1World, int par2, int par3, int par4)
+    //all direction related stuff is copied from the furnace
+    public void onBlockAdded(World par1World, int par2, int par3, int par4)//gets called a block gets added to the world
     {
         super.onBlockAdded(par1World, par2, par3, par4);
+        //sets the direction for the front
         this.setDefaultDirection(par1World, par2, par3, par4);
     }
     
@@ -106,7 +107,7 @@ public class carbonformer extends BlockContainer{
     
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int Side, int Metadata){
+    public IIcon getIcon(int Side, int Metadata){//gets the icon for every side
     	if(Side == 0){
     		return BottomIcon;
     	} else if(Side == 1){
@@ -125,9 +126,9 @@ public class carbonformer extends BlockContainer{
     	}
     }
     
-    @Override
+    @Override//gets called when you click on the block
     public boolean onBlockActivated(World world,int x,int y,int z, EntityPlayer player, int Side, float hitX,float hitY, float hitZ){
-		
+		//checks if the item you click with can be used to fill with fluid plastic
     	if(player.getHeldItem() != null && FluidContainerRegistry.isEmptyContainer(player.getHeldItem())){
     		if(world.getTileEntity(x, y, z) instanceof TileEntityCarbonFormer){
     			if(((TileEntityCarbonFormer)world.getTileEntity(x, y, z)).tank.getFluidAmount() >= 1000){
@@ -141,7 +142,7 @@ public class carbonformer extends BlockContainer{
     		}
     		
     	}
-    	
+    	//stuff to open the gui
     	if(player.isSneaking()){
     		return false;
     	}
@@ -154,9 +155,10 @@ public class carbonformer extends BlockContainer{
     	
     }
 
-	@Override
+	@Override//gets called when you break a block of this type
 	public void breakBlock(World world, int x,int y,int z, Block block, int metadata){
-		if(!keepInventory){
+		if(!keepInventory){//keepInventory is true when toggeling the state of the carbon former
+			//Drops the items inside the tileeintity
 			TileEntity te = world.getTileEntity(x, y, z);
 			if(te != null && te instanceof IInventory){
 				IInventory inv = (IInventory)te;
@@ -183,14 +185,14 @@ public class carbonformer extends BlockContainer{
 			}
 		}
 		
-		super.breakBlock(world, x, y, z, block, metadata);
+		super.breakBlock(world, x, y, z, block, metadata);//Actually breaks the block and removes it from the world
 	}
 
     public static void updateFurnaceBlockState(boolean par0, World par1World, int par2, int par3, int par4)
-    {
+    {//updates the state of the furnace so it renders with or without flames
         int l = par1World.getBlockMetadata(par2, par3, par4);
         TileEntity tileentity = par1World.getTileEntity(par2, par3, par4);
-        keepInventory = true;
+        keepInventory = true;//used in the breakblock function
 
         if (par0)
         {
@@ -215,7 +217,7 @@ public class carbonformer extends BlockContainer{
      * A randomly called display update to be able to add particles or other items for display
      */
     public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
-    {
+    {//renders particles if the furnace is on
         if (this.isActive)
         {
             int l = par1World.getBlockMetadata(par2, par3, par4);
@@ -248,7 +250,7 @@ public class carbonformer extends BlockContainer{
         }
     }
 
-	@Override
+	@Override//creates a new instance of the tileentity when a block gets placed
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityCarbonFormer();
 	}

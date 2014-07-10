@@ -19,10 +19,6 @@ public class PCBlocks {
      public static Block trashCan; 
      
 	public static void init(){
-		
-        block_Quicksand =  new BlockQuicksand(Material.ground).setBlockName("Quicksand");
-        GameRegistry.registerBlock(block_Quicksand,"quicksand");
-        block_Quicksand.setCreativeTab(PlastiCraft.tabsPC);
         
         carbon_former_idle = new carbonformer(Material.iron,false).setBlockName("CarbonFormer");
         carbon_former_burning = new carbonformer(Material.iron,true).setBlockName("CarbonFormerBurning");

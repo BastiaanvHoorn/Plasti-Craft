@@ -1,5 +1,5 @@
 package plasticraft;
-
+//the proxy for the server and the client
 public class CommonProxy {
     
     // Client stuff
